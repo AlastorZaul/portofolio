@@ -178,6 +178,14 @@ h1 {
 }
 .detail ul { margin: 0; padding-left: 1.2em; display: grid; gap: 8px; max-width: 64ch; }
 .detail p { margin: 0; max-width: 64ch; }
+.skills { margin-top: 24px; display: grid; gap: 10px; }
+.skills-title {
+  margin: 0;
+  font: 500 12px/1.4 "IBM Plex Mono", monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
 .flow { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
 .flow .node {
   background: var(--card);
@@ -211,6 +219,19 @@ footer {
     <p class="eyebrow">Portfolio</p>
     <h1>Jérôme</h1>
     <p class="lede">Développeur backend Python. Je conçois des API avec FastAPI, Pydantic, SQLAlchemy et Alembic. Mes projets personnels me servent à explorer le front, l'infrastructure et les jeux.</p>
+    <div class="skills">
+      <p class="skills-title">Compétences</p>
+      <ul class="stack" aria-label="Compétences">
+        <li>Python</li>
+        <li>FastAPI</li>
+        <li>Pydantic</li>
+        <li>SQLAlchemy</li>
+        <li>Alembic</li>
+        <li>Angular</li>
+        <li>TypeScript</li>
+        <li>Supabase</li>
+      </ul>
+    </div>
   </header>
 
   <main class="projects" id="home" aria-label="Projets">
@@ -385,6 +406,9 @@ footer {
 
   <footer>
     Projets personnels. Plus de détails sur demande.
+    <div class="links">
+      <a href="https://github.com/AlastorZaul" target="_blank" rel="noopener">Profil GitHub</a>
+    </div>
   </footer>
 </div>
 <script>
