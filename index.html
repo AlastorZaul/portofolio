@@ -198,6 +198,10 @@ h1 {
 .flow .node.planned { border-style: dashed; color: var(--muted); }
 .flow .arrow { color: var(--accent); font: 500 16px/1 "IBM Plex Mono", monospace; }
 .lang { margin: 16px 0 0; font-weight: 500; }
+.shots { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 14px; }
+.shots figure { margin: 0; min-width: 0; }
+.shots img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 6px; }
+.shots figcaption { margin-top: 6px; font: 500 12px/1.4 "IBM Plex Mono", monospace; color: var(--muted); }
 .grid-plan {
   display: grid;
   grid-template-columns: minmax(70px, 90px) repeat(7, minmax(0, 1fr));
@@ -335,6 +339,13 @@ footer {
     <p class="eyebrow">Projet personnel</p>
     <h2 class="dh">FermeGPU</h2>
     <p class="lead">Dashboard pour suivre et réserver des ressources GPU sur plusieurs clusters, avec un rôle administrateur et un rôle utilisateur.</p>
+    <h3>Captures</h3>
+    <div class="shots">
+      <figure><img src="assets/fermegpu/dashboard.jpg" alt="Tableau de bord FermeGPU avec des données de test" loading="lazy"><figcaption>Tableau de bord</figcaption></figure>
+      <figure><img src="assets/fermegpu/gateways.jpg" alt="Liste des passerelles réseau, données de test" loading="lazy"><figcaption>Passerelles réseau</figcaption></figure>
+      <figure><img src="assets/fermegpu/models.jpg" alt="Catalogue de modèles IA, données de test" loading="lazy"><figcaption>Catalogue de modèles</figcaption></figure>
+      <figure><img src="assets/fermegpu/reservation.jpg" alt="Formulaire de réservation de namespace" loading="lazy"><figcaption>Réservation</figcaption></figure>
+    </div>
     <h3>Problème</h3>
     <p>Suivre les GPU et les modèles, pouvoir réserver des ressources et les allouer automatiquement.</p>
     <h3>Choix techniques</h3>
