@@ -202,11 +202,13 @@ h1 {
 .shots figure { margin: 0; min-width: 0; }
 .shots img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 6px; }
 .shots figcaption { margin-top: 6px; font: 500 12px/1.4 "IBM Plex Mono", monospace; color: var(--muted); }
+.mock:has(.grid-plan) { overflow-x: auto; }
 .grid-plan {
   display: grid;
-  grid-template-columns: minmax(70px, 90px) repeat(7, minmax(0, 1fr));
+  grid-template-columns: minmax(64px, 84px) repeat(7, minmax(26px, 1fr));
   gap: 4px;
   font-size: 12px;
+  min-width: 300px;
 }
 .grid-plan span { padding: 7px 4px; border-radius: 3px; background: var(--chip); min-width: 0; }
 .grid-plan .lbl { background: none; color: var(--muted); text-align: left; padding-left: 0; }
