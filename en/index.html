@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jérôme's portfolio</title>
+<style>
+[hidden]{display:none!important}
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap");
+
+/* Layout: a single column of projects under a short intro, the project name leads each entry. */
+:root {
+  --bg: #f5f4ef;
+  --fg: #1c1e1b;
+  --muted: #5d615a;
+  --line: #d6d4cb;
+  --card: #ffffff;
+  --accent: #2c5a4d;
+  --chip: #e6ebe6;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #131412;
+    --fg: #e8e7e1;
+    --muted: #9b9e96;
+    --line: #2b2e2a;
+    --card: #1a1c19;
+    --accent: #8cc3ae;
+    --chip: #222723;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #131412;
+  --fg: #e8e7e1;
+  --muted: #9b9e96;
+  --line: #2b2e2a;
+  --card: #1a1c19;
+  --accent: #8cc3ae;
+  --chip: #222723;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font: 14px/1.6 "IBM Plex Sans", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 40px;
+}
+.wrap { max-width: 760px; margin-inline: auto; }
+a { color: var(--accent); }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+.intro { padding-bottom: 32px; border-bottom: 1px solid var(--line); }
+.eyebrow {
+  margin: 0 0 12px;
+  font: 500 12px/1.4 "IBM Plex Mono", monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+h1 {
+  margin: 0 0 16px;
+  font: 500 clamp(40px, 8vw, 56px)/1.05 "Newsreader", Georgia, serif;
+  text-wrap: balance;
+}
+.lede { margin: 0; max-width: 60ch; color: var(--muted); font-size: 16px; }
+
+.projects { display: grid; gap: 16px; padding-top: 32px; }
+.project {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 24px;
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+}
+.project-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 16px;
+}
+.project h2 {
+  margin: 0;
+  font: 500 26px/1.2 "Newsreader", Georgia, serif;
+  text-wrap: balance;
+  min-width: 0;
+}
+.status {
+  font: 500 12px/1.4 "IBM Plex Mono", monospace;
+  color: var(--accent);
+  background: var(--chip);
+  padding: 3px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.project p { margin: 0; max-width: 62ch; }
+.stack {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.stack li {
+  font: 400 12px/1.4 "IBM Plex Mono", monospace;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+.links { display: flex; flex-wrap: wrap; gap: 16px; font-weight: 500; }
+
+.carnet-table td.ok { color: var(--accent); }
+.carnet-table td.off { color: var(--muted); }
+.carnet-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+.carnet-tabs span {
+  font: 500 12px/1.4 "IBM Plex Mono", monospace;
+  padding: 3px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+}
+.carnet-tabs span[aria-current] { color: var(--accent); border-color: var(--accent); }
+.carnet-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.carnet-table th,
+.carnet-table td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+.carnet-table th {
+  font: 500 11px/1.4 "IBM Plex Mono", monospace;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.mock {
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 16px;
+  background: var(--bg);
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+}
+.mock figcaption {
+  font: 500 11px/1.4 "IBM Plex Mono", monospace;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.mock-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; }
+.mock-kpis span { display: block; font-size: 12px; color: var(--muted); }
+.mock-kpis strong { font: 500 22px/1.2 "Newsreader", Georgia, serif; font-variant-numeric: tabular-nums; }
+.mock-bars { display: flex; align-items: flex-end; gap: 8px; height: 90px; }
+.mock-bars span { flex: 1; min-width: 0; background: var(--accent); opacity: 0.8; border-radius: 3px 3px 0 0; }
+
+.project h2 a { color: inherit; text-decoration: none; }
+.project h2 a:hover { text-decoration: underline; }
+.detail { display: grid; gap: 18px; padding-top: 32px; }
+.back { font-weight: 500; justify-self: start; }
+.dh { margin: 0; font: 500 clamp(34px, 6vw, 44px)/1.1 "Newsreader", Georgia, serif; text-wrap: balance; }
+.detail .lead { margin: 0; max-width: 60ch; color: var(--muted); font-size: 17px; }
+.detail h3 {
+  margin: 8px 0 0;
+  font: 500 12px/1.4 "IBM Plex Mono", monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.detail ul { margin: 0; padding-left: 1.2em; display: grid; gap: 8px; max-width: 64ch; }
+.detail p { margin: 0; max-width: 64ch; }
+.skills { margin-top: 24px; display: grid; gap: 10px; }
+.skills-title {
+  margin: 0;
+  font: 500 12px/1.4 "IBM Plex Mono", monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.flow { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.flow .node {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 14px;
+  min-width: 0;
+}
+.flow .node.planned { border-style: dashed; color: var(--muted); }
+.flow .arrow { color: var(--accent); font: 500 16px/1 "IBM Plex Mono", monospace; }
+.lang { margin: 16px 0 0; font-weight: 500; }
+.grid-plan {
+  display: grid;
+  grid-template-columns: minmax(70px, 90px) repeat(7, minmax(0, 1fr));
+  gap: 4px;
+  font-size: 12px;
+}
+.grid-plan span { padding: 7px 4px; border-radius: 3px; background: var(--chip); min-width: 0; }
+.grid-plan .lbl { background: none; color: var(--muted); text-align: left; padding-left: 0; }
+.grid-plan .lbl:not(:first-child) { text-align: center; }
+.grid-plan .on { background: var(--accent); }
+
+footer {
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 13px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .project { transition: border-color 0.2s ease; }
+  .project:hover { border-color: var(--accent); }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="intro">
+    <p class="eyebrow">Portfolio</p>
+    <h1>Jérôme</h1>
+    <p class="lede">Python backend developer. I design APIs with FastAPI, Pydantic, SQLAlchemy and Alembic. My personal projects let me explore the front end, infrastructure and games.</p>
+    <div class="skills">
+      <p class="skills-title">Skills</p>
+      <ul class="stack" aria-label="Skills">
+        <li>Python</li>
+        <li>FastAPI</li>
+        <li>Pydantic</li>
+        <li>SQLAlchemy</li>
+        <li>Alembic</li>
+        <li>Angular</li>
+        <li>TypeScript</li>
+        <li>Supabase</li>
+      </ul>
+    </div>
+    <p class="lang"><a href="../">Version française</a></p>
+  </header>
+
+  <main class="projects" id="home" aria-label="Projects">
+    <article class="project">
+      <div class="project-head">
+        <h2><a href="#fermegpu">FermeGPU</a></h2>
+        <span class="status">Personal project</span>
+      </div>
+      <p>Angular dashboard to monitor and manage GPU and cluster resources: an overview of machines and their usage.</p>
+      <figure class="mock" aria-label="Preview of the dashboard, sample data">
+        <figcaption>Preview · sample data</figcaption>
+        <div class="mock-kpis">
+          <div><span>GPUs in use</span><strong>12 / 16</strong></div>
+          <div><span>Memory</span><strong>64 %</strong></div>
+          <div><span>CPU</span><strong>41 %</strong></div>
+        </div>
+        <table class="carnet-table">
+          <thead><tr><th>Server</th><th>Status</th><th>GPU</th></tr></thead>
+          <tbody>
+            <tr><td>SRV-01</td><td class="ok">● Online</td><td>4</td></tr>
+            <tr><td>SRV-02</td><td class="off">● Offline</td><td>2</td></tr>
+            <tr><td>SRV-03</td><td class="ok">● Online</td><td>6</td></tr>
+          </tbody>
+        </table>
+      </figure>
+      <ul class="stack" aria-label="Technologies">
+        <li>Angular</li>
+        <li>TypeScript</li>
+      </ul>
+    </article>
+
+    <article class="project">
+      <div class="project-head">
+        <h2><a href="#fortunes-weave">Fortune's Weave Companion</a></h2>
+        <span class="status">In progress</span>
+      </div>
+      <p>Companion app for the game Fire Emblem: Fortune's Weave, born from my game notebook. I am starting with the API, then the front end.</p>
+      <figure class="mock" aria-label="Preview of the notebook, sample data">
+        <figcaption>Preview · sample data</figcaption>
+        <div class="carnet-tabs">
+          <span aria-current="true">Summary</span>
+          <span>Recruits</span>
+          <span>Chapters</span>
+          <span>Equipment</span>
+        </div>
+        <table class="carnet-table">
+          <thead><tr><th>Ch.</th><th>Title</th><th>Battle</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Sample chapter</td><td>Against a boss</td></tr>
+            <tr><td>2</td><td>Sample chapter</td><td>Tutorial dungeon</td></tr>
+            <tr><td>3</td><td>Sample chapter</td><td>Brazier race</td></tr>
+          </tbody>
+        </table>
+      </figure>
+      <ul class="stack" aria-label="Technologies">
+        <li>FastAPI</li>
+        <li>Python</li>
+        <li>Angular</li>
+      </ul>
+    </article>
+
+    <article class="project">
+      <div class="project-head">
+        <h2><a href="#pilotage">Management tools</a></h2>
+        <span class="status">In progress</span>
+      </div>
+      <p>A management tools portal in development, built with a partner. Details on request.</p>
+      <figure class="mock" aria-label="Preview of a tracking table, sample data">
+        <figcaption>Preview · sample data</figcaption>
+        <table class="carnet-table">
+          <thead><tr><th>Item</th><th>Status</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td>Item A</td><td class="ok">● Validated</td><td>12</td></tr>
+            <tr><td>Item B</td><td class="off">● Pending</td><td>8</td></tr>
+            <tr><td>Item C</td><td class="ok">● Validated</td><td>5</td></tr>
+          </tbody>
+        </table>
+      </figure>
+      <ul class="stack" aria-label="Technologies">
+        <li>JavaScript</li>
+        <li>Supabase</li>
+        <li>GitHub Pages</li>
+      </ul>
+    </article>
+  </main>
+
+  <section class="detail" id="fermegpu" hidden>
+    <a class="back" href="#">← All projects</a>
+    <p class="eyebrow">Personal project</p>
+    <h2 class="dh">FermeGPU</h2>
+    <p class="lead">A dashboard to track and book GPU resources across several clusters, with an administrator role and a user role.</p>
+    <h3>Problem</h3>
+    <p>Track GPUs and models, book resources and allocate them automatically.</p>
+    <h3>Technical choices</h3>
+    <ul>
+      <li>Angular for the dashboard.</li>
+      <li>Two roles, administrator and user, to separate management from booking.</li>
+      <li>Offline gateways are flagged and can be restarted from the interface.</li>
+    </ul>
+    <h3>Diagram</h3>
+    <div class="flow" role="img" aria-label="User, then Angular dashboard, then GPU clusters">
+      <span class="node">User</span><span class="arrow">→</span>
+      <span class="node">Angular dashboard</span><span class="arrow">→</span>
+      <span class="node">GPU clusters</span>
+    </div>
+    <h3>Features</h3>
+    <ul>
+      <li><strong>Overview</strong>: GPU, memory and CPU load gauges for all connected clusters.</li>
+      <li><strong>Node list</strong>: online or offline status, owner, number of physical and virtual GPUs.</li>
+      <li><strong>Bookings</strong>: form (application, namespace, model, GPU, CPU, RAM), activation, moving to another node, deletion after confirmation.</li>
+      <li><strong>Network gateways</strong>: list, alert for offline gateways, restart button.</li>
+    </ul>
+    <h3>What I learned</h3>
+    <p>This project was my first steps in Python, a language I had never used.</p>
+    <h3>What I would do differently</h3>
+    <p>A more minimal version, so it can fit into a startup. It started as a proof of concept for large groups, which can afford solutions that already exist.</p>
+    <h3>Technologies</h3>
+    <ul class="stack">
+      <li>Angular</li>
+      <li>TypeScript</li>
+    </ul>
+    <h3>Status</h3>
+    <p>Personal project.</p>
+  </section>
+
+  <section class="detail" id="fortunes-weave" hidden>
+    <a class="back" href="#">← All projects</a>
+    <p class="eyebrow">In progress</p>
+    <h2 class="dh">Fortune's Weave Companion</h2>
+    <p class="lead">A companion app for the game Fire Emblem: Fortune's Weave, born from the notebook I keep during my playthrough.</p>
+    <h3>Problem</h3>
+    <p>Have a personal companion at hand, without searching the internet each time. The project turns my game notes into a structured tool.</p>
+    <h3>Technical choices</h3>
+    <ul>
+      <li>FastAPI: game data (units, classes, weapons).</li>
+      <li>Django: players, accounts, administration and the playthrough notebook.</li>
+      <li>Angular front end, once both services are stable.</li>
+    </ul>
+    <h3>Diagram</h3>
+    <div class="flow" role="img" aria-label="Game notebook, then FastAPI API, then planned Angular front end">
+      <span class="node">Game notebook</span><span class="arrow">→</span>
+      <span class="node">FastAPI API</span><span class="arrow">→</span>
+      <span class="node planned">Angular front end (planned)</span>
+    </div>
+    <h3>What I learned</h3>
+    <p>I am currently learning Django, a Python framework I am discovering through this project.</p>
+    <h3>What I would do differently</h3>
+    <p>Start directly with the final stack, to avoid redoing the work once the technical choices are settled.</p>
+    <h3>Technologies</h3>
+    <ul class="stack">
+      <li>FastAPI</li>
+      <li>Python</li>
+      <li>Django</li>
+      <li>Angular</li>
+    </ul>
+    <h3>Status</h3>
+    <p>In progress. Started in October 2026 with the FastAPI API.</p>
+  </section>
+
+  <section class="detail" id="pilotage" hidden>
+    <a class="back" href="#">← All projects</a>
+    <p class="eyebrow">In progress</p>
+    <h2 class="dh">Management tools</h2>
+    <p class="lead">A management tools portal in development, built with a partner. Details on request.</p>
+    <h3>Problem</h3>
+    <p>Answering a friend's request: a portal that brings the tools together to improve steering and management processes.</p>
+    <h3>What I learned</h3>
+    <p>The legal aspects of building a suite for other users.</p>
+    <h3>What I would do differently</h3>
+    <p>Start with generic data from the beginning. I started developing too fast, using real data, whereas a generic dataset would have been simpler to test and share.</p>
+    <h3>Technologies</h3>
+    <ul class="stack">
+      <li>JavaScript</li>
+      <li>Supabase</li>
+      <li>GitHub Pages</li>
+    </ul>
+    <h3>Status</h3>
+    <p>In progress. Built with a partner.</p>
+  </section>
+
+  <footer>
+    Personal projects. More details on request.
+    <div class="links">
+      <a href="https://github.com/AlastorZaul" target="_blank" rel="noopener">GitHub profile</a>
+      <a href="https://www.linkedin.com/in/desvauxjerome" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </footer>
+</div>
+<script>
+function showView(id = location.hash.slice(1)) {
+  const detail = id ? document.getElementById(id) : null;
+  document.querySelectorAll("section.detail").forEach(s => { s.hidden = s !== detail; });
+  document.getElementById("home").hidden = !!detail;
+  window.scrollTo(0, 0);
+}
+document.addEventListener("click", e => {
+  const a = e.target.closest('a[href^="#"]');
+  if (!a) return;
+  e.preventDefault();
+  const id = a.getAttribute("href").slice(1);
+  try { history.replaceState(null, "", id ? "#" + id : location.pathname); } catch (_) {}
+  showView(id);
+});
+showView();
+</script>
+</body>
+</html>
