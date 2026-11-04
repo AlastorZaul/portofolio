@@ -333,33 +333,36 @@ footer {
     <p class="eyebrow">Projet personnel</p>
     <h2 class="dh">FermeGPU</h2>
     <p class="lead">Dashboard pour suivre et réserver des ressources GPU sur plusieurs clusters, avec un rôle administrateur et un rôle utilisateur.</p>
-    <h3>Le problème</h3>
-    <p>Avoir un dashboard pour suivre les GPU et les modèles, pouvoir réserver des ressources et les allouer automatiquement.</p>
-    <h3>Ce que j'en retiens</h3>
-    <p>Ce projet m'a permis de faire mes premiers pas en Python, un langage que je n'avais jamais utilisé.</p>
+    <h3>Problème</h3>
+    <p>Suivre les GPU et les modèles, pouvoir réserver des ressources et les allouer automatiquement.</p>
+    <h3>Choix techniques</h3>
+    <ul>
+      <li>Angular pour le tableau de bord.</li>
+      <li>Deux rôles, administrateur et utilisateur, pour séparer la gestion et la réservation.</li>
+      <li>Les passerelles hors ligne sont signalées et peuvent être relancées depuis l'interface.</li>
+    </ul>
     <h3>Schéma</h3>
     <div class="flow" role="img" aria-label="Utilisateur, puis dashboard Angular, puis clusters GPU">
       <span class="node">Utilisateur</span><span class="arrow">→</span>
       <span class="node">Dashboard Angular</span><span class="arrow">→</span>
       <span class="node">Clusters GPU</span>
     </div>
-    <ul class="stack">
-      <li>Réservations</li>
-      <li>Nœuds</li>
-      <li>Passerelles</li>
-    </ul>
-    <h3>Ce que fait l'application</h3>
+    <h3>Fonctionnalités</h3>
     <ul>
       <li><strong>Vue d'ensemble</strong> : jauges de charge GPU, mémoire et CPU pour l'ensemble des clusters connectés.</li>
       <li><strong>Liste des nœuds</strong> : statut en ligne ou hors ligne, propriétaire, nombre de GPU physiques et virtuels.</li>
       <li><strong>Réservations</strong> : formulaire (application, namespace, modèle, GPU, CPU, RAM), activation, déplacement vers un autre nœud, suppression après confirmation.</li>
       <li><strong>Passerelles réseau</strong> : liste des passerelles, alerte sur celles qui sont hors ligne, bouton de relance.</li>
     </ul>
+    <h3>Ce que j'en retiens</h3>
+    <p>Ce projet m'a permis de faire mes premiers pas en Python, un langage que je n'avais jamais utilisé.</p>
     <h3>Technologies</h3>
     <ul class="stack">
       <li>Angular</li>
       <li>TypeScript</li>
     </ul>
+    <h3>Statut</h3>
+    <p>Projet personnel.</p>
   </section>
 
   <section class="detail" id="fortunes-weave" hidden>
@@ -367,24 +370,20 @@ footer {
     <p class="eyebrow">En cours</p>
     <h2 class="dh">Fortune's Weave Companion</h2>
     <p class="lead">Application compagnon pour le jeu Fire Emblem: Fortune's Weave, née du carnet que je tiens pendant ma partie.</p>
+    <h3>Problème</h3>
+    <p>Avoir un compagnon personnel sous la main, sans chercher sur internet à chaque fois. Le projet transforme mes notes de partie en outil structuré.</p>
+    <h3>Choix techniques</h3>
+    <ul>
+      <li>FastAPI : données du jeu (unités, classes, armes).</li>
+      <li>Django : joueurs, comptes, administration et carnet de partie.</li>
+      <li>Front Angular, une fois les deux services stabilisés.</li>
+    </ul>
     <h3>Schéma</h3>
     <div class="flow" role="img" aria-label="Carnet de jeu, puis API FastAPI, puis front Angular prévu">
       <span class="node">Carnet de jeu</span><span class="arrow">→</span>
       <span class="node">API FastAPI</span><span class="arrow">→</span>
       <span class="node planned">Front Angular (prévu)</span>
     </div>
-    <h3>Pourquoi ce projet</h3>
-    <p>Avoir un compagnon personnel sous la main, sans chercher sur internet à chaque fois. Le projet transforme mes notes de partie en outil structuré, avec une API qui stocke les données et une interface pour les consulter.</p>
-    <h3>Où en est-on</h3>
-    <ul>
-      <li>Démarré en octobre 2026 avec l'API FastAPI, en cours de réalisation.</li>
-    </ul>
-    <h3>Architecture</h3>
-    <ul>
-      <li>FastAPI : données du jeu (unités, classes, armes).</li>
-      <li>Django : joueurs, comptes, administration et carnet de partie.</li>
-      <li>Front Angular, une fois les deux services stabilisés.</li>
-    </ul>
     <h3>Ce que j'en retiens</h3>
     <p>Je suis en train d'apprendre Django, un framework Python que je découvre à travers ce projet.</p>
     <h3>Ce que je ferais différemment</h3>
@@ -396,6 +395,8 @@ footer {
       <li>Django</li>
       <li>Angular</li>
     </ul>
+    <h3>Statut</h3>
+    <p>En cours. Démarré en octobre 2026 avec l'API FastAPI.</p>
   </section>
 
   <section class="detail" id="pilotage" hidden>
@@ -403,12 +404,13 @@ footer {
     <p class="eyebrow">Actif</p>
     <h2 class="dh">Outils de pilotage</h2>
     <p class="lead">Une suite d'outils web de suivi et de reporting, développée à deux pour piloter une activité.</p>
-    <h3>Le problème</h3>
+    <h3>Problème</h3>
     <p>Répondre à la demande d'un proche : un portail qui centralise les outils pour améliorer le processus de pilotage et de gestion.</p>
-    <h3>Ce que j'en retiens</h3>
-    <p>Les aspects juridiques liés à la création d'une suite destinée à d'autres utilisateurs.</p>
-    <h3>Ce que je ferais différemment</h3>
-    <p>Partir de données génériques dès le départ. J'ai commencé à développer trop vite, en m'appuyant sur des données réelles, alors qu'un jeu de données générique aurait été plus simple à tester et à partager.</p>
+    <h3>Choix techniques</h3>
+    <ul>
+      <li>Application web sans étape de compilation : les fichiers restent sur l'ordinateur de l'utilisateur.</li>
+      <li>Supabase pour la connexion et les droits selon le rôle de chacun.</li>
+    </ul>
     <h3>Schéma</h3>
     <div class="flow" role="img" aria-label="Exports CSV ou Excel, puis interface web, puis base Supabase">
       <span class="node">Exports CSV ou Excel</span><span class="arrow">→</span>
@@ -424,23 +426,24 @@ footer {
         <span class="lbl">Équipe C</span><span class="on"></span><span></span><span></span><span class="on"></span><span class="on"></span><span></span><span class="on"></span>
       </div>
     </figure>
-    <h3>Ce que couvre la suite</h3>
+    <h3>Fonctionnalités</h3>
     <ul>
       <li><strong>Planning partagé</strong> : données stockées dans une base, consultables par l'équipe.</li>
       <li><strong>Reporting</strong> : calculs de marges et de charges à partir d'exports CSV ou Excel.</li>
       <li><strong>Tableaux de bord</strong> : suivi d'actions et d'indicateurs, avec export vers PowerPoint.</li>
     </ul>
-    <h3>Fonctionnement</h3>
-    <ul>
-      <li>Application web sans étape de compilation, les fichiers restent sur l'ordinateur de l'utilisateur.</li>
-      <li>Accès par compte, avec des droits selon le rôle de chacun.</li>
-    </ul>
+    <h3>Ce que j'en retiens</h3>
+    <p>Les aspects juridiques liés à la création d'une suite destinée à d'autres utilisateurs.</p>
+    <h3>Ce que je ferais différemment</h3>
+    <p>Partir de données génériques dès le départ. J'ai commencé à développer trop vite, en m'appuyant sur des données réelles, alors qu'un jeu de données générique aurait été plus simple à tester et à partager.</p>
     <h3>Technologies</h3>
     <ul class="stack">
       <li>JavaScript</li>
       <li>Supabase</li>
       <li>GitHub Pages</li>
     </ul>
+    <h3>Statut</h3>
+    <p>Actif. Réalisé à deux.</p>
   </section>
 
   <footer>
