@@ -197,6 +197,16 @@ h1 {
 }
 .flow .node.planned { border-style: dashed; color: var(--muted); }
 .flow .arrow { color: var(--accent); font: 500 16px/1 "IBM Plex Mono", monospace; }
+.grid-plan {
+  display: grid;
+  grid-template-columns: minmax(70px, 90px) repeat(7, minmax(0, 1fr));
+  gap: 4px;
+  font-size: 12px;
+}
+.grid-plan span { padding: 7px 4px; border-radius: 3px; background: var(--chip); min-width: 0; }
+.grid-plan .lbl { background: none; color: var(--muted); text-align: left; padding-left: 0; }
+.grid-plan .lbl:not(:first-child) { text-align: center; }
+.grid-plan .on { background: var(--accent); }
 
 footer {
   margin-top: 40px;
@@ -385,6 +395,15 @@ footer {
       <span class="node">Interface web</span><span class="arrow">→</span>
       <span class="node">Base Supabase</span>
     </div>
+    <figure class="mock" aria-label="Aperçu d'un planning hebdomadaire, données inventées">
+      <figcaption>Aperçu · planning hebdomadaire, données inventées</figcaption>
+      <div class="grid-plan">
+        <span class="lbl"></span><span class="lbl">L</span><span class="lbl">M</span><span class="lbl">M</span><span class="lbl">J</span><span class="lbl">V</span><span class="lbl">S</span><span class="lbl">D</span>
+        <span class="lbl">Équipe A</span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span>
+        <span class="lbl">Équipe B</span><span></span><span class="on"></span><span class="on"></span><span></span><span class="on"></span><span class="on"></span><span></span>
+        <span class="lbl">Équipe C</span><span class="on"></span><span></span><span></span><span class="on"></span><span class="on"></span><span></span><span class="on"></span>
+      </div>
+    </figure>
     <h3>Ce que couvre la suite</h3>
     <ul>
       <li><strong>Planning partagé</strong> : données stockées dans une base, consultables par l'équipe.</li>
