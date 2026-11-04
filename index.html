@@ -356,7 +356,7 @@ footer {
 <script>
 // Affiche la vue du projet demandé dans l'adresse (#fermegpu, #fortunes-weave, #pilotage), sinon la liste.
 function showView(id = location.hash.slice(1)) {
-  const detail = document.querySelector(`section.detail#${CSS.escape(id)}`);
+  const detail = id ? document.getElementById(id) : null;
   document.querySelectorAll("section.detail").forEach(s => { s.hidden = s !== detail; });
   document.getElementById("home").hidden = !!detail;
   window.scrollTo(0, 0);
