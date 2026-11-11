@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comparateur GPU — Jérôme</title>
+<style>
+  :root { --bg:#f5f4ef; --fg:#1c1e1b; --muted:#5d615a; --card:#ffffff; --line:#d6d4cb; --accent:#2c5a4d; --chip:#e6ebe6; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --bg:#131412; --fg:#e8e7e1; --muted:#9b9e96; --card:#1a1c19; --line:#2b2e2a; --accent:#8cc3ae; --chip:#222723; }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--fg); min-height: 100vh; padding: 32px 16px; }
+  main { max-width: 960px; margin: 0 auto; }
+  a { color: var(--accent); }
+  h1 { font-size: 24px; }
+  .back { display: inline-block; margin-bottom: 14px; font-weight: 500; }
+  .sub { color: var(--muted); font-size: 14px; margin-top: 6px; line-height: 1.5; }
+  section { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 20px; margin-top: 20px; }
+  h2 { font-size: 17px; margin-bottom: 14px; }
+  .controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: end; margin-bottom: 14px; }
+  label { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--muted); }
+  select { background: var(--bg); color: var(--fg); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; font-size: 14px; min-width: 180px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 9px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .03em; }
+  td.win { color: var(--accent); font-weight: 600; }
+  .tag { font-size: 11px; padding: 2px 7px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
+  .small { color: var(--muted); font-size: 12px; display: block; margin-top: 2px; }
+  .note { color: var(--muted); font-size: 12px; margin-top: 12px; line-height: 1.5; }
+  .empty { color: var(--muted); font-size: 14px; }
+  .scroll { overflow-x: auto; }
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="../">← Retour au portfolio</a>
+  <header>
+    <h1>Comparateur GPU</h1>
+    <p class="sub">Compare des cartes graphiques à partir de leurs spécifications : mémoire, consommation, prix de lancement (MSRP) et prix constatés en France. Il n'y a pas de score de performance, car ces données ne sont pas des benchmarks.</p>
+  </header>
+
+  <section>
+    <h2>Comparaison 1 contre 1</h2>
+    <div class="controls">
+      <label>Carte A <select id="selA"></select></label>
+      <label>Carte B <select id="selB"></select></label>
+    </div>
+    <div class="scroll">
+      <table id="compare"></table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Catalogue</h2>
+    <div class="controls">
+      <label>Marque
+        <select id="fBrand">
+          <option value="">Toutes</option>
+          <option>NVIDIA</option>
+          <option>AMD</option>
+        </select>
+      </label>
+      <label>VRAM minimale
+        <select id="fVram">
+          <option value="0">Toutes</option>
+          <option value="8">8 Go et plus</option>
+          <option value="12">12 Go et plus</option>
+          <option value="16">16 Go et plus</option>
+          <option value="24">24 Go et plus</option>
+        </select>
+      </label>
+      <label>Trier par
+        <select id="sort">
+          <option value="price">MSRP croissant</option>
+          <option value="vram">VRAM décroissante</option>
+          <option value="tdp">Consommation croissante</option>
+          <option value="value">Go de VRAM par 100 $ (MSRP)</option>
+          <option value="eur">Prix constaté croissant</option>
+          <option value="valueEur">Go de VRAM par 100 € (prix constaté)</option>
+        </select>
+      </label>
+    </div>
+    <div class="scroll">
+      <table id="catalog"></table>
+    </div>
+    <p class="note">MSRP : prix de lancement indicatifs en dollars américains, à vérifier avant publication. Prix constatés : relevés sur LDLC et gpuprix lors de recherches web, avec des dates variables (2025 à 2026). Ces valeurs ne sont pas vérifiées en direct et peuvent avoir changé. Les cartes marquées « retirée » ne sont plus vendues neuves.</p>
+  </section>
+</main>
+
+<script>
+// eurLow : bas de la fourchette constatée en euros (null si aucun relevé)
+const GPUS = [
+  { name: "GeForce RTX 5090", brand: "NVIDIA", year: 2025, vram: 32, tdp: 575, price: 1999, eurLow: 3249.95, eurText: "3 249,95 € à 4 499,95 €", eurNote: "LDLC, relevés divergents (jusqu'à 5 499,95 € en sept. 2026)" },
+  { name: "GeForce RTX 5080", brand: "NVIDIA", year: 2025, vram: 16, tdp: 360, price: 999, eurLow: 1439.90, eurText: "1 439,90 € à 1 879,95 €", eurNote: "LDLC, dont promo" },
+  { name: "GeForce RTX 5070", brand: "NVIDIA", year: 2025, vram: 12, tdp: 250, price: 549, eurLow: 629.90, eurText: "629,90 € à 739,95 €", eurNote: "LDLC, plusieurs modèles" },
+  { name: "GeForce RTX 4090", brand: "NVIDIA", year: 2022, vram: 24, tdp: 450, price: 1599, eurLow: 4990, eurText: "4 990 € (plus bas)", eurNote: "gpuprix, carte retirée côté LDLC" },
+  { name: "GeForce RTX 4080", brand: "NVIDIA", year: 2022, vram: 16, tdp: 320, price: 1199, eurLow: null, eurText: "Aucun relevé", eurNote: "fiches LDLC retirées" },
+  { name: "GeForce RTX 4070", brand: "NVIDIA", year: 2023, vram: 12, tdp: 200, price: 599, eurLow: 679.95, eurText: "679,95 € (dernier prix)", eurNote: "LDLC, carte retirée" },
+  { name: "GeForce RTX 4060", brand: "NVIDIA", year: 2023, vram: 8, tdp: 115, price: 299, eurLow: 364.95, eurText: "364,95 € (dernier prix)", eurNote: "LDLC, carte retirée" },
+  { name: "GeForce RTX 3090", brand: "NVIDIA", year: 2020, vram: 24, tdp: 350, price: 1499, eurLow: 2218, eurText: "2 218 € (plus bas)", eurNote: "gpuprix, source peu fiable" },
+  { name: "GeForce RTX 3060", brand: "NVIDIA", year: 2021, vram: 12, tdp: 170, price: 329, eurLow: 299.95, eurText: "299,95 € (dernier prix)", eurNote: "LDLC, carte retirée" },
+  { name: "Radeon RX 9060 XT 16 Go", brand: "AMD", year: 2025, vram: 16, tdp: 160, price: 349, eurLow: 399.95, eurText: "399,95 € à 669,95 €", eurNote: "LDLC, plusieurs modèles" },
+  { name: "Radeon RX 7900 XTX", brand: "AMD", year: 2022, vram: 24, tdp: 355, price: 999, eurLow: 849.96, eurText: "849,96 € à 979,95 €", eurNote: "LDLC, déstockage ou retirée" },
+  { name: "Radeon RX 7900 XT", brand: "AMD", year: 2022, vram: 20, tdp: 315, price: 899, eurLow: 705.46, eurText: "705,46 € à 899,95 €", eurNote: "LDLC, déstockage ou retirée" },
+  { name: "Radeon RX 7800 XT", brand: "AMD", year: 2023, vram: 16, tdp: 263, price: 499, eurLow: 575.95, eurText: "575,95 € à 639,95 €", eurNote: "LDLC, déstockage ou retirée" }
+];
+
+const $ = id => document.getElementById(id);
+const perf100 = g => (g.vram / g.price * 100);                              // Go par 100 $ (MSRP)
+const valueEur = g => (g.eurLow ? g.vram / g.eurLow * 100 : null);          // Go par 100 € (constaté)
+const fmt = n => n === null ? "—" : n.toFixed(2);
+
+function fillSelects() {
+  const opts = GPUS.map((g, i) => `<option value="${i}">${g.name}</option>`).join("");
+  $("selA").innerHTML = opts;
+  $("selB").innerHTML = opts;
+  $("selA").value = 0;
+  $("selB").value = 3;
+}
+
+function renderCompare() {
+  const a = GPUS[$("selA").value], b = GPUS[$("selB").value];
+  // [libellé, texte A, texte B, sens du meilleur (max/min), valeur A, valeur B]
+  const rows = [
+    ["Année", a.year, b.year, null],
+    ["VRAM", a.vram + " Go", b.vram + " Go", "max", a.vram, b.vram],
+    ["Consommation", a.tdp + " W", b.tdp + " W", "min", a.tdp, b.tdp],
+    ["Prix de lancement (MSRP)", a.price + " $", b.price + " $", "min", a.price, b.price],
+    ["Go de VRAM par 100 $ (MSRP)", fmt(perf100(a)), fmt(perf100(b)), "max", perf100(a), perf100(b)],
+    ["Prix constaté (FR)", a.eurText + "<span class='small'>" + a.eurNote + "</span>", b.eurText + "<span class='small'>" + b.eurNote + "</span>", "min", a.eurLow, b.eurLow],
+    ["Go de VRAM par 100 € (constaté)", fmt(valueEur(a)), fmt(valueEur(b)), "max", valueEur(a), valueEur(b)]
+  ];
+  let html = `<thead><tr><th></th><th>${a.name}</th><th>${b.name}</th></tr></thead><tbody>`;
+  rows.forEach(r => {
+    let ca = "", cb = "";
+    const [label, ta, tb, dir, va, vb] = r;
+    if (dir && va !== null && vb !== null && va !== undefined && vb !== undefined && va !== vb) {
+      const aWins = dir === "max" ? va > vb : va < vb;
+      ca = aWins ? ' class="win"' : "";
+      cb = aWins ? "" : ' class="win"';
+    }
+    html += `<tr><th>${label}</th><td${ca}>${ta}</td><td${cb}>${tb}</td></tr>`;
+  });
+  html += "</tbody>";
+  $("compare").innerHTML = html;
+}
+
+function renderCatalog() {
+  const brand = $("fBrand").value;
+  const minVram = Number($("fVram").value);
+  const sort = $("sort").value;
+  let list = GPUS.filter(g => (!brand || g.brand === brand) && g.vram >= minVram);
+  const keys = {
+    price: (x, y) => x.price - y.price,
+    vram: (x, y) => y.vram - x.vram,
+    tdp: (x, y) => x.tdp - y.tdp,
+    value: (x, y) => perf100(y) - perf100(x),
+    eur: (x, y) => (x.eurLow ?? Infinity) - (y.eurLow ?? Infinity),
+    valueEur: (x, y) => (valueEur(y) ?? -Infinity) - (valueEur(x) ?? -Infinity)
+  };
+  list.sort(keys[sort]);
+  if (!list.length) {
+    $("catalog").innerHTML = '<tbody><tr><td class="empty">Aucune carte ne correspond à ces filtres.</td></tr></tbody>';
+    return;
+  }
+  let html = `<thead><tr><th>Carte</th><th>Marque</th><th>Année</th><th>VRAM</th><th>TDP</th><th>MSRP</th><th>Prix constaté (FR)</th><th>Go / 100 $</th><th>Go / 100 € (constaté)</th></tr></thead><tbody>`;
+  list.forEach(g => {
+    html += `<tr><td>${g.name}</td><td><span class="tag">${g.brand}</span></td><td>${g.year}</td><td>${g.vram} Go</td><td>${g.tdp} W</td><td>${g.price} $</td><td>${g.eurText}<span class="small">${g.eurNote}</span></td><td>${fmt(perf100(g))}</td><td>${fmt(valueEur(g))}</td></tr>`;
+  });
+  html += "</tbody>";
+  $("catalog").innerHTML = html;
+}
+
+["selA", "selB"].forEach(id => $(id).addEventListener("change", renderCompare));
+["fBrand", "fVram", "sort"].forEach(id => $(id).addEventListener("change", renderCatalog));
+
+fillSelects();
+renderCompare();
+renderCatalog();
+</script>
+</body>
+</html>
