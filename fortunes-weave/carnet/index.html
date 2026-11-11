@@ -1,0 +1,1344 @@
+<!doctype html><html><head><meta charset=utf-8>
+<title>Carnet Fortune's Weave — Jérôme</title>
+<meta name="robots" content="noindex"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+SC:wght@500;700&family=Alegreya+Sans:wght@400;500;700&display=swap">
+<style>
+/* Layout : en-tête marin collant + onglets, une colonne lisible, tableaux défilants sur mobile */
+:root{
+  --bg:#f3f5f4; --surface:#ffffff; --ink:#18242a; --muted:#5b6b70; --line:#d6dedd;
+  --sea:#1f5f6b; --sea-soft:#e1eeee; --brass:#a8741c; --brass-soft:#f6ecd9;
+  --good:#2f7a4a; --good-soft:#e2f2e7; --warn:#a24a2c; --warn-soft:#f8e6df; --neutral-soft:#eceff0;
+  --display:"Alegreya SC", Georgia, "Times New Roman", serif;
+  --body:"Alegreya Sans", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#10181b; --surface:#172226; --ink:#e4ecec; --muted:#93a5a8; --line:#2a393d;
+  --sea:#6fb3bd; --sea-soft:#1d3238; --brass:#d9a54a; --brass-soft:#33291a;
+  --good:#7cc795; --good-soft:#1c3324; --warn:#e48f71; --warn-soft:#3a2219; --neutral-soft:#1f2b2f; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#10181b; --surface:#172226; --ink:#e4ecec; --muted:#93a5a8; --line:#2a393d;
+  --sea:#6fb3bd; --sea-soft:#1d3238; --brass:#d9a54a; --brass-soft:#33291a;
+  --good:#7cc795; --good-soft:#1c3324; --warn:#e48f71; --warn-soft:#3a2219; --neutral-soft:#1f2b2f; color-scheme:dark}
+html{background:var(--bg)}
+body{background:var(--bg);color:var(--ink);font:16px/1.5 var(--body)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.wrap{max-width:1040px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+.brand{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;padding-block:14px 6px}
+h1{font-family:var(--display);font-weight:700;font-size:1.7rem;margin:0;letter-spacing:.02em;color:var(--sea)}
+.sub{color:var(--muted);font-size:.92rem}
+.save{margin-left:auto;font-size:.82rem;color:var(--muted)}
+
+/* Tableaux sans défilement : texte qui passe à la ligne, colonnes fixes pour l'équipement, cartes empilées sur mobile */
+th{white-space:normal}
+.tablebox td.name{white-space:normal;overflow-wrap:anywhere}
+.tablebox td.name .note{font-weight:400}
+table select{width:100%;min-width:0;max-width:100%}
+table.eq{table-layout:fixed}
+table.eq th:nth-child(1){width:17%} table.eq th:nth-child(2){width:10%} table.eq th:nth-child(6){width:8%} table.eq th:nth-child(7){width:8%} table.eq td.stack select{display:block;width:100%}table.eq td.stack select+select{margin-top:4px}
+table.eq select{font-size:.82rem;padding:3px 2px}
+@media (max-width:760px){
+ .tablebox{border:0;background:none;overflow:visible}
+ .tablebox table,.tablebox tbody,.tablebox tr,.tablebox td{display:block;width:100%;box-sizing:border-box;min-width:0}
+ .tablebox td>*{min-width:0;max-width:100%}
+ .tablebox table.eq{table-layout:auto}
+ .tablebox thead{display:none}
+ .tablebox tr{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px 12px;margin-bottom:10px}
+ .tablebox tr.recruited{opacity:.75}
+ .tablebox td{border:0;padding:4px 0;display:grid;grid-template-columns:minmax(84px,34%) minmax(0,1fr);gap:10px;align-items:center;text-align:left}
+ .tablebox td.num{text-align:left}
+ .tablebox td::before{content:attr(data-label);font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:700}
+ .tablebox td[data-label=""]{display:block}
+ .tablebox td[data-label=""]::before{display:none}
+ .tablebox tr:has(> th){background:none;border:0;padding:6px 0 0;margin:0}
+ .tablebox tr > th{display:block;background:none;padding:0;font-size:.85rem}
+ .tablebox input[type=number]{width:5em!important}
+}
+select.over{border-color:var(--warn);color:var(--warn)}
+table.eq select{max-width:12em}
+nav.routes{display:flex;gap:6px;flex-wrap:wrap}
+nav.routes button{font:700 .85rem var(--body);letter-spacing:.04em;text-transform:uppercase;border:1px solid var(--line);background:var(--surface);color:var(--muted);padding:4px 12px;border-radius:6px;cursor:pointer}
+nav.routes button[aria-pressed="true"]{background:var(--sea);border-color:var(--sea);color:var(--surface)}
+nav.tabs{display:flex;gap:4px;overflow-x:auto;padding-bottom:8px;scrollbar-width:thin}
+@media (min-width:761px){nav.tabs{flex-wrap:wrap;overflow-x:visible}}
+nav.tabs button{font:500 .93rem var(--body);border:1px solid transparent;background:none;color:var(--muted);padding:6px 12px;border-radius:999px;cursor:pointer;white-space:nowrap}
+nav.tabs button[aria-selected="true"]{background:var(--sea-soft);color:var(--sea);border-color:var(--sea)}
+nav.tabs button:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+main{padding-block:20px 48px}
+section[role=tabpanel]{display:grid;gap:18px}
+h2{font-family:var(--display);font-weight:500;font-size:1.35rem;margin:6px 0 0;text-wrap:balance}
+h3{font-size:1.02rem;margin:4px 0 0;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700}
+p{margin:0;max-width:68ch}
+.lead{font-size:1.04rem}
+.note{color:var(--muted);font-size:.9rem}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:grid;gap:10px;min-width:0}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.tablebox{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.93rem}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);background:var(--neutral-soft);white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td.num{font-variant-numeric:tabular-nums;text-align:center}
+.pill{display:inline-block;font-size:.78rem;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.p0{background:var(--brass-soft);color:var(--brass)} .p1{background:var(--sea-soft);color:var(--sea)}
+.p2{background:var(--good-soft);color:var(--good)} .p3{background:var(--sea-soft);color:var(--sea)}
+.p4{background:var(--neutral-soft);color:var(--muted)} .p5{background:var(--warn-soft);color:var(--warn)}
+select,input[type=search]{font:inherit;font-size:.9rem;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:4px 6px}
+.check{display:flex;gap:10px;align-items:flex-start;padding:6px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.check:last-child{border-bottom:0}
+.check input{width:18px;height:18px;margin-top:3px;accent-color:var(--sea);flex:none}
+.check.done span{color:var(--muted);text-decoration:line-through}
+input[type=checkbox]{accent-color:var(--sea);width:18px;height:18px;cursor:pointer}
+.bar{height:8px;background:var(--neutral-soft);border-radius:999px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--sea);border-radius:999px}
+.stats{display:flex;flex-wrap:wrap;gap:8px 22px;align-items:baseline}
+.stat b{font-family:var(--display);font-size:1.5rem;color:var(--sea);font-variant-numeric:tabular-nums}
+.filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+#gift-table td.name{white-space:nowrap;word-break:normal;overflow-wrap:normal}
+.chip{font:500 .85rem var(--body);border:1px solid var(--line);background:var(--surface);color:var(--muted);padding:4px 10px;border-radius:999px;cursor:pointer}
+.chip[aria-pressed="true"]{border-color:var(--sea);color:var(--sea);background:var(--sea-soft)}
+tr.recruited td{color:var(--muted)}
+tr.pending td{color:var(--muted)}
+.panel.ai.alert{border-color:var(--brass);background:var(--brass-soft)}
+.persos{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.perso-head{display:flex;justify-content:space-between;align-items:center;gap:8px}.perso-head h3{margin:0}
+.perso .cls{display:flex;gap:8px;align-items:center}.perso .cls input{flex:1;min-width:0;font:inherit;font-size:.9rem;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:4px 6px}
+.skills{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 12px}
+.skills label{display:flex;justify-content:space-between;align-items:center;gap:6px;font-size:.85rem;color:var(--muted)}
+.skills label.has{color:var(--ink);font-weight:600}
+.skills label.off{opacity:.4;font-weight:400}.skills label.off span{text-decoration:line-through}
+.cv{font:inherit;font-size:.85rem;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:3px 6px;width:100%;box-sizing:border-box}
+textarea.cv{resize:none;min-height:2.4em;overflow:hidden;field-sizing:content;line-height:1.35}
+td.name select.cv{margin-top:4px;color:var(--muted)}
+.dl .dlrow .dlst{display:inline-block;font-size:.78rem;font-weight:600;padding:1px 8px;border-radius:999px;background:var(--neutral-soft);color:var(--muted)}
+.dl .dlrow.open .dlst{background:var(--good-soft,#e2f2e7);color:var(--good,#2f7a4a)}
+.dl .dlrow.soon .dlst{background:var(--brass-soft,#f6ecd9);color:var(--brass,#a8741c)}
+.dl .dlrow.urgent .dlst{background:var(--warn-soft,#f8e6df);color:var(--warn,#a24a2c)}
+.dl .dlrow.dim{opacity:.55}
+.shop td.num{white-space:nowrap}
+.convcat{scroll-margin-top:110px;margin-top:6px}
+.cv.low{border-color:var(--warn);color:var(--warn);font-weight:600}
+.cursebox{display:inline-flex;gap:4px;align-items:center;font-size:.8rem;color:var(--muted);margin-top:4px}.cursebox input:checked+*{color:var(--warn)}
+table.conv{table-layout:fixed}table.conv th:nth-child(1){width:26%}table.conv th:nth-child(2){width:7%}table.conv th:nth-child(3){width:9%}table.conv th:nth-child(4){width:9%}table.conv th:nth-child(5){width:18%}table.conv th:nth-child(6){width:31%}
+@media (max-width:760px){table.conv{table-layout:auto}}.convcat h2{display:flex;gap:10px;align-items:baseline}
+.linkbtn{font:inherit;color:var(--sea);background:none;border:0;padding:0;text-decoration:underline;cursor:pointer}
+.wtypes{display:flex;flex-wrap:wrap;gap:4px;align-items:center}.wtypes>span:first-child{font-size:.85rem;color:var(--muted);margin-right:4px}
+.rowbtns{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px}.rowbtns .chip{margin-top:0}
+.chip.mv{font-size:.7rem;padding:2px 8px}.chip.mv:disabled{opacity:.35;cursor:default}
+.chip.del{margin-top:4px;font-size:.75rem;padding:2px 8px}.chip.del[data-armed]{color:var(--warn);border-color:var(--warn)}
+.goals h3{display:flex;justify-content:space-between;gap:8px;align-items:baseline}.goals h4{margin:6px 0 0;font-size:.8rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.goals-wrap{display:grid;gap:12px;margin-bottom:18px}
+.renown{display:inline-flex;gap:6px;align-items:center;font-weight:600}
+.renown{flex-wrap:wrap;max-width:100%;min-width:0}.renown select{max-width:100%;min-width:0}
+tr.grp th{text-align:left;text-transform:none;letter-spacing:0;font-size:.85rem;background:var(--neutral-soft)}
+tr.sub td{color:var(--muted)}
+.addgoal{margin-top:6px}.check .chip.del{margin-left:auto}
+td.chg{background:var(--sea-soft);font-weight:600}
+.muted{color:var(--muted)}
+tr.recruited td.name{text-decoration:line-through}
+td.name{font-weight:700;white-space:nowrap}
+.star{color:var(--brass)}
+.next{border-left:4px solid var(--brass)}tr.next td{background:var(--brass-soft,rgba(168,116,28,.12))}tr.dim td{color:var(--muted)}
+.stepper{display:inline-flex;align-items:center;gap:6px}
+.stepper button{width:28px;height:28px;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:700 1rem var(--body);cursor:pointer}
+.pips{display:inline-flex;gap:3px}
+.pips i{width:12px;height:12px;border-radius:3px;background:var(--neutral-soft);border:1px solid var(--line)}
+.pips i.on{background:var(--brass);border-color:var(--brass)}
+.bird-head{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+ul.plain{margin:0;padding-left:1.1em;display:grid;gap:6px;max-width:72ch}
+a{color:var(--sea)}
+@media (prefers-reduced-motion:no-preference){.bar i{transition:width .3s}}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand"><a href="../../#fortunes-weave" style="font-size:.85rem;color:var(--muted)">← Portfolio</a>
+      <h1>Carnet Fortune's Weave</h1>
+      <nav class="routes" id="routes" aria-label="Choisir la route"></nav>
+      <span class="save" id="save" aria-live="polite">Chargement…</span>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Sections du guide" id="tabs"></nav>
+  </div>
+</header>
+
+<main class="wrap" id="main"></main>
+
+<script>
+/* ---------- Données du guide ---------- */
+const PRIOS=["Priorité 1","Priorité 2","Favori","Paralogue","Optionnel","À éviter"];
+// rang de tri : Priorité 1 et Favori d'abord, puis paralogues, puis Priorité 2, optionnels, à éviter
+const PRIO_RANK=[0,2,0,1,3,4];
+let RECRUITS=[];
+let DEF_GROWTH={};
+/* ---------- Données (base) ---------- */
+let ROUTE_ID=(()=>{try{return localStorage.getItem("fe-route")||"cai"}catch(_){return "cai"}})();
+let ROUTE={id:ROUTE_ID,label:"…",stateDoc:"guide/etat"};
+let ROUTE_LIST=[];
+let DATA_READY=false;
+function applyData(game,route){
+  if(game){GODS=game.gods||[];GIFTS=game.gifts||[];GIFT_FR=game.giftFr||{};MAG_GROWTH=game.magGrowth||{};RES_GROWTH=game.resGrowth||{};DEF_GROWTH=game.defGrowth||{}}
+  if(route){ROUTE=route;
+    RECRUITS=(route.recruits||[]).map(r=>({name:r.name,prio:r.prio,renown:r.renown,support:r.support,cond:r.cond,leda:!!r.leda,from:r.from,deja:r.deja}));
+    PROGRESS=route.progress||[];CHAPTERS=route.chapters||[];PARALOGUES=route.paralogues||[];CLASSES=route.classes||[];TRAINING=route.training||[];
+    BIRD=route.bird||{};CONVOI=route.convoy||[];CAI_TEAM=route.team||[];ORDER=route.order||[];BASE_TEAM=new Set(route.baseTeam||[]);
+    CH_GOALS=route.chGoals||{};REC_ITEMS=route.recItems||{};MOUNT_GOAL=route.mountGoal||{};
+    CAI_SET=new Set([...(route.baseTeam||[]),...RECRUITS.map(r=>r.name)]);
+    ROUTES.cai.label=route.label||route.id;
+  }
+  DATA_READY=!!(game&&route);
+}
+let routeRef=null,routeTimer=null;
+function saveRoute(){
+  ROUTE.recruits=RECRUITS.map(({name,prio,renown,support,cond,leda,from,deja})=>Object.assign({name,prio,renown,support,cond,leda},from===undefined?{}:{from},deja?{deja}:{}));
+  ROUTE.chGoals=CH_GOALS;
+  CAI_SET=new Set([...(ROUTE.baseTeam||[]),...RECRUITS.map(r=>r.name)]);
+  try{localStorage.setItem("fe-data-"+ROUTE_ID,JSON.stringify({game:{gods:GODS,gifts:GIFTS,giftFr:GIFT_FR,magGrowth:MAG_GROWTH,resGrowth:RES_GROWTH,defGrowth:DEF_GROWTH},route:ROUTE}))}catch(_){}
+  clearTimeout(routeTimer);setSave("Enregistrement…");
+  routeTimer=setTimeout(async()=>{routeTimer=null;if(routeRef){try{await routeRef.set(JSON.parse(JSON.stringify(ROUTE)));setSave("Enregistré")}catch(e){setSave("Enregistré sur cet appareil seulement")}}else setSave("Enregistré sur cet appareil")},500);
+}
+async function exportApi(){
+  const msg=document.getElementById("export-msg");const say=t=>{if(msg)msg.textContent=t};
+  const dl=null;
+  if(!dl){say("Le téléchargement n'est pas disponible ici : non disponible sur cette version du carnet.");return}
+  const bundle={format:"fortunes-weave-carnet/1",exportedAt:new Date().toISOString(),
+    game:{gods:GODS,gifts:GIFTS,giftFr:GIFT_FR,magGrowth:MAG_GROWTH,resGrowth:RES_GROWTH,defGrowth:DEF_GROWTH},route:ROUTE,state};
+  const day=new Date().toISOString().slice(0,10);
+  try{await dl.save({filename:`carnet-${ROUTE_ID}-${day}.json`,data:JSON.stringify(bundle,null,1)});say("Export enregistré.")}
+  catch(e){const c=e&&e.code;say(c==="declined"?"Export annulé.":c==="rate_limited"?"Patiente un instant puis réessaie.":"L'export n'a pas pu se faire ici.")}
+}
+function stateKey(){return ROUTE_ID==="cai"?"guide-cai":"fe-state-"+ROUTE_ID}
+
+let PROGRESS=[];
+
+let CHAPTERS=[];
+
+let PARALOGUES=[];
+
+let CLASSES=[];
+
+let TRAINING=[];
+
+let GODS=[];
+
+let BIRD={};
+
+const ROUTES={
+ cai:{label:"Cai",tabs:[["rbilan","Bilan"],["suivi","Suivi"],["recrues","Recrues"],["persos","Persos"],["combat","Préparer un combat"],["equip","Équipement"],["convoi","Convoi"],["equipe","Équipe et classes"],["chapitres","Chapitres"],["temps","Temps libre"],["bird","Bird Time"],["cadeaux","Cadeaux"],["sources","Sources"]]},
+ leda:{label:"Leda",tabs:[["bilan","Bilan"],["p1","Partie I"],["lrecrues","Recrues"],["p2","Partie II"],["lequip","Équipement"],["lbird","Bird Time"]]},
+ commun:{label:"Commun",tabs:[["meca","Armes efficaces"],["bless","Bénédictions"],["classes","Classes"],["routine","Routine"],["suite","Partie III"]]}
+};
+const VIEWS={rbilan:()=>vRouteBilan(),suivi:()=>vSuivi(),recrues:()=>vRecrues(),equipe:()=>vEquipe(),chapitres:()=>vChapitres(),temps:()=>vTemps(),bird:()=>vBird(),persos:()=>vPersos(),cadeaux:()=>vCadeaux(),sources:()=>vSources(),combat:()=>vCombat(),equip:()=>vEquipCai(),convoi:()=>vConvoi(),lequip:()=>vEquipLeda(),
+ bilan:()=>vLedaBilan(),p1:()=>vLedaP1(),lrecrues:()=>vLedaRecrues(),p2:()=>vLedaP2(),lbird:()=>vLedaBird(),
+ meca:()=>vMeca(),bless:()=>vBless(),classes:()=>vClasses(),routine:()=>vRoutine(),suite:()=>vSuite()};
+const ROUTE_OF=Object.fromEntries(Object.entries(ROUTES).flatMap(([r,o])=>o.tabs.map(([t])=>[t,r])));
+
+/* ---------- Route de Leda (terminée) ---------- */
+const T=(head,rows,cls)=>`<div class="tablebox"><table><thead><tr>${head.map(h=>`<th>${h}</th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map((c,i)=>`<td${i===0&&cls?` class="${cls}"`:""}>${c}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+
+const LEDA_ROSTER=[
+ ["Leda","41","Danseur","Épée B, Arc B+"],["Olympia","41","Évêque","Magie blanche B+, Magie noire C+"],
+ ["Guzran","43","Shido","Épée B+"],["Sirocco","43","Troubadour","Magie noire B, Magie blanche B"],
+ ["Ninae","39","Cavalier bardé","Lance B+, Épée C"],["Mu","42","Guerrier","Épée B+, Pugilat B, Hache C+"],
+ ["Creek","42","Cavalier bardé","Épée B, Lance D"],["Jasmine","38","Hoplite","Hache B, Lance B"],
+ ["Dante","38","Vate","Magie noire B, Magie blanche B"],["Buccar","43","Hoplite","Lance A, Hache B"],
+ ["Io","38","Cavalier bardé","Lance B, Épée C"],["Halvin","38","Cavalier sylvain","Arc B+"],
+ ["Dadao","38","Guerrier","Hache B, Épée C, Pugilat D+"],["Simon","38","Guerrier","Hache B+, Épée C, Pugilat D+"],
+ ["Inyoni","38","Archer d'élite","Arc B"],["Catania","38","Shido","Épée C+, Lance C"],
+ ["Kiroc","38","Escroc","Arc C, Épée D+"],["Zarcone","38","Guerrier","Hache B, Épée C, Pugilat D"],
+ ["Nathan","40","Cavalier bardé","Lance B, Épée D"]];
+
+function vLedaBilan(){
+  return `
+  <p class="lead">Route terminée : Partie I et Partie II faites le 22/10/2026. Toute cette armée revient en Partie III.</p>
+  <div class="panel"><div class="stats">
+    <span class="stat"><b>19</b> persos dans l'armée</span>
+    <span class="stat"><b>4/4</b> recrues de Partie II (Creek, Nathan, Aswan, Tahonia)</span>
+    <span class="stat"><b>4/4</b> paralogues</span>
+  </div></div>
+  <h2>Armée finale</h2>
+  ${T(["Perso","Niveau","Classe","Rangs"],LEDA_ROSTER,"name")}
+  <p class="note">Pas recrutés sur cette route : Diego (paralogue d'Orchel) et Sha Lan (paralogue d'Anatolia). Aswan et Tahonia rejoignent en Partie III.</p>`;
+}
+
+function vLedaP1(){
+  return `
+  <p class="lead">12 chapitres. Le noyau Leda, Mu, Olympia, Sirocco n'a pas bougé de toute la route.</p>
+  <h2>Équipe par phase</h2>
+  ${T(["Phase","Équipe type","Banc"],[
+   ["Ch. 1–4","Leda, Mu, Olympia, Sirocco, Buccar (+ Catania, Guzran au ch. 4)","—"],
+   ["Ch. 5–8","Leda, Mu, Olympia, Sirocco, Guzran, Catania","Buccar, Jasmine, Kiroc"],
+   ["Ch. 9–12","Leda, Mu, Olympia, Sirocco + 2–3 places tournantes (Dante, Guzran, Catania)","Buccar, Jasmine, Kiroc, Ninae"]],"name")}
+  <h2>Chapitres</h2>
+  ${T(["Ch.","Titre (VO)","Tours libres","Combat","À retenir"],[
+   ["1","The Vengeful Dancer","—","Contre Bjor","Leda apprend Chant de passion"],
+   ["2","Battle at Coris Mine","—","Donjon tutoriel","Laisse venir les ennemis un par un"],
+   ["3","The Road to Caelus","—","Contre Olympia, course aux braseros en 10 tours","Garde les flammes extérieures bleues ; Olympia rejoint après"],
+   ["4","The Indelible Past","Oui","—","Premières Représentations, Catania, Guzran"],
+   ["5","Women at Battle","120","Qualif. contre les Combattants de Palma (Jasmine)","Magie contre les armures ; quête « Le Monstre de la nuit » avant le 5/7"],
+   ["6","The Soaring Maiden","76","Chevaliers d'argent de Tellus","7 places, arcs contre les pégases"],
+   ["7","Rose of Retribution","120","Pont, boss Lechner (Escroc très esquiveur)","Mars niv. 1 (+50 Précision) ; quête Mehdel avant le 28/6"],
+   ["8","Shape of the Conspiracy","36","—","Chapitre court : finir les quêtes avant"],
+   ["9","Discordance","204","Contre Cai, bête démoniaque, morts-vivants","Quête du Danseur (Hingosh de l'oasis de Baina, avant le 15/10)"],
+   ["10","A Father's Request…","68","Battre Theodora","Paralogues ; magie contre sa Défense"],
+   ["11","Banquet of the Risen Dead","85","Martila et Guillermo","Séraphin + Aurora niv. 3 contre la Faveur des Enfers"],
+   ["12","Revenge's End","80","Battre Bertrand","Kalla niv. 1 et Aurora niv. 1 sur son tour ; frappe à distance"]],"num")}
+  <h2>Quêtes propres à Leda</h2>
+  <ul class="plain">
+   <li><b>Représentations</b> (patron de la taverne) : ~200 de renommée chacune ; toutes finies, elles débloquent Rôdeur et Troubadour.</li>
+   <li><b>L'Héritière de la grande danseuse</b> : Hingosh de l'oasis de Baina avant le 15/10 → Collier de danseur.</li>
+   <li><b>Le Monstre de la nuit</b> (avant le 5/7), <b>En savoir plus sur Mehdel</b> (avant le 28/6), <b>Recettes de boissons raffinées</b> (renommée 10, avant le 17/11).</li>
+   <li>Bonus : combat d'épreuve niveau 30 au Temple principal de Kalla.</li>
+  </ul>
+  <h2>Paralogues</h2>
+  ${T(["Paralogue","Fenêtre","Débloque"],[
+   ["Anatolia – La Reine des effacés","5/10 → 14/10, limite 17/10","Sha Lan"],
+   ["Cai – La Grande Évasion","16/10 → 22/10","Tialla"],
+   ["Le Passé scellé","16/10 → 22/10, limite 1/11","—"],
+   ["Orchel","18/10 → 25/10, limite 27/10","Diego, Bâton de soin"]],"name")}`;
+}
+
+function vLedaRecrues(){
+  const R=[["Mu, Olympia, Sirocco, Buccar","—","—","Automatiques","✔"],["Catania","—","—","Tutoriel","✔"],["Guzran","1","3","—","✔"],
+  ["Jasmine","2","4","500 or","✔"],["Kiroc","1","4","3 Eaux bénites","✔"],["Dadao","2","5","2 Kothar Gar","✔"],["Zarcone","2","5","Négocier jusqu'à 10 or","✔"],
+  ["Simon","3","6","Choisir « face »","✔"],["Io","1","6","1 500 or","✔"],["Inyoni","1","7","3 000 or","✔"],["Halvin","3","7","10 Dattes","✔"],
+  ["Ninae","3","8","1 Poisson du paradis","✔"],["Dante","3","10","8 000 or","✔"],["Diego","3","8","Paralogue d'Orchel","—"],
+  ["Sha Lan","3","8","Paralogue d'Anatolia + répondre Saramis, Da Mina, Grounded Ship","—"],
+  ["Loretta","3","5","3 Épées en fer",""],["Fianna","3","5","3 000 or",""],["Esmeralda","3","6","Quête",""],["Mikaela","3","6","3 000 or",""],
+  ["Lilian","2","7","5 000 or",""],["Lysander","3","7","5 Lances en fer",""],["Ludia","3","7","Quête",""],["Sofia, Benditz","3","7","—",""],
+  ["Tialla","3","8","Paralogue de Cai + 3 000 or",""],["Yang Jie","3","8","Cheese, Moon, Potatoes",""],["Ultand","3","8","Quête",""],["Noctula","3","8","—",""],
+  ["Nezha","3","9","3 Viandes de ver des sables",""],["Majide","3","9","Répondre 3 fois",""],["Nuzzuo","3","9","3 Arcs en fer",""],
+  ["Fabio","3","9","Paralogue de Dietrich + quête « They Have Lost »",""],["Alexandra","3","10","—",""],["Peter, Seteth","3","10","Quête",""],
+  ["Jester","3","10","3 quêtes",""],["Goliath","3","10","3 Viandes de géant",""],["Nydine","3","10","3 Haches en fer",""]];
+  return `<p class="lead">Conditions sur la route de Leda (différentes de celles de Cai). ✔ = recruté.</p>
+  ${T(["Perso","Soutien","Renommée","Condition","Recruté"],R,"name")}
+  <p class="note">Non recrutables chez Leda : Peppe, Ursula, Gaitz.</p>`;
+}
+
+function vLedaP2(){
+  return `
+  <p class="lead">Six combats sans temps libre, avec 13 places (Theodora et Bertrand en plus). Défaite si Leda, Theodora ou Bertrand tombe.</p>
+  <h2>Chapitres et plans qui ont marché</h2>
+  ${T(["Ch.","Titre (VO)","Victoire","Ce qu'on a retenu"],[
+   ["1","The Battle of Klytius Plains","Déroute ennemie","10 places dont Theodora"],
+   ["2","Showdown at Agris Stronghold","Vaincre Lind et Ianuarius","Creek se recrute en le battant"],
+   ["3","Beyond the Salt Road","Vaincre Gilchris","Garder Aswan et Tahonia en vie ; Creek doit achever Nathan ; cases de feu au nord"],
+   ["4","The Battle of Alcineus Span (viaduc)","Vaincre Lind","Lind à cheval : lances et Arc anti cavalerie ; résurrection, à battre deux fois. Volants : archers près des mages"],
+   ["5","Divine Emperor Dagda","Vaincre Dagda","Escaliers : cavaliers à pied. Balistes au sud. Dagda a une barrière : le frapper une fois, finir le tour, puis tout lâcher"],
+   ["6","The Underworld Incarnate","Vaincre Lyrah, puis fuir","Lyrah en 2 phases : garder des coups pour la phase 2, attaquer par l'est. Fuite : Kalla niv. 3, éviter le miasme, Lame purificatrice pour la sortie"]],"num")}
+  <h2>Recrues de Partie II</h2>
+  ${T(["Perso","Condition","Statut"],[
+   ["Creek","Quête « My Late Sister's Accessory » en Partie I, puis le vaincre au ch. 2","✔"],
+   ["Nathan","Creek doit l'achever au ch. 3","✔"],["Aswan","Rester en vie au ch. 3","✔"],["Tahonia","Rester en vie au ch. 3","✔"]],"name")}
+  <p class="note">L'équipement final est dans l'onglet Équipement.</p>`;
+}
+
+function vLedaBird(){
+  return `<p class="lead">Réponses parfaites pour Leda.</p>
+  ${T(["Leda parle de…","Réaction"],[["La posture en danse","Danser"],["Ses difficultés à dormir, une berceuse","Chanter une belle mélodie"],["Les applaudissements pendant un spectacle","Déployer les ailes"],["Si les dieux écoutent les prières","Fixer du regard"],["La musique de chez elle","Fixer du regard"],["Goûter sa cuisine","Pencher la tête"],["Payer n'importe quel prix pour son but","Pencher la tête"],["La saluer quand elle passe à cheval","Déployer les ailes"],["Chanter avec sa vihuela","Chanter une belle mélodie"],["Chasser les serpents","Être intimidant"]])}`;
+}
+
+/* ---------- Mécaniques communes ---------- */
+
+function vMeca(){
+  return `
+  <p class="lead">Pas de triangle des armes : ce qui compte, ce sont les armes efficaces (puissance ×2, ×3 pour « efficace+ »).</p>
+  <p class="note">Pour vérifier en jeu : compare les dégâts prévus en changeant d'arme sur la même cible.</p>
+  ${T(["Type d'ennemi","Exemples","Armes efficaces"],[
+   ["Cavalerie","Cavalerie légère, aurige, cavalier bardé, cuirassier, cavalier cornac","Presque toutes les lances, Hallebarde, Zambato, Arc anti cavalerie"],
+   ["Armure","Soldat, chevalier en armure, cuirassier","Marteau (×3), Flissa, Hallebarde, Espadon, toute la magie"],
+   ["Volant","Soldat ailé, pégase, cavalier dragon","Tous les arcs, Arc anti cavalerie, sorts Vent"],
+   ["Bête","Yarc, loup rayé","Arc de chasseur"],
+   ["Mort-vivant","Squelettes","Séraphin ; la Lame purificatrice ignore la Faveur des Enfers (−50 % de dégâts non efficaces)"],
+   ["Golem, dragon","—","Rien de recensé : magie et gros frappeurs"]],"name")}
+  <h2>Autres règles retenues</h2>
+  <ul class="plain">
+   <li><b>Grimoires</b> : les sorts sont liés au mage, seul l'accessoire se choisit.</li>
+   <li><b>Écus</b> : leur poids peut coûter les doubles attaques ; compare la Vitesse d'attaque avant et après.</li>
+   <li><b>Jauge d'embrasement</b> (capacités de flamme des seigneurs) : bonus à mi-jauge, mais jauge pleine = Burst, PV max divisés par 2 pour le combat.</li>
+   <li><b>Fortuna</b> : retour en arrière gratuit, à utiliser sans hésiter.</li>
+   <li><b>Armes par classe</b> : chaque classe n'utilise que certains types d'armes, même avec le rang (ex. le Lutteur ne prend pas de hache). Coche-les dans les fiches de l'onglet Persos.</li>
+   <li><b>Usure des armes</b> : une arme ne s'use que quand on lance une capacité avec. Une attaque normale ne consomme rien : une seule copie suffit, sauf pour un perso qui enchaîne les capacités.</li>
+  </ul>`;
+}
+
+function vClasses(){
+  return `
+  <p class="lead">Les classes se passent par examen à Dagsion (quartier du Temple), un permis par tentative ; une classe obtenue se reprend gratuitement.</p>
+  ${T(["Palier","Niveau conseillé","Renommée","Quand"],[["Novice","5","1","Partie I"],["Avancée","20","4","Partie I"],["Élite","35","8","Partie I"],["Suprême","45","—","Partie III"],["Divine","—","—","Fin de Partie III"]],"name")}
+  <ul class="plain">
+   <li><b>Suprême</b> : permis suprême en Partie III ; tenter seulement au-dessus de 75 % de réussite. Sword Master demande le temple de Mars restauré, High Savant celui de Smyrnos (après celui de Jurah).</li>
+   <li><b>Divine</b> : 5 Clés du Diadème (Grotte des hérétiques, bois du Couguar, fort de l'Ombre des sables, île d'Enno, fort de l'Empreinte du géant) ; 8 classes uniques, une seule unité par classe, 100 % de réussite exigé.</li>
+   <li>Danseur : Arc B et Épée B, ou la quête du Collier de danseur (Leda). Guerroyeur : Pugilat A, Hache A, Épée A. Cherchombre : Arc A et Épée A.</li>
+  </ul>`;
+}
+
+function vRoutine(){
+  return `
+  <p class="lead">Tout se réinitialise le dimanche : arène, cadeaux, repas, temple et Bird Time ne coûtent aucun tour.</p>
+  ${T(["Jour","Dieu (jour saint)","Bonus"],[["Lundi","Aurora","—"],["Mardi","Mars","—"],["Mercredi","Smyrnos","—"],["Jeudi","Jurah","—"],["Vendredi","Kalla","—"],["Samedi","Credna","Arène −50 %"],["Dimanche","—","Réinitialisation, arène et repas −50 %"]],"name")}
+  <ul class="plain">
+   <li><b>Astuce double séance</b> : arène le samedi, puis le dimanche après la réinitialisation.</li>
+   <li><b>Paliers de renommée</b> : 4 = classes Avancées, 6 = manuels, 7 = théâtre, 8 = classes Élite et thermes, 10 = dernières recrues.</li>
+   <li><b>Éclats de karma</b> : Expérience +10 % d'abord, puis réduction sur les cadeaux.</li>
+   <li><b>Bird Time</b> : 3 bonnes réactions = séance parfaite ; seulement avec un perso déjà recruté ; il monte le soutien d'Eshmel (toi) avec lui.</li>
+   <li><b>Cadeaux</b> : un par perso et par semaine ; deux flèches dorées = cadeau adoré. Simon, Halvin et Zarcone aiment tous les légumes.</li>
+  </ul>`;
+}
+
+function vSuite(){
+  return `
+  <p class="lead">Partie III : au moins deux routes de Partie I terminées, idéalement plus, et un maximum de paralogues.</p>
+  ${T(["Route","Statut","Note"],[["Leda","Terminée (Parties I et II)","Armée de 19 persos acquise"],["Cai","En cours (Partie I)","Vise surtout les nouvelles recrues"],["Theodora","À faire","Politique, 7 paralogues"],["Dietrich","À faire","La plus exigeante en combat"]],"name")}
+  <ul class="plain">
+   <li>Tout perso recruté sur une route revient en Partie III ; un seigneur dont la route est finie arrive pleinement jouable.</li>
+   <li>Pour les autres seigneurs, tu peux passer leur Partie II.</li>
+  </ul>`;
+}
+
+function vBless(){
+  const g=nextGod();
+  return `
+  <p>Les niveaux sont liés à ta sauvegarde, pas à la route. Mets-les à jour ici : le prochain dieu à servir se recalcule.</p>
+  <div class="tablebox"><table><thead><tr><th>Dieu</th><th>Jour saint</th><th>Niveau</th><th>Objectif</th><th>Effets</th></tr></thead><tbody>
+  ${GODS.map(([n,d,t,fx,why])=>{const lv=state.bless[n]||0;return `<tr class="${n===g?"next":""}"><td class="name">${n}${n===g?' <span class="pill p0">À servir</span>':""}</td><td>${d}</td>
+    <td><span class="stepper"><button data-bless="${n}" data-d="-1" aria-label="Baisser ${n}">−</button><span class="pips" aria-label="Niveau ${lv}">${[1,2,3].map(k=>`<i class="${k<=lv?"on":""}"></i>`).join("")}</span><button data-bless="${n}" data-d="1" aria-label="Monter ${n}">+</button></span></td>
+    <td class="num">${t||"—"}</td><td>${fx.map((e,k)=>`<div class="${k<lv?"":"note"}">Niv. ${k+1} : ${esc(e)}</div>`).join("")}<div class="note">${esc(why)}</div></td></tr>`}).join("")}
+  </tbody></table></div>
+`;
+}
+
+/* ---------- Équipement de la route de Cai ---------- */
+const CATS=["Épées","Lances","Haches","Arcs","Gantelets","Écus","Accessoires","Potions"];
+let CONVOI=[];
+const SPELLS="Sorts (grimoire)";
+let CAI_TEAM=[];
+let ORDER=[];
+function ordIdx(n){const i=ORDER.indexOf(n);if(i>=0)return i;const r=RECRUITS.findIndex(x=>x.name===n);return 100+(r>=0?r:900)}
+function byOrder(a,b){return ordIdx(a)-ordIdx(b)}
+let BASE_TEAM=new Set();
+function owned(n){return BASE_TEAM.has(n)||!!state.recruited[n]}
+function teamList(){
+  const t=CAI_TEAM.filter(([p])=>owned(p));
+  for(const r of RECRUITS){ if(state.recruited[r.name]&&!t.some(x=>x[0]===r.name)){
+    const c=CLASSES.find(x=>x[0]===r.name);
+    t.push([r.name,c?c[1]:"Classe à noter","Rangs à noter","Banc",{pot:0}]);
+  }}
+  t.sort((a,b)=>byOrder(a[0],b[0]));
+  return t.map(([p,cls,ranks,st,eq])=>{const d=persoOf(p,cls,ranks);const rt=ranksText(d.ranks);return [p,(d.cls||cls)+(d.lvl?" niv. "+d.lvl:""),rt||ranks,st,eq]});
+}
+const SLOTS=[["a1","Arme 1"],["a2","Arme 2"],["a3","Arme 3"],["ecu","Écu"],["acc","Accessoire"],["acc2","Accessoire 2"],["acc3","Accessoire 3"]];
+const isAcc=k=>k==="acc"||k==="acc2"||k==="acc3";
+const isJewel=n=>/^(anneau|gemme|amulette)/i.test(String(n||""));
+const COLS=[["Armes",["a1","a2","a3"]],["Écu",["ecu"]],["Accessoires",["acc","acc2","acc3"]]];
+function convoy(){
+  const ed=state.itemEdits||{},rm=state.removed||{};
+  const base=CONVOI.filter(([,name])=>!rm[name]).map(([cat,name,rank,qty,desc])=>Object.assign({cat,name,rank,qty,desc},ed[name]||{},{key:name,src:"base"}));
+  for(const [name,x] of Object.entries(state.extraItems||{})) if(!base.some(b=>b.name===name)) base.push({name,...x,key:name,src:"extra"});
+  return base.map(it=>({...it,qty:state.qty[it.name]!==undefined?state.qty[it.name]:it.qty}));
+}
+function confirmDel(btn,name){if(btn.dataset.armed){return true}document.querySelectorAll("[data-armed]").forEach(b=>{delete b.dataset.armed;b.textContent="Supprimer"});btn.dataset.armed="1";btn.textContent="Confirmer ?";return false}
+function catRows(items,c){
+  const ord=((state.itemOrder||{})[c])||[];
+  return items.map((it,n)=>({it,n})).filter(x=>x.it.cat===c).sort((a,b)=>{const ia=ord.indexOf(a.it.key),ib=ord.indexOf(b.it.key);return (ia<0?1000+a.n:ia)-(ib<0?1000+b.n:ib)}).map(x=>x.it);
+}
+function moveItem(k,dir){
+  const it=itemByKey(k);if(!it)return;
+  const keys=catRows(convoy(),it.cat).map(i=>i.key);const i=keys.indexOf(k),j=i+dir;
+  if(j<0||j>=keys.length)return;[keys[i],keys[j]]=[keys[j],keys[i]];
+  state.itemOrder=Object.assign({},state.itemOrder,{[it.cat]:keys});
+}
+function itemByKey(k){return convoy().find(i=>i.key===k)}
+function replaceInEquip(oldN,newN){
+  const eq={};for(const [p,e] of Object.entries(state.equip||{})){const o=Object.assign({},e);for(const [sl] of SLOTS) if(o[sl]===oldN) o[sl]=newN;eq[p]=o}
+  for(const [p,,,,d] of CAI_TEAM){for(const [sl] of SLOTS) if(d[sl]===oldN&&!(eq[p]&&eq[p][sl]!==undefined)){eq[p]=Object.assign({},eq[p]||{},{[sl]:newN})}}
+  state.equip=eq;
+}
+function editItem(k,f,v){
+  const it=itemByKey(k);if(!it)return;
+  if(f==="rank") v=v.trim().toUpperCase();
+  if(f==="name"){v=v.trim();if(!v||v===it.name||convoy().some(i=>i.name===v))return;
+    replaceInEquip(it.name,v);
+    if(state.qty[it.name]!==undefined){const q=Object.assign({},state.qty);q[v]=q[it.name];delete q[it.name];state.qty=q}}
+  if(it.src==="base"){state.itemEdits=Object.assign({},state.itemEdits,{[k]:Object.assign({},(state.itemEdits||{})[k],{[f]:v})})}
+  else{const x=Object.assign({},state.extraItems);const cur=Object.assign({},x[k]);
+    if(f==="name"){delete x[k];x[v]=cur;const o=Object.assign({},state.itemOrder);for(const c in o)o[c]=o[c].map(z=>z===k?v:z);state.itemOrder=o}else{cur[f]=v;x[k]=cur}
+    state.extraItems=x}
+}
+function deleteItem(k){
+  const it=itemByKey(k);if(!it)return;
+  replaceInEquip(it.name,"");
+  if(it.src==="base") state.removed=Object.assign({},state.removed,{[k]:true});
+  else{const x=Object.assign({},state.extraItems);delete x[k];state.extraItems=x}
+  const q=Object.assign({},state.qty);delete q[it.name];state.qty=q;
+}
+function equipOf(p){const d=(teamList().find(x=>x[0]===p)||[,,,,{}])[4];return Object.assign({},d,state.equip[p]||{})}
+function isHidden(p){return !!(state.hiddenPersos||{})[p]}
+function statusOf(p){if(isHidden(p))return "Banc";return state.deploy[p]||(teamList().find(x=>x[0]===p)||[,,,"Banc"])[3]}
+const BAG=6;
+function bagCount(e){let n=0;for(const [k] of SLOTS){if(e[k]&&e[k]!==SPELLS)n++}return n+(Number(e.pot)||0)+(Number(e.bre)||0)}
+function usage(){
+  const u={},who={};
+  for(const [p] of teamList()){const e=equipOf(p);
+    for(const [k] of SLOTS){const it=e[k];if(it&&it!==SPELLS){u[it]=(u[it]||0)+1;(who[it]=who[it]||[]).push(p)}}
+    const n=Number(e.pot)||0;if(n){u["Potion"]=(u["Potion"]||0)+n;(who["Potion"]=who["Potion"]||[]).push(p)}
+    const b=Number(e.bre)||0;if(b){u["Breuvage"]=(u["Breuvage"]||0)+b;(who["Breuvage"]=who["Breuvage"]||[]).push(p)}}
+  return {u,who};
+}
+const WTYPES=["Épée","Lance","Hache","Arc","Gantelets","Sorts"];
+const CAT_TYPE={"Épées":"Épée","Lances":"Lance","Haches":"Hache","Arcs":"Arc","Gantelets":"Gantelets"};
+function classWeapons(p){const w=((state.persos||{})[p]||{}).weapons||{};const on=WTYPES.filter(t=>w[t]);return on.length?on:null}
+function canUse(p,it){
+  if(!it||!CAT_TYPE[it.cat])return true;
+  const on=classWeapons(p);if(!on)return true;
+  if(on.includes(CAT_TYPE[it.cat]))return true;
+  return on.includes("Sorts")&&/magique/i.test(it.desc||"")&&it.cat==="Gantelets";
+}
+function slotSelect(p,k,val,items,u){
+  const sorted=CATS.flatMap(c=>catRows(items,c));
+  const pool=k==="ecu"?sorted.filter(i=>i.cat==="Écus"):isAcc(k)?sorted.filter(i=>i.cat==="Accessoires"):sorted.filter(i=>!["Écus","Accessoires","Potions"].includes(i.cat)&&(canUse(p,i)||i.name===val));
+  const opts=[["","—"]];if((k==="a1"||k==="a2")&&(!classWeapons(p)||classWeapons(p).includes("Sorts")))opts.push([SPELLS,SPELLS]);
+  let grp="";let html=opts.map(([v,l])=>`<option value="${esc(v)}" ${v===val?"selected":""}>${esc(l)}</option>`).join("");
+  for(const i of pool){
+    if(i.cat!==grp){if(grp)html+="</optgroup>";html+=`<optgroup label="${esc(i.cat)}">`;grp=i.cat}
+    const left=i.qty-(u[i.name]||0)+(i.name===val?1:0);
+    html+=`<option value="${esc(i.name)}" ${i.name===val?"selected":""}>${esc(i.name)}${i.rank?" ("+i.rank+")":""}${i.curse?" – maudit":""}${left<=0&&i.name!==val?" – épuisé":""}</option>`;
+  }
+  if(grp)html+="</optgroup>";
+  const over=val&&val!==SPELLS&&(u[val]||0)>((items.find(i=>i.name===val)||{}).qty||0);
+  return `<select id="eq-${esc(p)}-${k}" data-eq="${esc(p)}" data-slot="${k}" aria-label="${esc(p)} : ${k}" ${over?'class="over"':""}>${html}</select>`;
+}
+/* ---------- Répartition par Claude ---------- */
+let ai={busy:false,err:"",preview:null,ctl:null};
+function convoySig(){return convoy().map(i=>i.name+":"+i.qty).sort().join("|")}
+function teamSig(){return teamList().map(([p])=>p+":"+statusOf(p)).sort().join("|")}
+function allocKey(){return convoySig()+"#"+teamSig()}
+const RANKS="EDCBAS";
+let MAG_GROWTH={};
+function aiPrompt(){
+  const team=teamList().map(([p,cls,ranks])=>{const c=CLASSES.find(x=>x[0]===p);return {perso:p,classe:cls,rangs:ranks,armes_de_sa_classe:classWeapons(p)?classWeapons(p).join(", "):"non renseigné",croissance_magie:MAG_GROWTH[p]!==undefined?MAG_GROWTH[p]+" %":"?",plan_de_classes:c?{novice:c[1],avancee:c[2],elite:c[3],supreme:c[4]}:null,statut:statusOf(p),sorts_connus:isCaster(p)?(((state.persos||{})[p]||{}).spells||"non renseigné"):"",actuel:equipOf(p)}});
+  const items=convoy().map(i=>({cat:i.cat,nom:i.name,rang:i.rank||"",quantite:i.qty,description:i.desc||"",maudit:!!i.curse}));
+  return `Tu répartis l'équipement d'une armée dans Fire Emblem: Fortune's Weave (route de ${ROUTE.label||ROUTE_ID}). Réponds UNIQUEMENT avec du JSON.
+
+Règles du jeu et du joueur :
+- Pas de triangle des armes. Les armes « efficaces » font ×2 (×3 pour efficace+) contre leur cible (cavalerie, armure, volant, bête).
+- Un perso ne peut porter une arme que si son rang dans ce type d'arme est au moins celui de l'arme (ordre E < D < C < B < A < S ; « D+ » vaut D). Catégories : Épées, Lances, Haches, Arcs, Gantelets (pugilat ; Breidablik est un gantelet magique pour Tialla).
+- Certaines armes ont deux types : le second est indiqué au début de leur description (ex. « Haches (Rang C) » sur une épée de rang B). Un perso ne peut la porter que s'il a les DEUX rangs (celui de l'arme ET celui de la description).
+- Armes magiques : si la description d'une arme indique une attaque magique (ex. Épée orage), ses dégâts dépendent de la Magie. Ne la donne JAMAIS à un perso dont la croissance_magie est de 25 % ou moins (Guzran, Noctula, Peter, Nuzzuo…) ; préfère celui qui a le rang requis et la meilleure croissance_magie.
+- Les mages attaquent avec leurs sorts : mets "${SPELLS}" en a1 pour les persos dont armes_de_sa_classe contient Sorts.
+- L'Épée d'élu n'est pas maudite : rang E, puissance faible, mais elle donne Protection +1 aux alliés adjacents. C'est une arme de soutien, à mettre en arme secondaire sur un perso de première ligne qui sait manier l'épée et reste collé au groupe, jamais en arme principale.
+- Les écus vont d'abord à la première ligne qui encaisse. Jamais d'écu sur un archer : il reste derrière et l'écu lui coûte une place d'objet.
+- Chaque classe n'utilise que certains types d'armes, même si le perso a le rang : quand armes_de_sa_classe est renseigné, ne donne JAMAIS une arme d'un autre type (Gantelets = pugilat ; une arme de Gantelets décrite comme magique, comme Breidablik, va aux utilisateurs de Sorts).
+- Accessoires : un perso peut en porter plusieurs, mais UN SEUL bijou (anneau, gemme ou amulette : même type). Les autres accessoires (bâtons, talismans, masques, Flagelleur…) se cumulent avec.
+- Bonus de progression des rangs par classe : Shaman Magie noire +2 ; Prêtre Magie blanche +2 et Magie noire +1. Shaman et Vate utilisent aussi la magie blanche.
+- Chaque perso porte d'abord les armes de son MEILLEUR type d'arme (son rang le plus haut). Une arme d'un type où il est plus faible n'est permise que si elle a un vrai rôle (efficace contre un type d'ennemi) et qu'aucune arme de son meilleur type ne peut remplir l'emplacement.
+- Jamais deux fois la même arme sur un même perso : ses 3 armes doivent être complémentaires (une arme principale, une arme à distance comme le Javelot si possible, une arme efficace ou magique). Une copie en trop reste au convoi pour un autre perso.
+${ROUTE.equipRules?ROUTE.equipRules+"\n":""}- Objets maudits : ceux marqués maudit: true dans le convoi (par exemple Véroquine, malédiction 2 ; Flagelleur curatif, 1 et poids 8 ; Masque tourmente). La malédiction remplit la jauge d'embrasement ; pleine, elle déclenche un Burst qui divise par 2 les PV max du perso jusqu'à la fin du combat. Au plus UN objet maudit par perso, et aucun dans un combat long (chapitre, plus de 12 ennemis). Préfère la Gemme Glorieuse (même soin après une victoire, sans malédiction) au Flagelleur curatif, et l'Épée Da Mina à la Véroquine pour Guzran dans les longs combats. Une arme « +N » est une version améliorée, préfère-la à la version de base. Le fer est plus fort que le bronze, le bronze que le bois.
+- Nombre de places au combat : ${Number(state.slots)||6}.
+- Les soigneurs "Oui" (Tialla…) reçoivent aussi un écu : leurs places libres ne doivent pas rester vides pendant qu'un remplaçant en reçoit.
+- Potions et Breuvages vont d'abord à la première ligne qui n'a aucun soin propre (Noctula, Ninae, Esmeralda, Cai…) : au moins 1 chacun. Les soigneurs (Tialla, Ultand) ont au plus 1 objet de soin chacun, puisqu'ils se soignent entre eux ; un perso qui porte le Flagelleur curatif ou la Gemme Glorieuse en a au plus 1.
+- Ordre de priorité : équipe d'abord COMPLÈTEMENT les persos au statut "Oui" (ce sont eux qui combattent). Les "Remplaçant" ne reçoivent que les restes : jamais un objet qu'un perso "Oui" pourrait utiliser, et AUCUNE Potion ni AUCUN Breuvage (ils restent au convoi pour les titulaires). Ceux au "Banc" reçoivent tout vide et 0 potion.
+- Ne jamais dépasser la quantité d'un objet du convoi. Emplacements : a1, a2, a3 (armes), ecu (catégorie Écus), acc, acc2, acc3 (catégorie Accessoires : un perso peut en porter plusieurs, jamais deux fois le même, dans la limite des 6 places), pot (nombre de Potions) et bre (nombre de Breuvages, 40 PV) : tous à répartir aux persos "Oui", les Breuvages en priorité à la première ligne et à ceux qui vont au contact du boss, sans dépasser 3 objets de soin par perso.
+- Chaque perso n'a que 6 places d'objets en tout : armes (a1, a2, a3), écu, chaque accessoire (acc, acc2, acc3), chaque Potion et chaque Breuvage comptent pour une place ("${SPELLS}" ne compte pas). Avec 3 armes, un écu et un accessoire, il ne reste qu'une place de soin : laisse plutôt une arme de secours de côté pour la première ligne.
+- Chaque arme portée doit servir le plan de classes du perso (champ plan_de_classes) : une arme d'un type que sa classe visée n'utilise pas est à retirer, même si elle est dans l'équipement actuel.
+- Aucun perso "Oui" ne doit rester sans arme : chacun reçoit au moins son arme principale (ou "${SPELLS}" pour les mages), et la première ligne (tank) reçoit en priorité écu et potions.
+- Utilise exactement les noms du convoi, ou "" pour un emplacement vide. Garde l'équipement actuel seulement s'il respecte toutes ces règles.
+
+${(()=>{const c=state.combat||{};const f=FOES.filter(([k])=>(c.foes||{})[k]).map(([,l])=>l);return f.length||c.note?`Prochain combat préparé (onglet Préparer un combat) : ennemis ${f.join(", ")||"non précisés"}${c.note?` ; note du joueur : ${c.note}`:""}. Choisis les armes des persos "Oui" en fonction de ces ennemis : une arme efficace contre chaque type présent (Hallebarde et Flissa contre les armures, Zambato et lances contre la cavalerie…), un écu anti-magie pour un soigneur exposé aux mages.\n`:""})()}Équipe : ${JSON.stringify(team)}
+Convoi : ${JSON.stringify(items)}
+
+Format attendu :
+{"equip":{"<Perso>":{"a1":"","a2":"","a3":"","ecu":"","acc":"","acc2":"","acc3":"","pot":0,"bre":0}},"notes":{"<Perso>":"une phrase en français expliquant le choix"},"resume":"une phrase en français sur ce qui change"}`;
+}
+function aiValidate(res){
+  const items=convoy(),names=new Set(items.map(i=>i.name)),left={};
+  for(const i of items) left[i.name]=i.qty;
+  const potMax=(items.find(i=>i.name==="Potion")||{qty:0}).qty;let pots=0;
+  const breMax=(items.find(i=>i.name==="Breuvage")||{qty:0}).qty;let bres=0;
+  const out={},warn=[];
+  const ordered=teamList().slice().sort((a,b)=>({"Oui":0,"Remplaçant":1,"Banc":2}[statusOf(a[0])]||0)-({"Oui":0,"Remplaçant":1,"Banc":2}[statusOf(b[0])]||0));
+  for(const [p] of ordered){
+    if(statusOf(p)==="Banc"){out[p]={a1:"",a2:"",a3:"",ecu:"",acc:"",acc2:"",acc3:"",pot:0,bre:0};continue}
+    const e=(res.equip||{})[p]||equipOf(p),o={};
+    for(const [k] of SLOTS){
+      let v=typeof e[k]==="string"?e[k]:"";
+      if(v&&v!==SPELLS){
+        const it=items.find(i=>i.name===v);
+        const okCat=it&&(k==="ecu"?it.cat==="Écus":isAcc(k)?it.cat==="Accessoires":!["Écus","Accessoires","Potions"].includes(it.cat)&&canUse(p,it));
+        const grp=["a1","a2","a3"].includes(k)?["a1","a2","a3"]:isAcc(k)?["acc","acc2","acc3"]:[];const dup=grp.some(x=>x!==k&&o[x]===v);
+        if(it&&isAcc(k)&&isJewel(v)&&["acc","acc2","acc3"].some(x=>x!==k&&o[x]&&isJewel(o[x]))){warn.push(`${p} : « ${v} » retiré (un seul bijou : anneau, gemme ou amulette)`);v=""}
+        else if(it&&it.cat==="Haches"&&["Tialla","Fianna"].includes(p)){warn.push(`${p} : « ${v} » retirée (pas de hache pour une mage pure)`);v=""}
+        else if(!names.has(v)||!okCat||!(left[v]>0)||dup){warn.push(`${p} : « ${v} » ${dup?"en double, retiré":it&&!canUse(p,it)?"interdit à sa classe":"ignoré"}`);v=""}
+        else left[v]--;
+      }
+      o[k]=v;
+    }
+    const sub=statusOf(p)!=="Oui";
+    let n=sub?0:Math.max(0,Math.round(Number(e.pot)||0));n=Math.min(n,potMax-pots);pots+=n;o.pot=n;
+    let nb=sub?0:Math.max(0,Math.round(Number(e.bre)||0));nb=Math.min(nb,breMax-bres);
+    const room=Math.max(0,BAG-bagCount(Object.assign({},o,{pot:0,bre:0})));
+    if(nb>room){warn.push(`${p} : ${nb-room} breuvage(s) en trop pour ses 6 places`);nb=room}
+    if(o.pot>room-nb){pots-=o.pot-(room-nb);warn.push(`${p} : ${o.pot-(room-nb)} potion(s) en trop pour ses 6 places`);o.pot=room-nb}
+    bres+=nb;o.bre=nb;
+    out[p]=o;
+  }
+  return {equip:out,notes:res.notes||{},resume:String(res.resume||""),warn};
+}
+async function aiRun(){
+  const sample=null;
+  if(!sample){ai.err="La répartition par Claude n'est pas disponible ici (non disponible sur cette version du carnet).";render();return}
+  ai.busy=true;ai.err="";ai.preview=null;ai.ctl=new AbortController();render();
+  try{
+    const res=await sample.json(aiPrompt(),{signal:ai.ctl.signal,modelTier:"default",cache:false});
+    ai.preview=aiValidate(res||{});
+  }catch(e){
+    const c=e&&e.code;
+    ai.err=c==="cancelled"?"":c==="not_granted"||c==="sampling_disabled"||c==="not_declared"||c==="capability_disabled"?"Tu n'as pas autorisé la page à utiliser Claude : tu peux le changer dans le menu Autorisations de la page.":c==="rate_limited"?"Trop de demandes : réessaie dans quelques minutes.":"Claude n'a pas pu répondre cette fois. Réessaie.";
+  }
+  ai.busy=false;ai.ctl=null;render();
+}
+function aiPanel(){
+  const sig=allocKey();
+  if(state.allocSig===undefined||state.allocSig===null){state.allocSig=sig}
+  const changed=state.allocSig!==sig;
+  const teamChanged=changed&&String(state.allocSig).split("#")[1]!==teamSig();
+  if(ai.busy) return `<div class="panel ai"><p><b>Claude répartit ton équipement…</b></p><div><button class="chip" data-ai="stop">Arrêter</button></div></div>`;
+  if(ai.preview){
+    const pv=ai.preview;
+    return `<div class="panel ai"><h3>Proposition de Claude</h3>${pv.resume?`<p>${esc(pv.resume)}</p>`:""}
+    <div class="tablebox"><table class="eq"><thead><tr><th>Perso</th>${COLS.map(([l])=>`<th>${l}</th>`).join("")}<th>Potions</th><th>Breuv.</th></tr></thead><tbody>
+    ${teamList().filter(([p])=>statusOf(p)!=="Banc").sort((a,b)=>(statusOf(a[0])==="Oui"?0:1)-(statusOf(b[0])==="Oui"?0:1)).map(([p])=>{const e=pv.equip[p]||{},cur=equipOf(p);
+      return `<tr><td class="name">${esc(p)}${pv.notes[p]?`<div class="note">${esc(pv.notes[p])}</div>`:""}</td>${COLS.map(([,ks])=>{const ch=ks.some(k=>(e[k]||"")!==(cur[k]||""));const vals=ks.map(k=>e[k]).filter(Boolean);return `<td${ch?' class="chg"':""}>${vals.length?vals.map(esc).join("<br>"):"—"}</td>`}).join("")}<td class="num${(Number(e.pot)||0)!==(Number(cur.pot)||0)?" chg":""}">${Number(e.pot)||0}</td><td class="num${(Number(e.bre)||0)!==(Number(cur.bre)||0)?" chg":""}">${Number(e.bre)||0}</td></tr>`}).join("")}
+    </tbody></table></div>
+    ${pv.warn.length?`<p class="note">Corrigé automatiquement : ${esc(pv.warn.join(" ; "))}.</p>`:""}
+    <p class="note">En surligné : ce qui change.</p>
+    <div class="filters"><button class="chip" data-ai="apply" aria-pressed="true">Appliquer</button><button class="chip" data-ai="cancel">Annuler</button></div></div>`;
+  }
+  return `<div class="panel ai${changed?" alert":""}">${changed?`<p><b>${teamChanged?"Équipe modifiée":"Convoi modifié"}</b> : mettre à jour l'équipement ?</p>`:`<p>Demande à Claude de répartir ton convoi entre les persos déployés.</p>`}
+    ${ai.err?`<p class="note" style="color:var(--warn)">${esc(ai.err)}</p>`:""}
+    <div class="filters"><button class="chip" data-ai="run" aria-pressed="${changed}">Répartir avec Claude</button>${changed?`<button class="chip" data-ai="dismiss">Garder tel quel</button>`:""}<button class="chip del" type="button" data-ai="clear">Vider la répartition</button></div></div>`;
+}
+function aiClick(a){
+  if(a==="run"){aiRun();return}
+  if(a==="clear"){
+    const btn=document.querySelector('[data-ai="clear"]');
+    if(btn&&!btn.dataset.armed){btn.dataset.armed="1";btn.textContent="Confirmer : tout retirer ?";return}
+    const eq={};for(const [p] of teamList()) eq[p]={a1:"",a2:"",a3:"",ecu:"",acc:"",acc2:"",acc3:"",pot:0,bre:0};
+    state.equip=eq;persist();render();return}
+  if(a==="stop"){ai.ctl&&ai.ctl.abort();return}
+  if(a==="cancel"){ai.preview=null;render();return}
+  if(a==="dismiss"){state.allocSig=allocKey();persist();render();return}
+  if(a==="apply"&&ai.preview){
+    const eq=Object.assign({},state.equip);
+    for(const [p,e] of Object.entries(ai.preview.equip)) eq[p]=e;
+    state.equip=eq;state.allocSig=allocKey();ai.preview=null;persist();render();
+  }
+}
+
+function vEquipCai(){
+  const items=convoy(),{u,who}=usage();
+  const slots=Number(state.slots)||6;const team=teamList().filter(([p])=>!isHidden(p));const deployed=team.filter(([p])=>statusOf(p)==="Oui").length;
+  const overList=items.filter(i=>(u[i.name]||0)>i.qty).map(i=>i.name);
+  return `
+  <p class="lead">Choisis l'équipement dans les menus : les quantités restantes du convoi se recomptent toutes seules. Chaque recrue cochée dans l'onglet Recrues apparaît ici, sur le banc.</p>
+  <div class="panel"><div class="stats">
+    <span class="stat" ${deployed>slots?'style="color:var(--warn)"':""}><b>${deployed}/${slots}</b> déployés${deployed>slots?" : trop !":""} <label style="font-weight:400">· places <input type="number" min="1" max="15" id="slots" value="${slots}" style="width:3.2em" aria-label="Nombre de places"></label></span><span class="stat"><b>${team.length}</b> persos dans l\'armée</span>
+    <span class="stat"><b>${(u["Potion"]||0)}/${(items.find(i=>i.name==="Potion")||{qty:0}).qty}</b> potions attribuées</span>
+    <span class="stat"><b>${(u["Breuvage"]||0)}/${(items.find(i=>i.name==="Breuvage")||{qty:0}).qty}</b> breuvages attribués</span>
+    ${overList.length?`<span class="stat" style="color:var(--warn)"><b>${overList.length}</b> objet(s) attribués en trop : ${esc(overList.join(", "))}</span>`:`<span class="stat"><b>0</b> objet en trop</span>`}
+  </div></div>
+  ${aiPanel()}
+  <div class="tablebox"><table class="eq"><thead><tr><th>Perso</th><th>Statut</th>${COLS.map(([l])=>`<th>${l}</th>`).join("")}<th>Potions</th><th>Breuv.</th></tr></thead><tbody>
+  ${(()=>{const G=[["Oui","Au combat"],["Remplaçant","Remplaçants"],["Banc","Sur le banc"]];return G.map(([g,l])=>{const rows=team.filter(([p])=>statusOf(p)===g);if(!rows.length)return "";return `<tr class="grp"><th colspan="${COLS.length+4}">${l} (${rows.length})</th></tr>`+rows.map(([p,cls,ranks])=>{const e=equipOf(p),st=statusOf(p);return `<tr class="${st==="Oui"?"":st==="Remplaçant"?"sub":"recruited"}"><td class="name">${esc(p)}<div class="note">${esc(cls)} · ${esc(String(ranks).split(", ").filter(x=>!/ E\+?$/.test(x)).join(", "))}</div><div class="note"${bagCount(e)>BAG?' style="color:var(--warn);font-weight:600"':""}>${bagCount(e)}/${BAG} objets${bagCount(e)>BAG?" : trop !":""}</div></td>
+    <td><select id="dp-${esc(p)}" data-deploy="${esc(p)}" aria-label="Statut de ${esc(p)}">${["Oui","Remplaçant","Banc"].map(o=>`<option ${o===st?"selected":""}>${o}</option>`).join("")}</select></td>
+    ${COLS.map(([,ks])=>`<td${ks.length>1?' class="stack"':""}>${ks.filter((k,i)=>i===0||e[k]||e[ks[i-1]]).map(k=>slotSelect(p,k,e[k]||"",items,u)).join("")}</td>`).join("")}
+    <td class="num"><input type="number" min="0" max="5" id="pot-${esc(p)}" data-pot="${esc(p)}" value="${Number(e.pot)||0}" aria-label="Potions de ${esc(p)}" style="width:3.5em"></td>
+    <td class="num"><input type="number" min="0" max="5" id="bre-${esc(p)}" data-bre="${esc(p)}" value="${Number(e.bre)||0}" aria-label="Breuvages de ${esc(p)}" style="width:3.5em"></td></tr>`}).join("")}).join("")})()}
+  </tbody></table></div>
+  <p class="note">Sous chaque nom : classe, niveau et rangs à partir de D (les rangs E sont dans l'onglet Persos). Les mages attaquent avec leurs sorts : choisis « ${SPELLS} » pour eux. Pas d'écu sur Guzran, Peter ni Noctula (poids).</p>
+  <p class="note">Le convoi (quantités, descriptions, ordre) se gère dans l'onglet <button class="linkbtn" data-tab="convoi">Convoi</button>.</p>`;
+}
+function vConvoi(){
+  const items=convoy(),{u,who}=usage();
+  const cats=CATS.filter(c=>items.some(i=>i.cat===c));
+  return `
+  <p class="lead">Ton convoi, un tableau par type d'objet. Tout se modifie directement : nom, catégorie, rang, nombre et description. ▲ ▼ changent l'ordre dans la catégorie (les menus de l'onglet Équipement suivent cet ordre). « Supprimer » retire l'objet du convoi et des persos qui le portaient.</p>
+  <div class="filters" role="group" aria-label="Aller à une catégorie">${cats.map(c=>`<button class="chip" type="button" data-jump="cat-${esc(c)}">${esc(c)} (${items.filter(i=>i.cat===c).length})</button>`).join("")}</div>
+  <form class="panel" id="add-item"><h3>Ajouter un objet au convoi</h3>
+    <div class="filters">
+      <select id="ai-cat" aria-label="Catégorie">${CATS.map(c=>`<option>${c}</option>`).join("")}</select>
+      <input id="ai-name" type="search" placeholder="Nom de l'objet" aria-label="Nom de l'objet" required>
+      <input id="ai-rank" type="search" placeholder="Rang (ex. D)" aria-label="Rang" style="width:7em">
+      <input id="ai-qty" type="number" min="1" value="1" aria-label="Quantité" style="width:4em">
+      <input id="ai-desc" type="search" placeholder="Description du jeu (facultatif)" aria-label="Description" style="flex:1;min-width:12em">
+      <button class="chip" type="submit">Ajouter</button>
+    </div>
+  </form>
+  ${cats.map(c=>{const rows=catRows(items,c);return `<section id="cat-${esc(c)}" class="convcat"><h2>${esc(c)} <span class="note">${rows.length} objet${rows.length>1?"s":""}</span></h2>
+  <div class="tablebox"><table class="conv"><thead><tr><th>Objet</th><th>Rang</th><th>Possédés</th><th>Restants</th><th>Porté par</th><th>Description (jeu)</th></tr></thead><tbody>
+  ${rows.map((i,idx)=>{const left=i.qty-(u[i.name]||0);const pot=i.name==="Potion"||i.name==="Breuvage";const k=esc(i.key);return `<tr><td class="name">${pot?esc(i.name):`<input type="text" class="cv" id="in-${k}" data-in="${k}" data-f="name" value="${esc(i.name)}" aria-label="Nom de l'objet">`}${pot?"":`<select class="cv" id="ic-${k}" data-in="${k}" data-f="cat" aria-label="Catégorie de ${esc(i.name)}">${CATS.filter(c=>c!=="Potions"||i.cat==="Potions").map(c=>`<option ${c===i.cat?"selected":""}>${c}</option>`).join("")}</select>${i.cat==="Potions"?"":`<label class="cursebox"><input type="checkbox" id="cu-${k}" data-curse="${k}" ${i.curse?"checked":""}> Maudit</label>`}`}</td><td class="num"><input type="text" class="cv" id="ir-${k}" data-in="${k}" data-f="rank" value="${esc(i.rank||"")}" aria-label="Rang de ${esc(i.name)}" style="width:3em;text-align:center"></td>
+    <td class="num"><input type="number" min="0" max="99" id="qty-${esc(i.name)}" data-qty="${esc(i.name)}" value="${i.qty}" aria-label="Nombre de ${esc(i.name)}" style="width:3.5em"></td>
+    <td class="num"><span class="pill ${left<0?"p5":left===0?"p4":"p2"}">${left}</span></td><td>${esc((who[i.name]||[]).join(", "))}</td><td><textarea class="cv" id="id-${k}" data-in="${k}" data-f="desc" rows="1" aria-label="Description de ${esc(i.name)}">${esc(i.desc||"")}</textarea><div class="rowbtns"><button class="chip mv" type="button" data-mv="${k}" data-dir="-1" aria-label="Monter ${esc(i.name)}" ${idx===0?"disabled":""}>▲</button><button class="chip mv" type="button" data-mv="${k}" data-dir="1" aria-label="Descendre ${esc(i.name)}" ${idx===rows.length-1?"disabled":""}>▼</button>${pot?"":`<button class="chip del" type="button" data-del="${k}" aria-label="Supprimer ${esc(i.name)}">Supprimer</button>`}</div></td></tr>`}).join("")}
+  </tbody></table></div></section>`}).join("")}`;
+}
+
+function vEquipLeda(){
+  return `<p class="lead">Équipement final de l'armée de Leda à la fin de la Partie II (route terminée, pour mémoire).</p>
+  ${T(["Perso","Arme principale","Secours","Objet"],[
+   ["Leda","Arc Tempétueux","Épée Orage +1, Arc de fer +3","Breuvage"],["Olympia","Sorts","—","Bâton de soin"],["Guzran","Épée en fer +3","Lame purificatrice, Espadon +1","Breuvage"],
+   ["Sirocco","Sorts","—","Chaîne venin"],["Ninae","Lance Da Mina","Lance en fer +3, Caballucide +1","Breuvage, Antidote"],["Mu","Zambato","Jamadhars +1, Salamandre +2","Breuvage"],
+   ["Creek","Lame ouragan +2","Épée en fer +3, Flissa","Breuvage"],["Dante","Sorts","—","Bâton magique"],["Buccar","Lance Da Mina +1","Petit épieu +2, Hache Courte +2","Écu Da Mina"],
+   ["Halvin","Arc Da Mina +1","Arc de fer +3, Arc anti cavalerie","Breuvage"],["Dadao","Hache Da Mina +1","Marteau +1, Hachette +2","Écu en fer, Gemme Toxique"],
+   ["Inyoni","Arc Tempétueux","Arc long +1, Arc de fer +3","Breuvage"],["Catania","Lance Da Mina","Petit épieu +2, Épée en fer +3","Breuvage"],["Nathan","Gundao +2","Lance en fer +3, Javelot +2","—"],
+   ["Jasmine","Hache Da Mina","Lance en fer +3, Hache Bouclier","—"],["Io","Lance en fer +3","Caballucide","Écu en fer"],["Simon","Hache Da Mina +1","Hache Courte +2, Hache en fer +3","Écu en fer"],
+   ["Kiroc","Arc en fer +2","Épée en fer +3","—"],["Zarcone","Hache Da Mina","Hache en fer +3, Hachette +2","—"]],"name")}
+  <p class="note">Gemme Toxique : dégâts ×1,3 sur un ennemi empoisonné (effet confirmé en jeu). Combo : Chaîne venin pour empoisonner, puis le porteur de la Gemme frappe.</p>`;
+}
+
+/* ---------- État (sauvegardé) ---------- */
+const DEFAULT_STATE={prio:{},recruited:{},progress:{},chapters:{},bless:{Aurora:3,Kalla:1,Mars:0,Smyrnos:0,Jurah:0,Credna:0},hideRecruited:false,filter:"all",bird:"Cai",lastTab:{},equip:{},deploy:{},qty:{},extraItems:{},giftScope:"cai",allocSig:null,persos:{},itemEdits:{},removed:{},goals:{},renown:null,slots:6,itemOrder:{},combat:null,combatLast:null,hiddenPersos:{},support:{},gameDate:"",dlShowAll:false,targets:null,suppliesDone:{}};
+let state=JSON.parse(JSON.stringify(DEFAULT_STATE));
+let dbRef=null, saveTimer=null;
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const setSave=t=>{$("#save").textContent=t};
+
+function merge(saved){
+  if(!saved) return;
+  for(const k of Object.keys(DEFAULT_STATE)){
+    if(saved[k]===undefined) continue;
+    if(typeof DEFAULT_STATE[k]==="object"&&DEFAULT_STATE[k]!==null) state[k]=Object.assign({},DEFAULT_STATE[k],saved[k]);
+    else state[k]=saved[k];
+  }
+}
+let blessRef=null;
+function saveBless(){
+  try{localStorage.setItem("fe-bless",JSON.stringify(state.bless))}catch(_){}
+  if(blessRef) blessRef.set({bless:JSON.parse(JSON.stringify(state.bless))}).catch(()=>{});
+}
+function persist(){
+  setSave("Enregistrement…");
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(async()=>{
+    saveTimer=null;
+    try{localStorage.setItem(stateKey(),JSON.stringify(state))}catch(e){}
+    if(dbRef){
+      try{await dbRef.set(JSON.parse(JSON.stringify(state)));setSave("Enregistré")}
+      catch(e){setSave("Enregistré sur cet appareil seulement")}
+    } else setSave("Enregistré sur cet appareil");
+  },500);
+}
+function prioOf(r){return state.prio[r.name]!==undefined?state.prio[r.name]:r.prio}
+
+/* ---------- Rendu ---------- */
+let current="suivi";
+function renderTabs(){
+  const route=ROUTE_OF[current];
+  const others=ROUTE_LIST.filter(x=>x.id!==ROUTE_ID);
+  $("#routes").innerHTML=`<button data-route="cai" aria-pressed="${route==="cai"}">${esc(ROUTES.cai.label)}</button>`+others.map(x=>`<button data-droute="${esc(x.id)}" aria-pressed="false">${esc(x.label)}</button>`).join("")+Object.entries(ROUTES).filter(([r])=>r!=="cai").map(([r,o])=>`<button data-route="${r}" aria-pressed="${r===route}">${o.label}</button>`).join("");
+  $("#tabs").innerHTML=ROUTES[route].tabs.map(([id,l])=>`<button role="tab" id="tab-${id}" aria-selected="${id===current}" data-tab="${id}">${l}</button>`).join("");
+}
+function autosize(t){if(CSS.supports&&CSS.supports("field-sizing","content"))return;t.style.height="auto";t.style.height=(t.scrollHeight+2)+"px"}
+function render(){
+  renderTabs();
+  if(!DATA_READY&&ROUTE_OF[current]!=="leda"&&!["meca","classes","routine","suite"].includes(current)){$("#main").innerHTML=`<section class="panel"><p><b>Chargement des données de la route…</b></p><p class="note">Elles sont enregistrées dans la base de la page. Si ce message reste affiché, non disponible sur cette version du carnet.</p></section>`;return}
+  $("#main").innerHTML=`<section role="tabpanel" aria-labelledby="tab-${current}">${VIEWS[current]()}</section>`;
+  document.querySelectorAll("textarea.cv").forEach(autosize);
+  document.querySelectorAll(".tablebox table").forEach(t=>{
+    const hs=[...t.querySelectorAll("thead th")].map(h=>h.textContent.trim());
+    t.querySelectorAll("tbody tr").forEach(r=>[...r.children].forEach((c,i)=>{if(c.tagName==="TD")c.dataset.label=hs[i]||""}));
+  });
+}
+
+function nextGod(){
+  for(const [g,,target] of GODS){ if(target>0 && (state.bless[g]||0)<target) return g; }
+  return null;
+}
+
+function vRouteBilan(){
+  const team=teamList().map(x=>x[0]);
+  const rows=team.map(p=>{const t=teamList().find(x=>x[0]===p);const d=persoOf(p,t[1],t[2]);return {p,lvl:Number(d.lvl)||0,cls:d.cls||"",ranks:d.ranks,hid:isHidden(p),st:statusOf(p)}}).sort((a,b)=>b.lvl-a.lvl);
+  const good=r=>Object.entries(r).filter(([,v])=>/^[SABC]/.test(v||"")).map(([k,v])=>k+" "+v).join(", ");
+  const active=rows.filter(r=>!r.hid),bench=rows.filter(r=>r.hid);
+  const rec=RECRUITS.filter(r=>state.recruited[r.name]).length;
+  const chDone=CHAPTERS.filter((c,i)=>state.chapters[i]).length;
+  const avg=active.length?Math.round(active.reduce((s,r)=>s+r.lvl,0)/active.length):0;
+  return `
+  <p class="lead">${ROUTE.done?`Route terminée${ROUTE.done!==true?` (${esc(String(ROUTE.done))})`:""} : `:""}l'armée de ${esc(ROUTE.label||ROUTE_ID)} telle qu'elle reviendra en Partie III. Ce bilan suit tes fiches Persos.</p>
+  <div class="panel"><div class="stats">
+    <span class="stat"><b>${rows.length}</b> persos dans l'armée</span>
+    <span class="stat"><b>${rec}/${RECRUITS.length}</b> recrues faites</span>
+    <span class="stat"><b>${chDone}/${CHAPTERS.length}</b> chapitres cochés</span>
+    <span class="stat"><b>${avg}</b> niveau moyen (persos actifs)</span>
+  </div></div>
+  <h2>Armée active</h2>
+  ${T(["Perso","Niveau","Classe","Rangs C et plus"],active.map(r=>[esc(r.p),r.lvl||"—",esc(r.cls),esc(good(r.ranks))]),"name")}
+  ${bench.length?`<h2>Persos masqués</h2>${T(["Perso","Niveau","Classe"],bench.map(r=>[esc(r.p),r.lvl||"—",esc(r.cls)]),"name")}`:""}`;
+}
+function vSuivi(){
+  const done=PROGRESS.filter(([k])=>state.progress[k]).length;
+  const rec=RECRUITS.filter(r=>state.recruited[r.name]).length;
+  const target=RECRUITS.filter(r=>[0,2,3].includes(prioOf(r)));
+  const targetDone=target.filter(r=>state.recruited[r.name]).length;
+  const nextR=sortedRecruits().find(r=>!state.recruited[r.name]&&prioOf(r)!==5);
+  const g=nextGod(); const gd=g?GODS.find(x=>x[0]===g):null;
+  return `
+  <p class="lead">Ta route de ${esc(ROUTE.label||ROUTE_ID)} en un coup d'œil : coche au fur et à mesure, tout est enregistré.</p>
+  <div class="panel">
+    <div class="stats">
+      <span class="stat"><b>${done}/${PROGRESS.length}</b> étapes clés</span>
+      <span class="stat"><b>${targetDone}/${target.length}</b> recrues visées (Priorité 1, favoris, paralogues)</span>
+      <span class="stat"><b>${rec}</b> recrues au total</span>
+    </div>
+    <div class="bar" aria-hidden="true"><i style="width:${Math.round(done/PROGRESS.length*100)}%"></i></div>
+  </div>
+  <div class="filters">${renownInput()}<label class="renown">Date en jeu <input type="text" id="gamedate" inputmode="numeric" placeholder="JJ/MM" value="${esc(state.gameDate||"")}" style="width:5em"></label></div>
+  ${deadlinesPanel()}
+  ${(()=>{const c=currentChapter();return c===null?"":goalList(c,true)})()}
+  ${(()=>{const pr=sortedRecruits().filter(r=>!state.recruited[r.name]&&[0,1].includes(prioOf(r)));if(!pr.length)return "";const rn=Number(state.renown)||0;
+    return `<div class="panel accent"><h2>Recrues prioritaires à faire (${pr.length})</h2>
+    ${pr.map((r,i)=>{const ok=!rn||r.renown<=rn;const fromCh=r.from!==undefined?r.from:(ROUTE.recruitFrom||0);const chNow=currentChapter();const early=chNow!==null&&chNow<fromCh&&CHAPTERS[fromCh];return `<label class="check"><input type="checkbox" id="sp-${i}" data-rec="${esc(r.name)}"><span><b>${esc(r.name)}</b> <span class="pill p${prioOf(r)}">${PRIOS[prioOf(r)]}</span> · ${early?`<span class="note">à partir du chapitre ${esc(CHAPTERS[fromCh][0])}</span>`:ok?(rn?"accessible maintenant":`renommée ${r.renown}`):`<span style="color:var(--warn)">renommée ${r.renown} requise (tu es à ${rn})</span>`} · ${esc(REC_ITEMS[r.name]||r.cond)}</span></label>`}).join("")}
+    <p class="note">Coche une recrue dès qu'elle est faite : elle passe dans ton armée. Les priorités se changent dans l'onglet Recrues.</p></div>`})()}
+  <div class="grid2">
+    <div class="panel next"><h3>Prochaine recrue conseillée</h3>
+      ${nextR?`<p><b>${esc(nextR.name)}</b> · renommée ${nextR.renown}, soutien ${nextR.support}</p><p class="note">${esc(nextR.cond)}</p>`:`<p>Toutes les recrues conseillées sont faites.</p>`}
+    </div>
+    <div class="panel next"><h3>Prochain dieu à servir</h3>
+      ${gd?`<p><b>${gd[0]}</b> le ${gd[1].toLowerCase()} · niveau ${state.bless[g]||0} → ${gd[2]}</p><p class="note">${esc(gd[4])}</p>`:`<p>Toutes les bénédictions visées sont au niveau voulu.</p>`}
+    </div>
+  </div>
+  <div class="panel"><h2>Étapes clés</h2>
+    ${PROGRESS.map(([k,l])=>`<label class="check ${state.progress[k]?"done":""}"><input type="checkbox" id="pg-${k}" data-progress="${k}" ${state.progress[k]?"checked":""}><span>${esc(l)}</span></label>`).join("")}
+  </div>
+  <div class="panel"><h2>Exporter vers l'API</h2>
+    <p>Télécharge un fichier JSON avec les données de la route, ton état et les données du jeu, à importer dans Fortune's Weave Companion : <code>python -m scripts.import_carnet fichier.json</code>.</p>
+    <div class="filters"><button class="chip" type="button" id="export-api">Exporter (${esc(ROUTE.label||ROUTE_ID)})</button><span class="note" id="export-msg"></span></div>
+  </div>
+  ${ROUTE_ID==="cai"?`<div class="panel"><h2>Ce qui change par rapport à Leda</h2>
+    <ul class="plain">
+      <li><b>Tes recrues ne suivent pas</b> : leurs conditions sont à refaire, souvent différentes ici.</li>
+      <li><b>Partagé en permanence</b> : classes débloquées, bienfaits achetés, niveaux de bénédiction, et d'après KeenGamer le soutien et la renommée (à vérifier dans la fiche des persos).</li>
+      <li><b>Tout perso recruté sur une route revient en Partie III</b> : ici, les nouvelles recrues sont le vrai gain.</li>
+      <li><b>Cai peut capturer des montures</b>, ce qui donne de la valeur aux cavaliers.</li>
+      <li>Jusqu'au chapitre 4, ton équipe est Cai, Guzran, Peter et Tialla, plus des invités. Le recrutement commence vraiment au chapitre 5.</li>
+    </ul>
+  </div>`:(ROUTE.introNotes||[]).length?`<div class="panel"><h2>À savoir sur cette route</h2><ul class="plain">${ROUTE.introNotes.map(t=>`<li>${t}</li>`).join("")}</ul></div>`:""}`;
+}
+
+function sortedRecruits(){
+  return RECRUITS.map((r,i)=>({...r,i})).sort((a,b)=>{
+    const pa=PRIO_RANK[prioOf(a)],pb=PRIO_RANK[prioOf(b)];
+    if(pa!==pb) return pa-pb;
+    if(a.renown!==b.renown) return a.renown-b.renown;
+    return a.i-b.i;
+  });
+}
+
+/* ---------- Liste de courses des recrues ---------- */
+function isTarget(r){const t=state.targets;if(t&&t[r.name]!==undefined)return !!t[r.name];return [0,3].includes(prioOf(r))}
+function recNeeds(r){
+  const txt=REC_ITEMS[r.name]||r.cond||"",out={gold:0,items:[],other:[]};
+  const g=txt.match(/(\d[\d\s  ]*)\s?G\b/);if(g)out.gold=Number(g[1].replace(/[\s  ]/g,""))||0;
+  const m=String(REC_ITEMS[r.name]||(/^\d/.test(txt)?txt:"")).match(/^(\d+)\s+([^(,.;—]+)/);if(m&&!/G$/.test(m[2].trim())&&!/qu[eê]te/i.test(m[2]))out.items.push([Number(m[1]),m[2].trim()]);
+  if(/qu[eê]te/i.test(txt))out.other.push(/(\d+)\s+qu[eê]tes/i.test(txt)?txt.match(/(\d+)\s+qu[eê]tes/i)[0]:"quête de recrutement");
+  if(/paralogue/i.test(txt))out.other.push(txt.match(/[Pp]aralogue[^,(—]*/)[0].trim());
+  return out;
+}
+function shoppingPanel(){
+  const tg=RECRUITS.filter(r=>!state.recruited[r.name]&&isTarget(r));
+  let gold=0;const items={},other=[];
+  for(const r of tg){const n=recNeeds(r);gold+=n.gold;for(const [q,it] of n.items){(items[it]=items[it]||{q:0,who:[]}).q+=q;items[it].who.push(r.name)}for(const o of n.other)other.push([r.name,o])}
+  const sup=(ROUTE.supplies||[]).filter(x=>!(state.suppliesDone||{})[x.id]);
+  const supItems={};for(const x of sup)for(const [q,it] of x.items){(supItems[it]=supItems[it]||{q:0,who:[]}).q+=q;supItems[it].who.push("vivres ch. "+x.ch)}
+  const tbl=(o)=>T(["Objet","Quantité","Pour"],Object.entries(o).sort((a,b)=>a[0].localeCompare(b[0])).map(([k,v])=>[esc(k),`<b>${v.q}</b>`,esc(v.who.join(", "))]),"name");
+  return `<div class="panel shop"><h2>Liste de courses</h2>
+  <p class="note">Recrues visées pas encore recrutées : ${tg.length?tg.map(r=>esc(r.name)).join(", "):"aucune"}. Coche ou décoche la colonne « Visée » du tableau pour changer la liste.</p>
+  <div class="stats"><span class="stat"><b>${gold.toLocaleString("fr-FR")} G</b> d'or à prévoir</span><span class="stat"><b>${Object.keys(items).length}</b> objets différents</span>${sup.length?`<span class="stat"><b>${sup.length}</b> envois de vivres en cours</span>`:""}</div>
+  ${Object.keys(items).length?`<h3>Objets pour les recrues</h3>${tbl(items)}`:""}
+  ${other.length?`<h3>Quêtes et paralogues</h3><ul class="plain">${other.map(([n,o])=>`<li><b>${esc(n)}</b> : ${esc(o)}</li>`).join("")}</ul>`:""}
+  ${(ROUTE.supplies||[]).length?`<h3>Envoyer des vivres (Bonaventure)</h3>
+    ${(ROUTE.supplies||[]).map(x=>`<label class="check ${(state.suppliesDone||{})[x.id]?"done":""}"><input type="checkbox" id="sd-${esc(x.id)}" data-supdone="${esc(x.id)}" ${(state.suppliesDone||{})[x.id]?"checked":""}><span><b>Chapitre ${esc(x.ch)}</b> : ${x.items.map(([q,it])=>`${q} ${esc(it)}`).join(" et ")}${x.reward?` <span class="note">→ ${esc(x.reward)}</span>`:""} <span class="note">(avant le ${esc(x.end||"?")})</span></span></label>`).join("")}
+    ${Object.keys(supItems).length?`<h4>Total pour les vivres restants</h4>${tbl(supItems)}`:""}`:""}
+  </div>`;
+}
+function vRecrues(){
+  const f=state.filter;
+  let list=sortedRecruits();
+  const total=list.length;
+  if(f!=="all") list=list.filter(r=>String(prioOf(r))===f);
+  if(state.hideRecruited) list=list.filter(r=>!state.recruited[r.name]);
+  const chips=[["all","Toutes"],...PRIOS.map((p,i)=>[String(i),p])];
+  let rank=0;
+  return `
+  <p class="lead">Dans l'ordre où je te conseille de les recruter. Change une priorité et la liste se réordonne toute seule.</p>
+  <div class="filters" role="group" aria-label="Filtrer par priorité">
+    ${chips.map(([k,l])=>`<button class="chip" data-filter="${k}" aria-pressed="${f===k}">${l}</button>`).join("")}
+    <label class="chip" style="display:inline-flex;gap:6px;align-items:center"><input type="checkbox" id="hide-rec" ${state.hideRecruited?"checked":""}> Masquer les recrutés</label>
+  </div>
+  ${shoppingPanel()}
+  <div class="tablebox"><table>
+    <thead><tr><th>#</th><th>Visée</th><th>Perso</th><th>Priorité</th><th>Renommée</th><th>Soutien demandé</th><th>Mon soutien</th><th>Condition spéciale</th><th>Déjà recruté</th><th>Recruté</th></tr></thead>
+    <tbody>
+    ${list.map(r=>{const p=prioOf(r);const pos=sortedRecruits().findIndex(x=>x.name===r.name)+1;const rec=!!state.recruited[r.name];
+      return `<tr class="${rec?"recruited":""}"><td class="num">${pos}</td><td class="num">${rec?"":`<input type="checkbox" id="tg-${r.i}" data-tgt="${esc(r.name)}" aria-label="Viser ${esc(r.name)}" ${isTarget(r)?"checked":""}>`}</td><td class="name">${esc(r.name)}</td>
+      <td><select id="pr-${r.i}" data-prio="${esc(r.name)}" aria-label="Priorité de ${esc(r.name)}" class="pill p${p}">${PRIOS.map((x,i)=>`<option value="${i}" ${i===p?"selected":""}>${x}</option>`).join("")}</select></td>
+      <td class="num"><input type="number" min="0" max="10" class="cv" style="width:3.5em" id="rr-${r.i}" data-rf="${esc(r.name)}" data-fld="renown" value="${r.renown}" aria-label="Renommée de ${esc(r.name)}"></td><td class="num"><input type="number" min="0" max="5" class="cv" style="width:3.5em" id="rs-${r.i}" data-rf="${esc(r.name)}" data-fld="support" value="${r.support}" aria-label="Soutien demandé pour ${esc(r.name)}"></td><td class="num">${(()=>{const m=(state.support||{})[r.name];const low=m!==undefined&&m!==""&&Number(m)<Number(r.support);return `<input type="number" min="0" max="5" class="cv${low?" low":""}" style="width:3.5em" id="ms-${r.i}" data-sup="${esc(r.name)}" value="${m===undefined?"":esc(m)}" placeholder="?" aria-label="Mon soutien avec ${esc(r.name)}" title="${low?"Soutien insuffisant":"Ton soutien actuel"}">`})()}</td><td><textarea class="cv" rows="1" id="rd-${r.i}" data-rf="${esc(r.name)}" data-fld="cond" aria-label="Condition de ${esc(r.name)}">${esc(r.cond)}</textarea></td>
+      <td>${(r.deja&&r.deja.length?r.deja:(r.leda?["Leda"]:[])).map(x=>`<span class="pill p2" title="Déjà dans ton armée avec ${esc(x)}">${esc(x)}</span>`).join(" ")}</td>
+      <td class="num"><input type="checkbox" id="rc-${r.i}" data-rec="${esc(r.name)}" aria-label="${esc(r.name)} recruté" ${rec?"checked":""}></td></tr>`}).join("")}
+    </tbody></table></div>
+  <form class="panel" id="add-rec"><h3>Ajouter une recrue</h3>
+    <div class="filters">
+      <input id="nr-name" type="search" placeholder="Nom" aria-label="Nom de la recrue" required style="width:10em">
+      <label class="renown">Renommée <input id="nr-ren" type="number" min="0" max="10" value="5" style="width:3.5em"></label>
+      <label class="renown">Soutien <input id="nr-sup" type="number" min="0" max="5" value="2" style="width:3.5em"></label>
+      <select id="nr-prio" aria-label="Priorité">${PRIOS.map((x,i)=>`<option value="${i}">${x}</option>`).join("")}</select>
+      <input id="nr-cond" type="search" placeholder="Condition (objet, quête, or…)" aria-label="Condition" style="flex:1;min-width:12em">
+      <button class="chip" type="submit">Ajouter</button>
+    </div></form>
+  <p class="note">Renommée, soutien et condition se modifient directement dans le tableau. ${list.length} sur ${total} affichés. « Déjà recruté » : la route où ce perso est déjà dans ton armée, donc acquis pour la Partie III. « Mon soutien » : ton niveau actuel avec lui, en orange s\'il est trop bas. Le soutien demandé est celui d'Eshmel (toi) avec la recrue, pas celui de Cai : avant le recrutement, seuls les cadeaux, les repas et les spectacles le font monter (le Bird Time n'est possible qu'après).</p>`;
+}
+
+function markOwned(t){
+  const names=[...BASE_TEAM,...RECRUITS.map(r=>r.name)];
+  return esc(t).replace(new RegExp("\\b("+names.join("|")+")\\b","g"),n=>owned(n)?`<b>${n}</b>`:`<span class="muted">${n}</span>`);
+}
+function vEquipe(){
+  return `
+  ${ROUTE_ID==="cai"?`<p class="lead">Cai, Guzran, Peter et Tialla rejoignent d'office, puis Ultand au chapitre 6. En gras : déjà dans ton armée ; en gris : pas encore recruté.</p>
+  <div class="tablebox"><table><thead><tr><th>Rôle</th><th>Personnages</th></tr></thead><tbody>
+    ${[["Première ligne","Cai, Ninae, Guzran, Noctula, Alexandra (volante), puis Esmeralda (armure lourde), Mu, Mikaela"],["Soins et soutien","Tialla (seule à avoir Remède, soin à distance ; puis Troubadour), Ultand (Soin au contact et Séraphins ; puis Évêque)"],["Mages","Fianna (attaquante : meilleure Magie de la route, 55 % ; Shaman puis Vate), Tialla (magie noire en Troubadour, avec Breidablik), puis Dante si ton or le permet, Olympia, Sirocco"],["Tanks magiques","Ultand (Rés. 45 %), Ninae (Rés. 45 % + Voix des esprits, Précision et Esquive +10 contre les mages), Yang Jie (PV 50 %, Rés. 40 %), Alexandra (Rés. 40 %)"],["Archers","Halvin, Nuzzuo, Peter"],["Anti-magie","Ninae"]].map(([r,t])=>`<tr><td>${r}</td><td>${markOwned(t)}</td></tr>`).join("")}
+  </tbody></table></div>
+  <p class="note">Les mages noirs arrivent tard (renommée 8 à 10). D'ici là, compte sur tes archers et Cai contre les armures.</p>`:`<p class="lead">${ROUTE.teamIntro||""} En gras : déjà dans ton armée ; en gris : pas encore recruté.</p>${(ROUTE.roles||[]).length?`<div class="tablebox"><table><thead><tr><th>Rôle</th><th>Personnages</th></tr></thead><tbody>${ROUTE.roles.map(([r,t])=>`<tr><td>${esc(r)}</td><td>${markOwned(t)}</td></tr>`).join("")}</tbody></table></div>`:""}`}
+  ${ROUTE_ID==="cai"?`  <h2>Montures</h2>
+  <p>Cai capture les montures pendant l'exploration : pose un appât, attends que la jauge se remplisse, puis reviens capturer. Les compétences (Canto, Duo…) se débloquent au lien 3 et se renforcent au lien 5 ; le lien appartient au duo cavalier-monture.</p>
+  <div class="tablebox"><table><thead><tr><th>Perso</th><th>Monture actuelle</th><th>Objectif et où</th></tr></thead><tbody>
+    ${(()=>{const PLAN={Cai:"Cheval de Ferghana (Force +2, Défense +2, Canto possible) : Sunset Road, appât légumes de bonne qualité (1-2 étoiles)",Alexandra:"Garder son pégase et monter le lien. Un Falicorn (Vitesse +3) ne vaut le coup que s'il a Canto en vol (Giant Bird's Neck ou Pegasus Rock)",Ninae:"Monter le lien. « Duo : Soin » est une compétence de duo : Ninae elle-même ne soigne pas",Loretta:"Monter le lien ; vérifie en combat qu'elle vole bien",Halvin:"Un cheval pour Cavalier sylvain (Ferghana ou cheval sauvage avec une compétence de déplacement) : Sunset Road ou Sunny Ridge, appât légumes",Tialla:"Un cheval pour Troubadour, une fois la classe obtenue"};
+      const names=teamList().map(x=>x[0]).filter(n=>!isHidden(n)&&(((state.persos||{})[n]||{}).mount||PLAN[n])).sort(byOrder);
+      return names.map(n=>{const m=((state.persos||{})[n]||{}).mount||"";return `<tr class="${m?"":"pending"}"><td class="name">${esc(n)}</td><td>${m?`<b>${esc(m)}</b>`:'<span class="note">aucune pour l\'instant</span>'}</td><td>${esc(PLAN[n]||"Monter le lien (compétences au lien 3, renforcées au lien 5)")}</td></tr>`}).join("")})()}
+  </tbody></table></div>
+  <p class="note">Le tableau suit les montures notées dans l'onglet Persos. Noms de lieux en anglais (Anna's Notebook) : je n'ai pas leur version française.</p>`:Object.keys(MOUNT_GOAL).length?`<h2>Montures</h2><div class="tablebox"><table><thead><tr><th>Perso</th><th>Monture actuelle</th><th>Objectif</th></tr></thead><tbody>${Object.entries(MOUNT_GOAL).map(([n,g])=>`<tr><td class="name">${esc(n)}</td><td>${esc(((state.persos||{})[n]||{}).mount||"—")}</td><td>${esc(g)}</td></tr>`).join("")}</tbody></table></div>`:""}
+  <h2>Classes conseillées</h2>
+  <p>Les classes s'obtiennent par examen auprès de l'examinateur du quartier du Temple à Dagsion, un permis par tentative. Les classes suprêmes n'ouvrent qu'en Partie III (permis suprême, niveau 45 conseillé, parfois un temple à restaurer) : sur cette route, vise l'Élite. <b>Les examens d'élite visent le niveau 35</b> : on peut les tenter avant, avec moins de chances de réussite (Fianna est passée Troubadour au niveau 34 avec 50 %).</p>
+  <p class="note"><b>Bonus de progression des rangs selon la classe</b> (les rangs concernés montent plus vite) : Shaman : Magie noire +2. Prêtre : Magie blanche +2, Magie noire +1. Le Shaman et le Vate peuvent aussi utiliser la magie blanche (vu avec Dante sur la route de Leda). Note ici les autres bonus quand tu les découvres.</p>
+  <div class="tablebox"><table><thead><tr><th>Perso</th><th>Novice</th><th>Avancée</th><th>Élite</th><th>Suprême (Partie III)</th></tr></thead><tbody>
+    ${CLASSES.filter(c=>owned(c[0])).sort((a,b)=>byOrder(a[0],b[0])).concat(CLASSES.filter(c=>!owned(c[0]))).map(c=>`<tr class="${owned(c[0])?"":"pending"}"><td class="name">${esc(c[0])}${owned(c[0])?"":'<div class="note">pas encore recruté</div>'}</td><td>${c.slice(1).map(esc).join("</td><td>")}</td></tr>`).join("")}
+  </tbody></table></div>
+  <p class="note">Chemins des persos de Leda : repris de ton ancien tableau. Nouveaux : déduits de leurs armes et de KeenGamer, à vérifier chez l'examinateur. Les noms anglais sont ceux dont je n'ai pas la version française.</p>`;
+}
+
+/* ---------- Objectifs par chapitre ---------- */
+let CH_GOALS={};
+function currentChapter(){const i=CHAPTERS.findIndex((c,i)=>!state.chapters[i]);return i<0?null:i}
+function goalRecruits(){
+  const r=Number(state.renown)||0,ch=currentChapter();
+  return sortedRecruits().filter(x=>!state.recruited[x.name]&&[0,1,2,3].includes(prioOf(x))&&x.renown<=r&&(ch===null||ch>=(x.from!==undefined?x.from:(ROUTE.recruitFrom||0))));
+}
+function goalList(i,current){
+  const g=CH_GOALS[i]||{avant:[],pendant:[]};
+  const item=([id,l])=>`<label class="check ${state.goals[id]?"done":""}"><input type="checkbox" id="g-${id}" data-goal="${id}" ${state.goals[id]?"checked":""}><span>${esc(l)}</span>${String(id).startsWith("u-")?`<button class="chip del" type="button" data-gdel="${esc(id)}" data-gch="${i}" aria-label="Supprimer l'objectif">✕</button>`:""}</label>`;
+  const recs=current?goalRecruits():[];
+  const recHtml=recs.map(x=>`<label class="check"><input type="checkbox" id="gr-${x.i}" data-rec="${esc(x.name)}"><span><b>Recruter ${esc(x.name)}</b> (renom ${x.renown}, soutien ${x.support}${(state.support||{})[x.name]!==undefined?` ; le tien : ${(state.support||{})[x.name]}${Number(state.support[x.name])<Number(x.support)?" ⚠":""}`:""}) : ${esc(REC_ITEMS[x.name]||x.cond)}${prioOf(x)===1?" <span class=\"note\">(priorité 2, pas pressé)</span>":""}</span></label>`).join("");
+  const n=[...g.avant,...g.pendant].length,d=[...g.avant,...g.pendant].filter(([id])=>state.goals[id]).length;
+  return `<div class="panel goals${current?" next":""}"><h3>Chapitre ${esc(CHAPTERS[i][0])} · ${esc(CHAPTERS[i][1])} <span class="note">${d}/${n}</span></h3>
+   ${recHtml||g.avant.length?`<h4>Avant le combat</h4>${recHtml}${g.avant.map(item).join("")}`:""}
+   ${current&&!recs.length&&state.renown?`<p class="note">Aucune recrue visée à faire pour l'instant (renommée ou chapitre pas encore atteints).</p>`:""}
+   ${g.pendant.length?`<h4>Pendant le combat</h4>${g.pendant.map(item).join("")}`:""}
+   <form class="filters addgoal" data-gadd="${i}"><input type="search" placeholder="Ajouter un objectif…" aria-label="Nouvel objectif" style="flex:1;min-width:10em"><select aria-label="Moment"><option value="avant">Avant le combat</option><option value="pendant">Pendant le combat</option></select><button class="chip" type="submit">Ajouter</button></form>
+  </div>`;
+}
+
+/* ---------- Échéances (dates du jeu) ---------- */
+function dm(t){const m=String(t||"").match(/(\d{1,2})\s*\/\s*(\d{1,2})/);return m?Number(m[2])*100+Number(m[1]):null}
+function dmDays(a,b){const d=x=>{const mo=Math.floor(x/100),da=x%100;return new Date(2001,mo-1,da).getTime()};return Math.round((d(b)-d(a))/864e5)}
+function deadlinesPanel(){
+  const list=(ROUTE.deadlines||[]);if(!list.length)return "";
+  const now=dm(state.gameDate),show=state.dlShowAll;
+  const rows=list.map(d=>{const st=dm(d.start),en=dm(d.end)??st;const done=!!state.goals["dl-"+d.id];
+    let status="",cls="",sort=en??9999,past=false;
+    if(now!=null){
+      if(en!=null&&en<now){past=true;status="passé";cls="dim"}
+      else if(st!=null&&st>now){const n=dmDays(now,st);status=d.end&&d.end!==d.start?`ouvre dans ${n} j`:`dans ${n} j`;cls=n<=7?"soon":"";sort=st}
+      else if(en!=null){const n=dmDays(now,en);status=n===0?"dernier jour !":`plus que ${n} j`;cls=n<=7?"urgent":"open"}
+    }
+    return {d,done,status,cls,sort,past}}).filter(r=>show||(!r.done&&!r.past)).sort((a,b)=>a.sort-b.sort);
+  const hiddenN=list.length-rows.length;
+  return `<div class="panel dl"><h2>Échéances à venir</h2>
+  ${now==null?`<p class="note">Indique la date en jeu (JJ/MM) au-dessus pour voir le compte à rebours.</p>`:""}
+  ${rows.map(({d,done,status,cls})=>`<label class="check dlrow ${cls}${done?" done":""}"><input type="checkbox" id="dl-${esc(d.id)}" data-goal="dl-${esc(d.id)}" ${done?"checked":""}><span><b>${esc(d.label)}</b> <span class="note">${d.start&&d.end&&d.start!==d.end?`du ${esc(d.start)} au ${esc(d.end)}`:d.end?`le ${esc(d.end)}`:`à partir du ${esc(d.start)}`}${d.ch?` · chapitre ${esc(d.ch)}`:""}</span>${status?` <span class="dlst">${status}</span>`:""}${d.lost?`<br><span class="note">Si raté : ${esc(d.lost)}</span>`:""}</span></label>`).join("")||'<p class="note">Rien à venir.</p>'}
+  <div class="filters"><button class="chip" type="button" data-dlall="1" aria-pressed="${!!show}">${show?"Masquer ce qui est fait ou passé":`Tout afficher${hiddenN?` (${hiddenN} masqué${hiddenN>1?"s":""})`:""}`}</button></div></div>`;
+}
+function renownInput(){return `<label class="renown">Ta renommée <input type="number" min="1" max="10" id="renown" value="${esc(state.renown||"")}" style="width:3.5em"></label>`}
+
+function vChapitres(){
+  return `
+  <p class="lead">Les objectifs de chaque chapitre à venir, puis la liste complète. Coche un chapitre terminé : le suivant devient le chapitre en cours.</p>
+  <div class="filters">${renownInput()}<span class="note">Les recrues accessibles à ta renommée s'ajoutent au chapitre en cours.</span></div>
+  <div class="goals-wrap">${(()=>{const c=currentChapter();return CHAPTERS.map((_,i)=>i).filter(i=>!state.chapters[i]&&(CH_GOALS[i]||i===c)).map(i=>goalList(i,i===c)).join("")})()}</div>
+  <h2>Tous les chapitres</h2>
+  <div class="tablebox"><table><thead><tr><th>Fait</th><th>Ch.</th><th>Titre</th><th>Combat</th><th>À retenir</th></tr></thead><tbody>
+  ${CHAPTERS.map((c,i)=>{const d=!!state.chapters[i];return `<tr class="${d?"recruited":""}"><td class="num"><input type="checkbox" id="ch-${i}" data-chapter="${i}" aria-label="Chapitre ${esc(c[0])} terminé" ${d?"checked":""}></td>
+    <td class="num">${esc(c[0])}</td><td class="name">${esc(c[1])}<div class="note">${esc(c[2])}</div></td><td>${esc(c[3])}</td><td>${esc(c[4])}</td></tr>`}).join("")}
+  </tbody></table></div>
+  <h2>Paralogues</h2>
+  <p>Chacun rapporte 20 000 G et 150 de renommée, et débloque des invités pour la Partie III.</p>
+  <div class="tablebox"><table><thead><tr><th>Paralogue</th><th>À accepter entre</th><th>Récompenses</th></tr></thead><tbody>
+  ${PARALOGUES.map(p=>`<tr><td><b>${esc(p[0])}</b> – ${esc(p[1])}<div class="note">${esc(p[2])}</div></td><td>${esc(p[3])}</td><td>${esc(p[4])}</td></tr>`).join("")}
+  </tbody></table></div>`;
+}
+
+let REC_ITEMS={};
+function recItems(){return sortedRecruits().filter(r=>!state.recruited[r.name]&&REC_ITEMS[r.name]&&prioOf(r)!==5).map(r=>[r.name,REC_ITEMS[r.name]])}
+function recGold(){return sortedRecruits().filter(r=>!state.recruited[r.name]&&prioOf(r)!==5&&/^[\d ]+ G$/.test(r.cond)).map(r=>[r.name,Number(r.cond.replace(/\D/g,""))])}
+function vTemps(){
+  return `
+  <p class="lead">Chaque semaine : une séance d'arène, un service au temple et un Bird Time. Le reste se cale autour.</p>
+  <div class="panel"><h2>Chaque semaine</h2><ul class="plain">
+    <li><b>Arène</b> : un entraînement, de préférence le week-end ou un jour férié (deux fois moins cher en or).</li>
+    <li><b>Temple</b> : un service, le jour saint du dieu que tu montes.</li>
+    <li><b>Bird Time</b> : une séance avec un perso déjà recruté (voir l'onglet Bird Time). Pour les recrues à venir : cadeaux et repas.</li>
+    <li><b>Tableau des quêtes</b> de Dagsion : de nouvelles quêtes à chaque chapitre.</li>
+    <li><b>Matchs à regarder</b> à l'arène, quand il y en a : expérience d'arme pour toute l'armée.</li>
+  </ul></div>
+  <h2>Jours des temples</h2>
+  ${(()=>{const DAYS=["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"],g=nextGod();
+    return `<div class="tablebox"><table><thead><tr><th>Jour</th><th>Dieu</th><th>Bénédiction</th><th>À faire</th></tr></thead><tbody>
+    ${DAYS.map(day=>{const gd=GODS.find(x=>x[1]===day);if(!gd)return `<tr class="dim"><td class="name">${day}</td><td>—</td><td>—</td><td>Pas de dieu ce jour-là</td></tr>`;
+      const [n,,t,,why]=gd,lv=state.bless[n]||0,done=lv>=t;
+      return `<tr class="${n===g?"next":done?"dim":""}"><td class="name">${day}</td><td><b>${n}</b>${n===g?' <span class="pill p0">À servir</span>':""}</td><td>niveau ${lv} / ${t}</td><td>${done?(t?"Objectif atteint":"Facultatif"):esc(why)}</td></tr>`}).join("")}
+    </tbody></table></div><p class="note">Les niveaux se mettent à jour dans <button class="chip" type="button" data-tab="bless">Commun › Bénédictions</button>. Le dieu marqué « À servir » est le prochain à monter.</p>`})()}
+  <h2>Entraînement à l'arène</h2>
+  <p>L'entraînement monte le rang des deux participants : associe deux persos qui ont besoin du même rang. Les types proposés changent chaque semaine, et l'entraînement gagne en efficacité avec la renommée (niveau 2 à renommée 4, niveau 3 à renommée 7).</p>
+  <div class="tablebox"><table><thead><tr><th>Entraînement</th><th>Rangs montés</th><th>Binôme</th><th>Pourquoi</th></tr></thead><tbody>
+  ${TRAINING.map(t=>`<tr><td class="name">${esc(t[0])}</td><td>${esc(t[1])}</td><td><b>${esc(t[2])}</b></td><td>${esc(t[3])}</td></tr>`).join("")}
+  </tbody></table></div>
+  ${ROUTE_ID==="cai"?`<p class="note">Chaque semaine, prends le binôme de l'exercice proposé. Priorité à ceux qui n'ont pas encore leur élite : Goliath (Hoplite), Noctula (Guerrier), Ludia (Shido) et Ultand (Évêque), tous au niveau 34. Tialla (Vate), Esmeralda (Hoplite) et Fianna (Troubadour) l'ont déjà. Les archers remplaçants passent en dernier. Cai et Guzran ont déjà leur classe d'élite : ils n'ont plus besoin d'entraînement prioritaire. En complément : entraînement automatique à l'auberge, manuels, et farm en donjon en battant en retraite avant le dernier coup.</p>`:`<p class="note">Chaque semaine, prends le binôme de l'exercice proposé. ${ROUTE.trainingNote||""}</p>`}
+  <p class="note">Bénédictions : voir l'onglet Bénédictions de la partie Commun.</p>
+  <div class="panel"><h2>Le reste</h2><ul class="plain">
+    <li><b>Éclats de karma</b> : d'abord Expérience +10 % (500 éclats), puis la réduction de 10 % sur les cadeaux (300).</li>
+    <li><b>Motivation et repas</b> : dépense la motivation avant de la remonter avec un repas ou les thermes.</li>
+    <li><b>Cadeaux</b> : offre-en un au premier perso recrutable croisé pour débloquer les repas plus tôt.</li>
+    <li><b>Objets de recrutement restants</b> : ${recItems().map(([n,t])=>`${esc(t)} (${esc(n)})`).join(" ; ")||"aucun"}.</li>
+    <li><b>Or à mettre de côté</b> : ${(()=>{const g=recGold();return g.length?g.map(([n,v])=>`${v.toLocaleString("fr-FR")} G (${esc(n)})`).join(", ")+` – total ${g.reduce((a,[,v])=>a+v,0).toLocaleString("fr-FR")} G`:"plus rien"})()}.</li>
+  </ul></div>`;
+}
+
+function vBird(){
+  const names=Object.keys(BIRD); const sel=BIRD[state.bird]?state.bird:(BIRD[ROUTE.lord]?ROUTE.lord:(Object.keys(BIRD)[0]||""));
+  return `
+  <p class="lead">Trois phrases par séance, une fois par semaine. Trois bonnes réactions = Bird Time parfait, qui monte davantage le soutien. Possible seulement avec un perso déjà recruté : les réponses des autres servent après leur recrutement.</p>
+  <div class="bird-head"><label for="bird-sel"><b>Personnage</b></label>
+    <select id="bird-sel"><optgroup label="Dans ton armée">${names.filter(owned).sort(byOrder).map(n=>`<option ${n===sel?"selected":""}>${esc(n)}</option>`).join("")}</optgroup><optgroup label="Pas encore recrutés">${names.filter(n=>!owned(n)).map(n=>`<option ${n===sel?"selected":""}>${esc(n)}</option>`).join("")}</optgroup></select></div>
+  <div class="tablebox"><table><thead><tr><th>${sel==="Cai"?"Ce que dit Cai":"Sujet de la phrase"}</th><th>Réaction</th></tr></thead><tbody>
+    ${BIRD[sel].map(([q,a])=>`<tr><td>${esc(q)}</td><td class="name">${esc(a)}</td></tr>`).join("")}
+  </tbody></table></div>
+  <p class="note">Réactions traduites de l'anglais : le libellé exact peut un peu différer en jeu. </p>`;
+}
+
+/* ---------- Cadeaux ---------- */
+let CAI_SET=new Set();
+let GIFTS=[];
+let GIFT_FR={};
+function giftFr(list){
+  return list.split(", ").map(x=>{
+    const m=x.match(/^(.*?)( \((?:\?|Game8)\))?$/);const en=m[1],tag=m[2]||"";
+    const fr=GIFT_FR[en];
+    return fr?`<span title="${esc(en)}">${esc(fr)}</span>${esc(tag)}`:esc(x);
+  }).join(", ");
+}
+function vCadeaux(){
+  const scope=state.giftScope==="all"?"all":"cai";
+  const list=GIFTS.filter(g=>scope==="all"||CAI_SET.has(g[0])).sort((a,b)=>(owned(b[0])-owned(a[0]))||(owned(a[0])?byOrder(a[0],b[0]):a[0].localeCompare(b[0])));
+  return `
+  <p class="lead">Ce que chaque perso préfère recevoir. Un cadeau par perso et par semaine ; deux flèches dorées = cadeau adoré, et un cadeau d'anniversaire compte comme adoré.</p>
+  <div class="panel"><h3>Où les trouver</h3><ul class="plain"><li><b>Marché de Dagsion</b> (centre-ville) : la source principale ; le stock change à chaque chapitre.</li><li><b>Marchand de la taverne des bas quartiers</b> (Dagsion) : un des meilleurs pour faire le plein.</li><li><b>Carte du monde</b> : appuie sur la gâchette sur une ville pour voir le stock de ses boutiques (armurerie, objets, marché, Compagnie Vandahl) et trouver un cadeau précis.</li><li><b>Orbes jaunes</b> à Dagsion et ailleurs : nourriture, matériaux ou cadeaux, renouvelés entre les chapitres.</li><li><b>Éclats de karma</b> : la réduction de 10 % sur les cadeaux.</li></ul></div>
+  <div class="panel"><h3>Les jokers</h3><p>Portrait de Yu Phas, Panorama de pégase, Portrait au bouclier, Tableau de fleurs et Récits d'aventure plaisent à presque tout le monde : garde-les pour les recrues à soutien 3.</p></div>
+  <div class="filters" role="group" aria-label="Filtrer les personnages">
+    <button class="chip" data-gscope="cai" aria-pressed="${scope==="cai"}">Route de ${esc(ROUTE.label||ROUTE_ID)} (${GIFTS.filter(g=>CAI_SET.has(g[0])).length})</button>
+    <button class="chip" data-gscope="all" aria-pressed="${scope==="all"}">Tous (${GIFTS.length})</button>
+    <input type="search" id="gift-q" placeholder="Chercher un perso ou un objet" aria-label="Chercher un perso ou un objet" style="flex:1;min-width:12em">
+  </div>
+  <div class="tablebox"><table id="gift-table"><thead><tr><th>Perso</th><th>Aime</th><th>Cadeaux adorés</th><th>À éviter</th></tr></thead><tbody>
+    ${list.map(([n,c,l,d])=>`<tr data-g="${esc((n+" "+c+" "+l+" "+l.split(", ").map(x=>GIFT_FR[x.replace(/ \((\?|Game8)\)$/,"")]||"").join(" ")).toLowerCase())}"><td class="name"><b>${esc(n)}</b>${owned(n)?" ✓":""}</td><td>${esc(c)}</td><td>${giftFr(l)}</td><td>${d?giftFr(d):"—"}</td></tr>`).join("")}
+  </tbody></table></div>
+  <p class="note">Noms d'objets traduits par moi depuis les guides anglais (survole un nom pour voir l'original) : ils peuvent différer un peu en jeu. « (?) » = non vérifié en jeu. Les guides ne sont pas toujours d'accord : si un perso réagit mal, dis-le-moi et je corrige.</p>`;
+}
+
+/* ---------- Fiches persos ---------- */
+let MOUNT_GOAL={};
+const SKILLS=["Épée","Lance","Hache","Arc","Pugilat","Magie noire","Magie blanche","Autorité","Infanterie","Cuirassé","Équitation","Vol"];
+const SKILL_WEAPON={"Épée":"Épée","Lance":"Lance","Hache":"Hache","Arc":"Arc","Pugilat":"Gantelets","Magie noire":"Sorts","Magie blanche":"Sorts"};
+function isCaster(p){const cw=classWeapons(p);return cw?cw.includes("Sorts"):["Tialla","Ultand","Sofia","Fianna","Dante","Olympia","Sirocco","Yang Jie"].includes(p)}
+function offClass(p,k){const cw=classWeapons(p),w=SKILL_WEAPON[k];return !!(cw&&w&&!cw.includes(w))}
+const RANK_OPTS=["","E","E+","D","D+","C","C+","B","B+","A","A+","S"];
+function parseRanks(t){const r={};for(const part of String(t||"").split(",")){const m=part.trim().match(/^(.+?)\s+([EDCBAS]\+?)$/);if(m&&SKILLS.includes(m[1]))r[m[1]]=m[2]}return r}
+function persoOf(p,cls,ranks){
+  const s=(state.persos||{})[p]||{};
+  return {lvl:s.lvl||"",mount:s.mount||"",spells:s.spells||"",cls:s.cls!==undefined?s.cls:cls,ranks:Object.assign(parseRanks(ranks),s.ranks||{})};
+}
+function ranksText(r){return SKILLS.filter(k=>r[k]).map(k=>k+" "+r[k]).join(", ")}
+function vPersos(){
+  const team=CAI_TEAM.filter(([p])=>owned(p)).map(x=>[x[0],x[1],x[2]]);
+  for(const r of RECRUITS) if(state.recruited[r.name]&&!team.some(x=>x[0]===r.name)){const c=CLASSES.find(x=>x[0]===r.name);team.push([r.name,c?c[1]:"","" ])}
+  team.sort((a,b)=>byOrder(a[0],b[0]));
+  const hid=state.hiddenPersos||{},shown=team.filter(([p])=>!hid[p]),masked=team.filter(([p])=>hid[p]);
+  return `
+  <p class="lead">Note ici le niveau, la classe et les rangs de tes persos. L'onglet Équipement et la répartition par Claude s'en servent.</p>
+  <p class="note">Les rangs vides ne sont pas affichés ailleurs. Une recrue cochée dans l'onglet Recrues apparaît ici automatiquement.</p>
+  ${masked.length?`<div class="filters" role="group" aria-label="Persos masqués"><span class="note">Masqués (${masked.length}) : clique pour réafficher</span>${masked.map(([p])=>`<button class="chip" type="button" data-phide="${esc(p)}">${esc(p)}</button>`).join("")}</div>`:""}
+  <div class="persos">
+  ${shown.map(([p,cls,ranks])=>{const d=persoOf(p,cls,ranks);return `<div class="panel perso">
+    <div class="perso-head"><h3>${esc(p)}</h3>
+      <button class="chip" type="button" data-phide="${esc(p)}" title="Masquer ce perso de l'onglet" style="margin-left:auto">Masquer</button>
+      <label>Niv. <input type="number" min="1" max="99" id="pl-${esc(p)}" data-pl="${esc(p)}" value="${esc(d.lvl)}" style="width:4em" aria-label="Niveau de ${esc(p)}"></label></div>
+    <label class="cls">Classe <input type="text" id="pc-${esc(p)}" data-pc="${esc(p)}" value="${esc(d.cls)}" aria-label="Classe de ${esc(p)}"></label>
+    <div class="wtypes"><span>Armes de sa classe</span>${WTYPES.map(t=>`<button class="chip" type="button" data-pw="${esc(p)}" data-wt="${t}" aria-pressed="${!!((state.persos||{})[p]||{}).weapons?.[t]}">${t}</button>`).join("")}${classWeapons(p)?"":`<span class="note">non renseigné : toutes autorisées</span>`}</div>
+    <label class="cls">Monture <input type="text" id="pm-${esc(p)}" data-pm="${esc(p)}" value="${esc(d.mount)}" placeholder="${esc(MOUNT_GOAL[p]||"—")}" aria-label="Monture de ${esc(p)}"></label>
+    ${isCaster(p)?`<label class="cls">Sorts connus <input type="text" id="psp-${esc(p)}" data-psp="${esc(p)}" value="${esc(d.spells)}" placeholder="ex. Soin, Remède, Feu" aria-label="Sorts connus de ${esc(p)}"></label>`:""}
+    <div class="skills">${SKILLS.map(k=>`<label class="${offClass(p,k)?"off":d.ranks[k]?"has":""}"${offClass(p,k)?' title="Arme que sa classe actuelle n\'utilise pas"':""}><span>${k}</span><select id="pr-${esc(p)}-${k}" data-pr="${esc(p)}" data-sk="${k}" aria-label="${k} de ${esc(p)}">${RANK_OPTS.map(o=>`<option value="${o}" ${o===(d.ranks[k]||"")?"selected":""}>${o||"—"}</option>`).join("")}</select></label>`).join("")}</div>
+  </div>`}).join("")}
+  </div>`;
+}
+function setPerso(p,patch){
+  const cur=(state.persos||{})[p]||{};
+  state.persos=Object.assign({},state.persos,{[p]:Object.assign({},cur,patch)});
+}
+
+/* ---------- Préparer un combat ---------- */
+let RES_GROWTH={};
+const FOES=[["cav","Cavalerie"],["arm","Armures"],["vol","Volants"],["mag","Mages"],["arc","Archers"],["epee","Épéistes"],["voleur","Voleurs"],["mort","Morts-vivants"],["bete","Bêtes"],["boss","Boss coriace"]];
+const GOALS=["Vaincre le boss","Vaincre tous les ennemis","Survivre / tenir X tours","Protéger quelqu'un","Atteindre une case"];
+let cb={busy:false,err:"",res:null,ctl:null};
+function combatState(){
+  const c=Object.assign({chap:null,slots:null,foes:{},goal:GOALS[0],forced:{},absent:{},note:""},state.combat||{});
+  if(c.chap===null){const cur=currentChapter();c.chap=cur===null?CHAPTERS.length-1:cur}
+  if(!c.slots) c.slots=Number(state.slots)||6;
+  return c;
+}
+function setCombat(patch){state.combat=Object.assign({},combatState(),patch)}
+function combatPrompt(){
+  const c=combatState(),ch=c.chap>=0?CHAPTERS[c.chap]:null;
+  const team=teamList().filter(([p])=>!c.absent[p]&&!isHidden(p)).map(([p,cls,ranks])=>{const pl=CLASSES.find(x=>x[0]===p);const d=(state.persos||{})[p]||{};
+    return {perso:p,classe_et_niveau:cls,rangs:ranks,armes_de_sa_classe:classWeapons(p)?classWeapons(p).join(", "):"non renseigné",monture:d.mount||"",sorts_connus:isCaster(p)?(d.spells||"non renseigné"):"",croissance_magie:MAG_GROWTH[p]!=null?MAG_GROWTH[p]+" %":"?",croissance_resistance:RES_GROWTH[p]!=null?RES_GROWTH[p]+" %":"?",croissance_defense:DEF_GROWTH[p]!=null?DEF_GROWTH[p]+" %":"?",plan_de_classes:pl?pl.slice(1).join(" → "):"",statut_actuel:statusOf(p),equipement_actuel:Object.entries(equipOf(p)).filter(([k,v])=>v&&k!=="pot").map(([,v])=>v).join(", "),obligatoire:!!c.forced[p]}});
+  const effItems=convoy().filter(i=>/efficace|magique/i.test(i.desc||"")).map(i=>`${i.name} (${i.cat}, rang ${i.rank||"-"}) : ${i.desc}`);
+  const foes=FOES.filter(([k])=>c.foes[k]).map(([,l])=>l);
+  return `Tu prépares l'équipe d'un combat de Fire Emblem: Fortune's Weave (route de ${ROUTE.label||ROUTE_ID}, Partie I). Réponds UNIQUEMENT avec du JSON.
+
+${ch?`Combat : chapitre ${ch[0]} « ${ch[1]} ». Objectif du jeu : ${ch[3]||"?"}. À retenir : ${ch[4]||"—"}.`:"Combat : une quête, une escarmouche ou un paralogue (pas un chapitre de l'histoire) : base-toi uniquement sur la description du joueur."}
+Objectif choisi par le joueur : ${c.goal}. Places : ${c.slots}. Ennemis signalés : ${foes.join(", ")||"non précisé"}. Note du joueur : ${c.note||"—"}.
+
+Règles :
+- Exactement ${c.slots} titulaires (moins s'il n'y a pas assez de persos). Les persos marqués obligatoire (champ obligatoire: true) sont TOUJOURS titulaires, le héros de la route compris, et leur raison explique ce qu'ils apportent dans ce combat.
+- Pas de triangle des armes. Armes efficaces ×2 : lances/hallebardes contre cavalerie (et armures pour la Hallebarde), arcs contre volants, magie et marteaux contre armures. Les unités volantes prennent ×2 des arcs : évite-les s'il y a beaucoup d'archers.
+- Contre les mages : privilégie une forte croissance_resistance (Ninae, Ultand, Alexandra, Yang Jie…). Contre les armures : magie et armes efficaces. Contre les morts-vivants : Lame purificatrice et Séraphin.
+- Prévois au moins un tank physique (forte croissance_defense, classe en armure comme Combattant cuirassé, ou première ligne très résistante) pour tenir la ligne et protéger les soigneurs, surtout si les ennemis sont surtout physiques, inconnus ou cachés (brouillard). Un tank magique (forte Résistance) ne remplace pas un tank physique. Exception : si les mages ennemis sont nombreux et que l'équipe est très petite (3 places ou moins), un perso en armure est une cible facile pour eux ; préfère alors des persos qui frappent fort avec des armes efficaces.
+- Seuls les persos qui lancent des Sorts avec un Bâton de soin (Tialla, Ultand, Sofia…) soignent. Une monture « Duo : Soin » (Monoceros de Ninae) ne permet PAS au cavalier de soigner. Les persos avec Flagelleur curatif ou Gemme Glorieuse ne se soignent qu'eux-mêmes. Sans soigneur titulaire, dis-le dans la lecture. Chaque perso a sa propre liste de sorts (le rang ne suffit pas) : fie-toi à sorts_connus. Un soin à distance (Remède) n'est possible que s'il figure dans sorts_connus.
+- Cite les rangs, niveaux et armes exactement tels que donnés (ne les arrondis pas).
+- Chaque raison doit correspondre au rôle choisi : un titulaire explique pourquoi il joue, un remplaçant pourquoi il attend et quand le faire entrer. Ne mets pas en titulaire un perso dont tu dis qu'il n'est pas indispensable.
+- Le but par défaut est « Vaincre le boss » : ne parle d'un boss que si la note du joueur ou les ennemis choisis en mentionnent un.
+- Un invité signalé dans la note (ex. « Orchel invitée, soigne ») joue EN PLUS des places : compte-le dans l'équipe. S'il soigne, un seul soigneur titulaire suffit (Tialla de préférence, pour Remède) et la place libérée va à un attaquant (Guzran, Ludia…), surtout contre beaucoup d'ennemis.
+- On peut descendre de monture pendant le combat : un cavalier à pied ne compte a priori plus comme cavalerie (moins exposé aux lances et armes anti-cavalerie) mais perd sa mobilité et ses compétences montées. Un cavalier peut donc rester titulaire face à des lanciers si tu conseilles de le faire descendre au contact.
+- Les consignes de la note du joueur sont OBLIGATOIRES et passent avant toutes tes autres règles : si elle dit d'éviter un type d'unité (cavalerie, volants, armures…), AUCUN perso de ce type n'est titulaire, même Cai ou un perso très fort ; mets-les en remplaçants. Classes de cavalerie : Cavalerie légère, Cavalier Ornius, Aurige, Cavalier bardé, Cavalier sylvain (un mage monté comme Troubadour n'est pas concerné, sauf si la note le précise).
+- Garde au moins un soigneur (un perso qui a Soin dans sorts_connus) si possible, deux si le combat est long. Avec un seul soigneur, privilégie des persos qui se soignent seuls (Flagelleur curatif, Gemme Glorieuse) ou très résistants.
+- Utilise les objets spéciaux du convoi : un perso qui a le rang pour une arme efficace contre les ennemis signalés est un excellent choix (ex. un archère avec l'Arc de chasseur contre les bêtes).
+- Progression : prends 1 ou 2 persos en retard (niveau nettement plus bas que les autres, ex. Mikaela, Peter, Yang Jie) seulement si le combat est abordable, encadrés par des persos solides ; ils doivent recevoir les coups fatals. Les persos de haut niveau peuvent jouer pour sécuriser, en laissant les coups fatals aux autres. Ne sacrifie jamais la sécurité de l'équipe pour l'expérience.
+- Terrain : tiens compte de la note (sable, eau, forêt, montagne…). En général dans Fire Emblem, le sable et la forêt ralentissent les cavaliers ; les unités volantes passent partout mais craignent les arcs.
+- Armes contre les bêtes : l'Arc de chasseur est efficace contre elles. Contre des épéistes (Esquive élevée, Défense faible) : de la précision et des coups puissants.
+${ROUTE.combatRules?ROUTE.combatRules+"\n":""}- Choisis 1 à 3 remplaçants parmi les autres, utiles en cas de changement.
+- Donne une raison pour CHAQUE perso choisi (titulaire et remplaçant), et commence par "lecture" : une phrase qui résume comment tu as compris le combat.
+
+Objets spéciaux du convoi : ${effItems.join(" ; ")||"—"}
+
+Persos disponibles : ${JSON.stringify(team)}
+
+Format attendu :
+{"lecture":"une phrase en français","titulaires":["Cai","..."],"remplacants":["..."],"raisons":{"<Perso>":"une phrase en français"},"conseils":["2 ou 3 conseils de placement ou de tactique, en français"]}`;
+}
+function combatValidate(r){
+  const c=combatState(),names=teamList().map(x=>x[0]).filter(p=>!c.absent[p]&&!isHidden(p));
+  let tit=[...new Set((r.titulaires||[]).filter(n=>names.includes(n)))];
+  const raisons=Object.assign({},r.raisons||{});
+  for(const f of Object.keys(c.forced).filter(k=>c.forced[k])) if(names.includes(f)&&!tit.includes(f)){tit.unshift(f);raisons[f]="Obligatoire (coché par toi) : Claude ne l'avait pas retenu. Son avis : "+String(raisons[f]||"—").replace(/^Remplaçant\s*:\s*/i,"")}
+  const over=tit.slice(c.slots);tit=tit.slice(0,c.slots);
+  for(const o of over) if(raisons[o]) raisons[o]="Remplaçant (plus de place après les obligatoires) : "+raisons[o];
+  const rem=[...new Set([...(r.remplacants||[]),...over].filter(n=>names.includes(n)&&!tit.includes(n)))].slice(0,3);
+  return {lecture:String(r.lecture||""),tit,rem,raisons,conseils:Array.isArray(r.conseils)?r.conseils.slice(0,4).map(String):[]};
+}
+async function combatRun(counter){
+  const sample=null;
+  if(!sample){cb.err="La proposition par Claude n'est pas disponible ici (non disponible sur cette version du carnet).";render();return}
+  const prev=cb.res;
+  let input=combatPrompt();
+  if(counter&&prev){
+    input=[{role:"user",content:combatPrompt()},{role:"assistant",content:JSON.stringify({lecture:prev.lecture,titulaires:prev.tit,remplacants:prev.rem,raisons:prev.raisons,conseils:prev.conseils})},
+      {role:"user",content:`Le joueur a modifié ou commenté ta proposition. Équipe qu'il garde pour l'instant : titulaires ${JSON.stringify(prev.tit)}, remplaçants ${JSON.stringify(prev.rem)}. Sa remarque : « ${counter} ». Revois la proposition en tenant compte de sa remarque et de ses modifications ; s'il impose un perso, garde-le. Dans "lecture", dis en une phrase ce que tu as changé et pourquoi (ou pourquoi tu maintiens un choix). Même format JSON.`}];
+  }
+  cb.busy=true;cb.err="";cb.res=null;cb.ctl=new AbortController();render();
+  try{cb.res=combatValidate(await sample.json(input,{signal:cb.ctl.signal,modelTier:"default",cache:false})||{});state.combatLast=Object.assign({quand:new Date().toISOString()},cb.res);persist()}
+  catch(e){if(!cb.res&&prev)cb.res=prev;const k=e&&e.code;cb.err=k==="cancelled"?"":["not_granted","sampling_disabled","not_declared","capability_disabled"].includes(k)?"Tu n'as pas autorisé la page à utiliser Claude : tu peux le changer dans le menu Autorisations de la page.":k==="rate_limited"?"Trop de demandes : réessaie dans quelques minutes.":"Claude n'a pas pu répondre cette fois. Réessaie."}
+  cb.busy=false;cb.ctl=null;render();
+}
+function combatApply(){
+  const c=combatState(),dep={};
+  for(const [p] of teamList()) dep[p]=cb.res.tit.includes(p)?"Oui":cb.res.rem.includes(p)?"Remplaçant":"Banc";
+  state.deploy=dep;state.slots=c.slots;
+}
+function vCombat(){
+  const c=combatState(),team=teamList().map(x=>x[0]).filter(p=>!isHidden(p));
+  const chip=(attr,k,on,l)=>`<button class="chip" type="button" ${attr}="${esc(k)}" aria-pressed="${!!on}">${esc(l)}</button>`;
+  const ch=c.chap>=0?CHAPTERS[c.chap]:null;
+  let res="";
+  if(cb.busy) res=`<div class="panel ai"><p><b>Claude prépare ton équipe…</b></p><div><button class="chip" type="button" data-cb="stop">Arrêter</button></div></div>`;
+  else if(cb.res){const r=cb.res;
+    res=`<div class="panel ai"><h3>Équipe proposée (${r.tit.length}/${c.slots})</h3>${r.lecture?`<p><b>L'avis de Claude :</b> ${esc(r.lecture)}</p>`:""}
+    <div class="tablebox"><table><thead><tr><th>Perso</th><th>Rôle</th><th>Pourquoi</th></tr></thead><tbody>
+    ${[...r.tit.map(p=>[p,"T"]),...r.rem.map(p=>[p,"R"])].map(([p,k])=>`<tr class="${k==="R"?"sub":""}"><td class="name">${esc(p)}</td><td><select data-crole="${esc(p)}" aria-label="Rôle de ${esc(p)}"><option value="T" ${k==="T"?"selected":""}>Titulaire</option><option value="R" ${k==="R"?"selected":""}>Remplaçant</option><option value="X">Retirer</option></select></td><td>${esc(r.raisons[p]||(r.manuel&&r.manuel[p]?"Ajouté par toi":""))}</td></tr>`).join("")}
+    </tbody></table></div>
+    ${(()=>{const others=teamList().map(x=>x[0]).filter(p=>!r.tit.includes(p)&&!r.rem.includes(p)&&!c.absent[p]&&!isHidden(p));return others.length?`<div class="filters"><label class="renown">Ajouter <select id="c-add"><option value="">—</option>${others.map(p=>`<option>${esc(p)}</option>`).join("")}</select></label><span class="note">${r.tit.length}/${c.slots} titulaires</span></div>`:""})()}
+    ${r.conseils.length?`<h4>Conseils</h4><ul class="plain">${r.conseils.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:""}
+    <label class="cls" style="align-items:flex-start">Ta contre-proposition <textarea class="cv" id="c-counter" rows="1" placeholder="Ex. : remplace Ninae par Alexandra, le sable ralentit les cavaliers">${esc(cb.counter||"")}</textarea></label>
+    <div class="filters"><button class="chip" type="button" data-cb="counter">Demander à Claude de revoir</button></div>
+    <div class="filters"><button class="chip" type="button" data-cb="applyeq" aria-pressed="true">Appliquer et équiper avec Claude</button><button class="chip" type="button" data-cb="apply">Appliquer seulement l'équipe</button><button class="chip" type="button" data-cb="cancel">Annuler</button></div></div>`}
+  return `
+  <p class="lead">Décris le combat, Claude propose l'équipe. Tu peux ensuite l'appliquer dans l'onglet Équipement et la faire équiper.</p>
+  <div class="panel">
+    <div class="filters">
+      <label class="renown">Combat <select id="c-chap"><option value="-1" ${c.chap===-1?"selected":""}>Quête, escarmouche ou paralogue</option>${CHAPTERS.map((x,i)=>`<option value="${i}" ${i===c.chap?"selected":""}>Chapitre ${esc(x[0])} · ${esc(x[1])}</option>`).join("")}</select></label>
+      <label class="renown">Places <input type="number" id="c-slots" min="1" max="15" value="${c.slots}" style="width:3.5em"></label>
+      <label class="renown">Objectif <select id="c-goal">${GOALS.map(g=>`<option ${g===c.goal?"selected":""}>${esc(g)}</option>`).join("")}</select></label>
+    </div>
+    ${ch?`<p class="note">${esc(ch[3]||"")}${ch[4]?" · "+esc(ch[4]):""}</p>`:`<p class="note">Décris bien la carte dans la note : terrain, types d'ennemis, boss, ce qu'il faut protéger.</p>`}
+    <h4>Ennemis présents</h4>
+    <div class="filters" role="group" aria-label="Ennemis présents">${FOES.map(([k,l])=>chip("data-cf",k,c.foes[k],l)).join("")}</div>
+    <h4>Obligatoires</h4>
+    <div class="filters" role="group" aria-label="Persos obligatoires">${team.map(p=>chip("data-cforce",p,c.forced[p],p)).join("")}</div>
+    <h4>Absents</h4>
+    <div class="filters" role="group" aria-label="Persos absents">${team.map(p=>chip("data-cabs",p,c.absent[p],p)).join("")}</div>
+    <label class="cls" style="align-items:flex-start">Note <textarea class="cv" id="c-note" rows="1" placeholder="Ce que tu vois sur la carte : rivière, boss archer, renforts…">${esc(c.note)}</textarea></label>
+    ${cb.err?`<p class="note" style="color:var(--warn)">${esc(cb.err)}</p>`:""}
+    <div class="filters"><button class="chip" type="button" data-cb="run" aria-pressed="true">Proposer une équipe</button></div>
+  </div>
+  ${res}`;
+}
+function combatClick(t){
+  const a=t.dataset.cb;
+  if(a==="run"){combatRun();return}
+  if(a==="counter"){const t=document.getElementById("c-counter");const v=(t&&t.value.trim())||"";cb.counter="";combatRun(v||"Je garde ces modifications, vérifie-les et complète si besoin.");return}
+  if(a==="stop"){cb.ctl&&cb.ctl.abort();return}
+  if(a==="cancel"){cb.res=null;render();return}
+  if((a==="apply"||a==="applyeq")&&cb.res){combatApply();cb.res=null;persist();
+    if(a==="applyeq"){current="equip";state.lastTab=Object.assign({},state.lastTab,{cai:"equip"});render();window.scrollTo(0,0);aiRun()}else render()}
+}
+
+function vSources(){
+  const S=[["Fortune's Weave (fan) – carte du monde interactive (recherche, ressources à cocher)","https://fortunesweave.co.uk/map"],["Anna's Notebook – montures de la route de Cai","https://annasnotebook.net/en/guides/mounts-guide/"],["Pocket Tactics – classes (Guardian, Sentinel)","https://www.pockettactics.com/fire-emblem-fortunes-weave/classes"],["KeenGamer – croissances de tous les persos","https://www.keengamer.com/articles/guides/fire-emblem-fortunes-weave-growth-rates-for-all-characters-and-classes/"],["KeenGamer – cadeaux","https://www.keengamer.com/articles/guides/fire-emblem-fortunes-weave-best-gifts-guide/"],["RaiderKing – cadeaux adorés","https://raiderking.com/fire-emblem-fortunes-weave-all-loved-gifts-guide/"],["Fire Emblem Wiki – liste des quêtes","https://fireemblemwiki.org/wiki/List_of_quests_in_Fire_Emblem:_Fortune's_Weave"],["VGC – Bird Time","https://www.videogameschronicle.com/guide/fire-emblem-fortunes-weave-bird-time-explained-how-and-why-you-should-do-it/"],["Fortune's Weave Guide – chapitres de la route de Cai","https://fortunesweave.co.uk/chapters/cai/1/1"],["Fortune's Weave Guide – calendrier des paralogues","https://fortunesweave.co.uk/paralogues"],["KeenGamer – conditions de recrutement","https://www.keengamer.com/articles/guides/fire-emblem-fortunes-weave-all-characters-recruitment-guide/"],["KeenGamer – meilleurs persos par route","https://www.keengamer.com/articles/guides/fire-emblem-fortunes-weave-tier-list-best-characters-ranked-for-every-route/"],["KeenGamer – bénédictions","https://www.keengamer.com/articles/guides/fire-emblem-fortunes-weave-best-blessings-and-which-god-to-serve-first/"],["KeenGamer – réponses du Bird Time","https://www.keengamer.com/articles/guides/fire-emblem-fortunes-weave-perfect-bird-time-answers-for-every-character/"],["Mobalytics – équipe pour Cai","https://mobalytics.gg/gamebase/guides/fire-emblem-fortunes-weave-cai-tier-list"],["Game8 – tier list","https://game8.co/games/Fire-Emblem-Fortunes-Weave/archives/624024"],["Game8 – monter les rangs d'armes","https://game8.co/games/Fire-Emblem-Fortunes-Weave/archives/618893"],["AllThings.How – paliers de classes","https://allthings.how/fire-emblem-fortune-s-weave-class-guide-all-tiers-and-masteries/"],["Dot Esports – ordre des routes","https://dotesports.com/nintendo/guides/fortunes-weave-best-faction-order"]];
+  return `<p class="lead">Les infos viennent de guides de fans ; celles marquées « non vérifié » sont à confirmer en jeu.</p>
+  <div class="panel"><ul class="plain">${S.map(([t,u])=>`<li><a href="${u}" target="_blank" rel="noopener">${esc(t)}</a></li>`).join("")}</ul></div>`;
+}
+
+/* ---------- Événements ---------- */
+document.addEventListener("click",e=>{
+  const dla=e.target.closest("[data-dlall]");if(dla){state.dlShowAll=!state.dlShowAll;persist();render();return}
+  const dr=e.target.closest("[data-droute]");
+  if(dr){try{localStorage.setItem("fe-route",dr.dataset.droute)}catch(_){}location.reload();return}
+  const ro=e.target.closest("[data-route]");
+  if(ro){current=(state.lastTab&&state.lastTab[ro.dataset.route])||ROUTES[ro.dataset.route].tabs[0][0];render();window.scrollTo(0,0);return}
+  const t=e.target.closest("[data-tab]");
+  if(t){current=t.dataset.tab;state.lastTab=Object.assign({},state.lastTab,{[ROUTE_OF[current]]:current});try{history.replaceState(null,"","#"+current)}catch(_){}render();window.scrollTo(0,0);return}
+  const fl=e.target.closest("[data-filter]");
+  if(fl){state.filter=fl.dataset.filter;persist();render();return}
+  if(e.target.id==="export-api"){exportApi();return}
+  const gd=e.target.closest("[data-gdel]");
+  if(gd){e.preventDefault();const i=gd.dataset.gch,id=gd.dataset.gdel,g=CH_GOALS[i];if(g){CH_GOALS=Object.assign({},CH_GOALS,{[i]:{avant:g.avant.filter(x=>x[0]!==id),pendant:g.pendant.filter(x=>x[0]!==id)}});saveRoute();render()}return}
+  const ph=e.target.closest("[data-phide]");
+  if(ph){const p=ph.dataset.phide,h=Object.assign({},state.hiddenPersos||{});if(h[p])delete h[p];else h[p]=true;state.hiddenPersos=h;persist();render();return}
+  const pw=e.target.closest("[data-pw]");
+  if(pw){const p=pw.dataset.pw,t=pw.dataset.wt,cur=((state.persos||{})[p]||{}).weapons||{};setPerso(p,{weapons:Object.assign({},cur,{[t]:!cur[t]})});persist();render();return}
+  const cbb=e.target.closest("[data-cb]");
+  if(cbb){combatClick(cbb);return}
+  const cft=e.target.closest("[data-cf],[data-cforce],[data-cabs]");
+  if(cft){const c=combatState();
+    if(cft.dataset.cf){setCombat({foes:Object.assign({},c.foes,{[cft.dataset.cf]:!c.foes[cft.dataset.cf]})})}
+    else if(cft.dataset.cforce){const k=cft.dataset.cforce;setCombat({forced:Object.assign({},c.forced,{[k]:!c.forced[k]}),absent:Object.assign({},c.absent,{[k]:false})})}
+    else{const k=cft.dataset.cabs;setCombat({absent:Object.assign({},c.absent,{[k]:!c.absent[k]}),forced:Object.assign({},c.forced,{[k]:false})})}
+    persist();render();return}
+  const jp=e.target.closest("[data-jump]");
+  if(jp){const t=document.getElementById(jp.dataset.jump);if(t)t.scrollIntoView({behavior:"smooth",block:"start"});return}
+  const mv=e.target.closest("[data-mv]");
+  if(mv){moveItem(mv.dataset.mv,Number(mv.dataset.dir));persist();render();const b=document.querySelector(`[data-mv="${CSS.escape(mv.dataset.mv)}"][data-dir="${mv.dataset.dir}"]`);if(b&&!b.disabled)b.focus();return}
+  const del=e.target.closest("[data-del]");
+  if(del){const it=itemByKey(del.dataset.del);if(it&&confirmDel(del,it.name)){deleteItem(del.dataset.del);persist();render()}return}
+  const aib=e.target.closest("[data-ai]");
+  if(aib){aiClick(aib.dataset.ai);return}
+  const gs=e.target.closest("[data-gscope]");
+  if(gs){state.giftScope=gs.dataset.gscope;persist();render();return}
+  const b=e.target.closest("[data-bless]");
+  if(b){const n=b.dataset.bless;state.bless[n]=Math.max(0,Math.min(3,(state.bless[n]||0)+Number(b.dataset.d)));persist();saveBless();render();}
+});
+document.addEventListener("change",e=>{
+  const el=e.target;
+  if(el.dataset.progress){state.progress[el.dataset.progress]=el.checked}
+  else if(el.dataset.rec){state.recruited[el.dataset.rec]=el.checked}
+  else if(el.dataset.prio){state.prio[el.dataset.prio]=Number(el.value)}
+  else if(el.dataset.goal){state.goals=Object.assign({},state.goals,{[el.dataset.goal]:el.checked})}
+  else if(el.dataset.crole&&cb.res){const p=el.dataset.crole,r=cb.res;r.tit=r.tit.filter(x=>x!==p);r.rem=r.rem.filter(x=>x!==p);if(el.value==="T")r.tit.push(p);else if(el.value==="R")r.rem.push(p);render();return}
+  else if(el.id==="c-add"&&cb.res&&el.value){const r=cb.res,c=combatState();if(r.tit.length<c.slots)r.tit.push(el.value);else r.rem.push(el.value);r.manuel=Object.assign({},r.manuel,{[el.value]:true});render();return}
+  else if(el.id==="c-counter"){cb.counter=el.value;return}
+  else if(el.id==="c-chap"){setCombat({chap:Number(el.value)})}
+  else if(el.id==="c-slots"){setCombat({slots:Math.max(1,Math.min(15,Number(el.value)||6))})}
+  else if(el.id==="c-goal"){setCombat({goal:el.value})}
+  else if(el.id==="c-note"){setCombat({note:el.value})}
+  else if(el.id==="slots"){state.slots=Math.max(1,Math.min(15,Number(el.value)||6))}
+  else if(el.dataset.tgt!==undefined){const t=Object.assign({},state.targets||{});t[el.dataset.tgt]=el.checked;state.targets=t}
+  else if(el.dataset.supdone!==undefined){state.suppliesDone=Object.assign({},state.suppliesDone,{[el.dataset.supdone]:el.checked})}
+  else if(el.id==="gamedate"){state.gameDate=el.value.trim()}
+  else if(el.id==="renown"){state.renown=Math.max(0,Math.min(10,Number(el.value)||0))||null}
+  else if(el.dataset.chapter!==undefined){state.chapters[el.dataset.chapter]=el.checked}
+  else if(el.id==="hide-rec"){state.hideRecruited=el.checked}
+  else if(el.id==="bird-sel"){state.bird=el.value}
+  else if(el.dataset.eq){const p=el.dataset.eq;state.equip[p]=Object.assign({},state.equip[p]||{},{[el.dataset.slot]:el.value})}
+  else if(el.dataset.deploy){state.deploy[el.dataset.deploy]=el.value}
+  else if(el.dataset.bre){const p=el.dataset.bre;state.equip[p]=Object.assign({},state.equip[p]||{},{bre:Math.max(0,Number(el.value)||0)})}
+  else if(el.dataset.pot){const p=el.dataset.pot;state.equip[p]=Object.assign({},state.equip[p]||{},{pot:Math.max(0,Number(el.value)||0)})}
+  else if(el.dataset.pl){setPerso(el.dataset.pl,{lvl:Math.max(0,Number(el.value)||0)||""})}
+  else if(el.dataset.pm){setPerso(el.dataset.pm,{mount:el.value.trim()})}
+  else if(el.dataset.psp){setPerso(el.dataset.psp,{spells:el.value.trim()})}
+  else if(el.dataset.pc){setPerso(el.dataset.pc,{cls:el.value.trim()})}
+  else if(el.dataset.pr){const p=el.dataset.pr,cur=persoOf(p,"","").ranks;const base=(state.persos&&state.persos[p]&&state.persos[p].ranks)||{};setPerso(p,{ranks:Object.assign({},base,{[el.dataset.sk]:el.value})})}
+  else if(el.dataset.sup!==undefined){const v=el.value.trim();const sp=Object.assign({},state.support);if(v==="")delete sp[el.dataset.sup];else sp[el.dataset.sup]=Math.max(0,Math.min(5,Number(v)||0));state.support=sp}
+  else if(el.dataset.curse!==undefined){editItem(el.dataset.curse,"curse",el.checked)}
+  else if(el.dataset.in!==undefined){editItem(el.dataset.in,el.dataset.f,el.value)}
+  else if(el.dataset.rf){const r=RECRUITS.find(x=>x.name===el.dataset.rf);if(r){const f=el.dataset.fld;r[f]=f==="cond"?el.value.trim():Math.max(0,Number(el.value)||0);saveRoute();render()}return}
+  else if(el.dataset.qty){state.qty[el.dataset.qty]=Math.max(0,Number(el.value)||0)}
+  else return;
+  persist();render();
+});
+
+document.addEventListener("input",e=>{
+  if(e.target.matches&&e.target.matches("textarea.cv")){autosize(e.target);return}
+  if(e.target.id!=="gift-q")return;
+  const q=e.target.value.trim().toLowerCase();
+  document.querySelectorAll("#gift-table tbody tr").forEach(r=>{r.hidden=q&&!r.dataset.g.includes(q)});
+});
+
+document.addEventListener("submit",e=>{
+  if(e.target.id==="add-rec"){e.preventDefault();const n=$("#nr-name").value.trim();if(!n||RECRUITS.some(r=>r.name===n))return;
+    RECRUITS.push({name:n,prio:Number($("#nr-prio").value)||0,renown:Number($("#nr-ren").value)||0,support:Number($("#nr-sup").value)||0,cond:$("#nr-cond").value.trim()||"—",leda:false});saveRoute();render();return}
+  if(e.target.dataset&&e.target.dataset.gadd!==undefined){e.preventDefault();const i=e.target.dataset.gadd,inp=e.target.querySelector("input"),sel=e.target.querySelector("select");const t=inp.value.trim();if(!t)return;
+    const g=CH_GOALS[i]?{avant:[...CH_GOALS[i].avant],pendant:[...CH_GOALS[i].pendant]}:{avant:[],pendant:[]};g[sel.value].push(["u-"+Date.now().toString(36),t]);CH_GOALS=Object.assign({},CH_GOALS,{[i]:g});saveRoute();render();return}
+  if(e.target.id!=="add-item")return;e.preventDefault();
+  const name=$("#ai-name").value.trim();if(!name)return;
+  state.extraItems=Object.assign({},state.extraItems,{[name]:{cat:$("#ai-cat").value,rank:$("#ai-rank").value.trim().toUpperCase(),qty:Math.max(1,Number($("#ai-qty").value)||1),desc:$("#ai-desc").value.trim()}});
+  persist();render();
+});
+/* ---------- Démarrage ---------- */
+const EMBEDDED={"game":{"defGrowth":{"Alexandra":30,"Benditz":35,"Buccar":45,"Cai":35,"Catania":30,"Centurio":50,"Dadao":45,"Dante":20,"Diego":35,"Esmeralda":45,"Fianna":20,"Gaitz":45,"Goliath":50,"Guzran":35,"Halvin":30,"Inyoni":40,"Io":40,"Jasmine":45,"Jester":35,"Kiroc":30,"Leda":30,"Lilian":30,"Loretta":30,"Ludia":30,"Lysander":40,"Majide":40,"Mikaela":40,"Mu":20,"Nezha":35,"Ninae":35,"Noctula":40,"Nuzzuo":20,"Nydine":30,"Olympia":30,"Peppe":30,"Peter":30,"Seteth":40,"Simon":40,"Sirocco":35,"Sofia":25,"Tialla":20,"Ultand":35,"Ursula":35,"Yang Jie":30,"Zarcone":30},"giftFr":{"Arrowhead Gem":"Gemme pointe de flèche","Bagua Divination Set":"Set de divination bagua","Blue-Rose Bouquet":"Bouquet de roses bleues","Bow Maintenance Kit":"Kit d'entretien d'arc","Candy Crystals":"Cristaux de sucre","Ceremonial Spear":"Lance de cérémonie","Coffee Pastries":"Pâtisseries au café","Coffee Pastries ":"Pâtisseries au café","Crafting Knives":"Couteaux d'artisan","Crimson Ghosh":"Ghosh pourpre","Decorative Arrows":"Flèches décoratives","Dual Fish Knives":"Couteaux à poisson jumeaux","Eastern Black Silk":"Soie noire d'Orient","Eastern Earrings":"Boucles d'oreilles d'Orient","Eastern Love Story":"Histoire d'amour d'Orient","Eastern Tea Leaves":"Feuilles de thé d'Orient","Ebony Game Board":"Plateau de jeu en ébène","Flexible Fishing Rod":"Canne à pêche souple","Flower Painting":"Tableau de fleurs","Gaudy Bangle":"Bracelet clinquant","History of a Master":"Histoire d'un maître","Honey Milk":"Lait au miel","Honey Pastries":"Pâtisseries au miel","Horse Grooming Kit":"Kit de pansage","Huge Fish Eyeball":"Œil de poisson géant","Jade Ghosh":"Ghosh de jade","Legendary Garum":"Garum légendaire","Magic Set":"Set de magie","Mane Ornament":"Ornement de crinière","Mature Ghosh":"Ghosh vieilli","Morfis Almanac":"Almanach de Morfis","Odd Vegetable Seeds":"Graines de légumes étranges","Outdoor Cooking Set":"Set de cuisine de plein air","Pastry Cookbook":"Livre de pâtisserie","Pegasus Panorama":"Panorama de pégase","Poems of the Greats":"Poèmes des grands maîtres","Portrait of Yu Phas":"Portrait de Yu Phas","Potted Vegetables":"Légumes en pot","Rancid Garum":"Garum rance","Rare Southern Seeds":"Graines rares du Sud","Rare Spices":"Épices rares","Red Hair Clip":"Barrette rouge","Rugged Blade":"Lame robuste","Saraminian Sweets":"Douceurs de Saramis","Select Coffee":"Café de choix","Sharp Fishhook":"Hameçon aiguisé","Shield Portrait":"Portrait au bouclier","Special \"Medicine\"":"« Remède » spécial","Strategy Manuscript":"Manuscrit de stratégie","Strong Seasonings":"Assaisonnements relevés","Tales of Adventure":"Récits d'aventure","The Works of Dante":"Œuvres de Dante","Training Pillar":"Poteau d'entraînement","Training Weights":"Poids d'entraînement","Volcano Ghosh":"Ghosh du volcan","Yarc Milk":"Lait de yarc"},"gifts":[["Alexandra","Chevaux, garum, tableaux de pégase","Pegasus Panorama, Shield Portrait, Flower Painting, Portrait of Yu Phas, Tales of Adventure, Mane Ornament, Horse Grooming Kit","Rancid Garum"],["Anatolia","Livres, mode, divination","Strategy Manuscript, History of a Master, Tales of Adventure, Morfis Almanac, Bagua Divination Set",""],["Benditz","Armes, objets militaires, jeux de société","Arrowhead Gem, Portrait of Yu Phas, Decorative Arrows, Rancid Garum, Eastern Love Story",""],["Bonaventure","Livres, épices","Poems of the Greats, Strategy Manuscript, Morfis Almanac, Dual Fish Knives, Rare Spices",""],["Buccar","Boissons fermentées, objets militaires et d'entraînement","Volcano Ghosh, Crimson Ghosh, Special \"Medicine\", Rancid Garum, Shield Portrait",""],["Cai","Chevaux, entraînement","Arrowhead Gem, Crimson Ghosh, Sharp Fishhook (Game8), Mane Ornament, Horse Grooming Kit, Portrait of Yu Phas, Pegasus Panorama",""],["Catania","Café, tableaux, objets rares","Flower Painting, Pegasus Panorama, Portrait of Yu Phas, Arrowhead Gem, Red Hair Clip, Gaudy Bangle","Rancid Garum"],["Centurio","—","Rancid Garum, Shield Portrait, Pegasus Panorama, Portrait of Yu Phas",""],["Dadao","Boissons de cervi, lait, pâtisseries","Tales of Adventure, Portrait of Yu Phas, Rugged Blade, Honey Milk, Huge Fish Eyeball",""],["Dante","Café, livres","Poems of the Greats, Tales of Adventure, Flower Painting, Portrait of Yu Phas, Rancid Garum",""],["Diego","Tir à l'arc, livres, jeux de société","Decorative Arrows, Bow Maintenance Kit, Portrait of Yu Phas, Shield Portrait, Ceremonial Spear",""],["Dietrich","Pâtisseries, tableaux, beauté","Pegasus Panorama, Ebony Game Board, Rugged Blade, Honey Pastries","Tout café"],["Esmeralda","Pêche, mode, cuisine","Eastern Earrings, Tales of Adventure, Flower Painting, Arrowhead Gem, Flexible Fishing Rod, Sharp Fishhook",""],["Fabio","Café","Rare Southern Seeds, Flower Painting, Pegasus Panorama, Jade Ghosh",""],["Fianna","Livres, café, thé, assaisonnements","Flower Painting, Portrait of Yu Phas, Blue-Rose Bouquet, Eastern Tea Leaves, Eastern Earrings, Strong Seasonings","Saraminian Sweets"],["Gaitz","Armes, thé, chevaux","Rancid Garum, Rugged Blade, Ceremonial Spear, Pegasus Panorama, Shield Portrait, Horse Grooming Kit",""],["Goliath","Café, jeux de société","Rancid Garum, Volcano Ghosh, Crimson Ghosh, Special \"Medicine\", Strategy Manuscript",""],["Guzran","Boissons fermentées (ghosh), café","Tales of Adventure, Volcano Ghosh, Crimson Ghosh, Shield Portrait, Strategy Manuscript",""],["Halvin","Légumes, magie","Red Hair Clip, Flower Painting, Blue-Rose Bouquet, Magic Set, Potted Vegetables",""],["Inyoni","Tir à l'arc, pêche","Strategy Manuscript, Tales of Adventure, Arrowhead Gem, Shield Portrait, Bow Maintenance Kit",""],["Io","Chevaux","Portrait of Yu Phas, Shield Portrait, Pegasus Panorama, Ceremonial Spear, Mane Ornament",""],["Jasmine","Cuisine, jeux de société, garum","Strategy Manuscript, Rugged Blade, Pegasus Panorama, Rare Spices",""],["Jester","Mode, pâtisseries, couteaux d'artisan","Legendary Garum, Portrait of Yu Phas, Arrowhead Gem, Crafting Knives",""],["Kiroc","Fleurs, mode, café","Arrowhead Gem (?), Crimson Ghosh (?), Volcano Ghosh (?), Select Coffee",""],["Leda","Mode, pierres précieuses, tableaux","Eastern Black Silk, Tales of Adventure, Flower Painting, Portrait of Yu Phas, Arrowhead Gem","Rancid Garum"],["Lilian","Mode, fleurs","Eastern Earrings, Blue-Rose Bouquet, Eastern Tea Leaves, Poems of the Greats, Strategy Manuscript",""],["Loretta","Pâtisseries, sucreries","Portrait of Yu Phas, Shield Portrait, Ceremonial Spear, Rugged Blade","Rancid Garum"],["Ludia","Café, livres, tableaux","Eastern Black Silk, Tales of Adventure, Pegasus Panorama, Flower Painting, Red Hair Clip",""],["Lysander","Armes, entraînement","Ceremonial Spear, Flower Painting, Shield Portrait, Pegasus Panorama, Training Pillar, Training Weights",""],["Majide","Boissons fermentées","Mature Ghosh, Arrowhead Gem (?), Crimson Ghosh (?), Dual Fish Knives (?)",""],["Mikaela","Café, ghosh, cuisine","Rugged Blade, Strategy Manuscript, Volcano Ghosh, Tales of Adventure",""],["Mu","Boissons de cervi, pâtisseries, café","Candy Crystals, Tales of Adventure, Yarc Milk",""],["Nezha","Légumes, jeux de société","Portrait of Yu Phas, Shield Portrait, Arrowhead Gem, Ceremonial Spear, Decorative Arrows",""],["Ninae","Fleurs, tableaux","Tales of Adventure, Portrait of Yu Phas, Eastern Black Silk, Poems of the Greats",""],["Noctula","Entraînement","Strategy Manuscript, Tales of Adventure, History of a Master, Shield Portrait, Ceremonial Spear, Training Pillar",""],["Nuzzuo","Cuisine, légumes, café","Arrowhead Gem, Rare Southern Seeds, Odd Vegetable Seeds, Rugged Blade, Pegasus Panorama, Outdoor Cooking Set","Tales of Adventure"],["Nydine","Tir à l'arc, chevaux, livres","Pegasus Panorama, Strategy Manuscript, Rugged Blade, Horse Grooming Kit",""],["Olympia","Fleurs, tableaux, beauté, jeux de société","Flower Painting, Portrait of Yu Phas, Tales of Adventure, Shield Portrait, Pegasus Panorama, Red Hair Clip",""],["Orchel","—","Blue-Rose Bouquet, Shield Portrait, Flower Painting, Portrait of Yu Phas",""],["Peppe","Café, boissons de cervi, sucreries","Rancid Garum, Portrait of Yu Phas, Shield Portrait, Pegasus Panorama",""],["Peter","Boissons de cervi, sucreries, livre de pâtisserie","Arrowhead Gem (?), Pastry Cookbook, Yarc Milk, Saraminian Sweets",""],["Seteth","Pêche, livres","Tales of Adventure, Portrait of Yu Phas, Morfis Almanac, Poems of the Greats, Strategy Manuscript",""],["Sha Lan","Cuisine, thé","Special \"Medicine\", Portrait of Yu Phas, Pastry Cookbook",""],["Simon","Tous les légumes","Rancid Garum, Portrait of Yu Phas, Shield Portrait",""],["Sirocco","Boissons fermentées, tableaux, livres","Portrait of Yu Phas, Flower Painting, Shield Portrait, Arrowhead Gem, Tales of Adventure, Volcano Ghosh",""],["Sofia","Sucreries, garum, cuisine","Candy Crystals, Blue-Rose Bouquet, Flower Painting, Dual Fish Knives, Volcano Ghosh, Tales of Adventure",""],["Talimun","Boissons fermentées, livres rares, tableaux","Volcano Ghosh",""],["Theodora","Café, entraînement, mode, cuisine","Pegasus Panorama, Portrait of Yu Phas","Strategy Manuscript, toute lecture"],["Tialla","Livres, boissons de cervi, jeux de société","Ebony Game Board, Tales of Adventure, Dual Fish Knives, Blue-Rose Bouquet, Portrait of Yu Phas, Morfis Almanac","Coffee Pastries, Rancid Garum, tout ghosh, Special \"Medicine\""],["Tobias","Boissons fermentées","Volcano Ghosh (?), Strategy Manuscript (?), Tales of Adventure (?)",""],["Ultand","Garum, livres, cuisine","Rancid Garum, Tales of Adventure, Dual Fish Knives, Blue-Rose Bouquet, Portrait of Yu Phas",""],["Ursula","Café, livres, tableaux, fleurs, jeux de société","Shield Portrait, Flower Painting, Pegasus Panorama, Portrait of Yu Phas",""],["Yang Jie","Boissons fermentées, livres","The Works of Dante, Volcano Ghosh (?), Strategy Manuscript (?)",""],["Zarcone","Tous les légumes","Potted Vegetables, Eastern Tea Leaves (?)","Tout café"]],"gods":[["Jurah","Jeudi",3,["Annule les dégâts efficaces","Pas de double attaque ennemie","Pas de coup critique ennemi"],"Protège Cai et tes cavaliers des lances ; peu chère (10 de sable)."],["Kalla","Vendredi",3,["+50 Esquive","+5 Vitesse","+2 Déplacement"],"Le +2 Déplacement change tout sur les cartes à objectif."],["Mars","Mardi",2,["+50 Précision physique","PV rendus à chaque ennemi tué","+5 Force"],"Cai, Guzran, Mu et les archers."],["Smyrnos","Mercredi",2,["+50 Précision magique","+1 Portée magique","+5 Magie"],"Pour tes mages."],["Aurora","Lundi",3,["Dégâts physiques divisés par 2","Dégâts magiques divisés par 2","Annule la Faveur des Enfers"],"Déjà au maximum."],["Credna","Samedi",0,["+5 Vision","Pas d'usure d'arme","Attaque en premier en phase ennemie"],"Facultative sur cette route."]],"magGrowth":{"Alexandra":35,"Benditz":20,"Cai":40,"Catania":35,"Dadao":20,"Dante":45,"Diego":20,"Esmeralda":20,"Fianna":55,"Goliath":5,"Guzran":20,"Halvin":30,"Inyoni":20,"Io":25,"Jasmine":20,"Jester":15,"Kiroc":15,"Lilian":30,"Loretta":35,"Ludia":20,"Lysander":25,"Majide":15,"Mikaela":30,"Mu":5,"Nezha":25,"Ninae":35,"Noctula":20,"Nuzzuo":15,"Nydine":30,"Olympia":50,"Peppe":25,"Peter":20,"Seteth":30,"Simon":20,"Sirocco":40,"Sofia":45,"Tialla":45,"Ultand":40,"Ursula":35,"Yang Jie":40,"Zarcone":20},"resGrowth":{"Alexandra":40,"Benditz":25,"Cai":35,"Catania":35,"Dadao":20,"Dante":40,"Diego":20,"Esmeralda":25,"Fianna":45,"Goliath":20,"Guzran":20,"Halvin":25,"Inyoni":30,"Io":25,"Jasmine":25,"Jester":25,"Kiroc":15,"Lilian":35,"Loretta":40,"Ludia":20,"Lysander":25,"Majide":10,"Mikaela":25,"Mu":10,"Nezha":25,"Ninae":45,"Noctula":20,"Nuzzuo":15,"Nydine":25,"Olympia":40,"Peppe":30,"Peter":25,"Seteth":35,"Simon":25,"Sirocco":35,"Sofia":40,"Tialla":40,"Ultand":45,"Ursula":30,"Yang Jie":40,"Zarcone":25}},"route":{"baseTeam":["Cai","Peter","Tialla","Guzran","Ultand"],"bird":{"Alexandra":[["Foyer à Tellus","Déployer les ailes"],["Plumes","Se lisser les plumes"],["Ragots","Être intimidant"],["Endroits dangereux","Hocher la tête"],["Rencontre avec Bucephalus","Hocher la tête"],["Planer","Déployer les ailes"],["Confiance au combat","Fixer du regard"],["Surnom « Vierge d'argent »","Déployer les ailes"],["Longues chevauchées","Déployer les ailes"],["Souvenirs heureux de ses parents","Chanter une belle mélodie"]],"Cai":[["Comment on devient adulte, au juste ?","Fixer du regard"],["Tu crois que je serai un jour meilleur à la lance que mon père ?","Hocher la tête"],["Ça fait du bien de se détendre un peu, hein ?","Chanter une belle mélodie"],["On dirait parfois que les gens devinent ce que je pense…","Pencher la tête"],["Ce serait amusant de jouer à cache-cache avec toi !","Battre des ailes"],["Je ne supporte pas la lâcheté…","Hocher la tête"],["C'est fou comme les oiseaux sont rapides, tu pourrais esquiver n'importe quoi !","Déployer les ailes"],["J'entends parfois un joli chant d'oiseau. C'est toi ?","Chanter une belle mélodie"],["Je me demande à quoi ressemble le monde vu par tes yeux.","Fixer du regard"],["Journée parfaite pour la pêche !","Déployer les ailes"]],"Catania":[["Apparence","Déployer les ailes"],["Partenaire idéal","Chanter doucement"],["S'amuser seule","Déployer les ailes"],["Cicatrice","Hocher la tête"],["Voix chantée","Chanter une belle mélodie"],["Conduite","Hocher la tête"],["Qualité","Fixer du regard"],["Poches vides","Être intimidant"],["Chute d'une noble","Chanter doucement"],["Palais du pégase","Chanter doucement"]],"Dante":[["Visages d'oiseaux","Fixer du regard"],["Substances enivrantes","Pencher la tête"],["Chants d'oiseaux chez lui","Chanter une belle mélodie"],["Chef-d'œuvre de son père","Hocher la tête"],["Ailes pour ses recherches","Déployer les ailes"],["Langues humaines","Pencher la tête"],["La ville","Fixer du regard"],["Idées d'histoire au temple","Hocher la tête"],["Prochain chef-d'œuvre","Déployer les ailes"],["Voix de démon","Pencher la tête"]],"Esmeralda":[["Sa mère","Déployer les ailes"],["Offre de poisson","Déployer les ailes"],["Chanter en pêchant","Chanter une belle mélodie"],["Son père et la mer","Hocher la tête"],["Fêtes nobles","Danser"],["Déteste les menteurs","Hocher la tête"],["Jolis yeux","Fixer du regard"],["Les gars de Dagsion","Hocher la tête"],["Ne pas sentir l'oiseau","Être intimidant"],["Être méprisée","Pencher la tête"]],"Guzran":[["Envie de dormir","Faire un salto"],["Vivre pleinement","Déployer les ailes"],["Frappé par une dame","Pencher la tête"],["Cicatrices et surnom","Hocher la tête"],["Regard déterminé","Hocher la tête"],["Mercenaires aguerris","Hocher la tête"],["Gens qu'il a aidés","Pencher la tête"],["Cris de guerre","Hocher la tête"],["Vraie forme d'oiseau","Pencher la tête"],["Repas","Hocher la tête"]],"Halvin":[["Étui à accessoires","Chanter doucement"],["Artisanat","Déployer les ailes"],["Oiseau de magicien","Pencher la tête"],["Talent au combat","Hocher la tête"],["Sucreries","Fixer du regard"],["Nasshim","Déployer les ailes"],["Tour de spectacle","Faire un salto"],["Inquiétude pour l'avenir","Battre des ailes"],["Famille et village natal","Chanter une belle mélodie"],["Légumes","Hocher la tête"]],"Inyoni":[["Perdre la notion du temps","Chanter une belle mélodie"],["Mots horribles","Chanter une belle mélodie"],["Famille et amis","Hocher la tête"],["Chasser les oiseaux","Être intimidant"],["Ne laisser aucune impression","Pencher la tête"],["Arc d'Ugo","Pencher la tête"],["Hommes qui la harcèlent","Être intimidant"],["Discours du village","Pencher la tête"],["Ordre de Mithras","Hocher la tête"]],"Mikaela":[["Mariage de sa mère","Hocher la tête"],["Chanter","Chanter une belle mélodie"],["Bagarre de taverne","Pencher la tête"],["Cuisine de sa sœur","Déployer les ailes"],["Serrer fort","Être intimidant"],["Dettes","Hocher la tête"],["Argent","Pencher la tête"],["Gens suspects","Hocher la tête"],["Mari","Pencher la tête"],["Protéger ses proches","Déployer les ailes"]],"Mu":[["Son père lui manque","Pencher la tête"],["Plantes médicinales","Hocher la tête"],["Chant de sa mère","Chanter une belle mélodie"],["Sirocco coureur de jupons","Hocher la tête"],["Offre de cuisiner","Hocher timidement la tête"],["Regard gentil","Fixer du regard"],["Traitée comme une enfant","Déployer les ailes"],["Mère insistante","Pencher la tête"],["Envie d'aider","Déployer les ailes"],["Entraînement avec sa mère","Être intimidant"]],"Ninae":[["Nuages","Regarder le ciel"],["Être crainte","Fixer du regard"],["Solitude","Hocher la tête"],["Esprits","Déployer les ailes"],["Compagnons invisibles","Pencher la tête"],["Insectes","Hocher la tête"],["Être incomprise","Pencher la tête"],["La mort","Pencher la tête"],["Prier","Chanter une belle mélodie"]],"Noctula":[["Défis du mariage","Hocher la tête"],["Tradition du combat loyal","Chanter fièrement"],["Savoir-faire de montagne","Hocher la tête"],["Se battre à mains nues","Hocher la tête"],["Entraînement au mont Orgus","Être intimidant"],["Nouvelle prise de lutte dansée","Faire un salto"],["Un surnom","Pencher la tête"],["Frère voyageur","Battre des ailes"],["Quelque chose arrive bientôt","Fixer du regard"],["Être seule","Déployer les ailes"]],"Nuzzuo":[["Vie en ville","Battre des ailes"],["Repas","Battre des ailes"],["Vivre avec la nature","Déployer les ailes"],["Plumes en bataille","Rester immobile"],["Rester fidèle à soi","Déployer les ailes"],["Anciens chefs","Chanter doucement"],["Flèches empoisonnées","Être intimidant"],["Présages","Être intimidant"],["Loi du plus fort","Hocher la tête"],["Isolement","Hocher la tête"]],"Olympia":[["Reconnue comme la Rose bleue","Déployer les ailes"],["Rivalité avec Leilidahna","Déployer les ailes"],["Kalla","Hocher la tête"],["Répétition manquée","Chanter une belle mélodie"],["Travaux manuels","Pencher la tête"],["Émotions dans la musique","Hocher la tête"],["Confiance en son chant","Chanter doucement"],["Composer un poème","Faire un salto"],["Maternité","Pencher la tête"],["Arbres en fleurs","Hocher la tête"]],"Peter":[["Sentiments pour Tialla","Chanter une belle mélodie"],["Peur de se battre","Déployer les ailes"],["Jambes qui tremblent","Déployer les ailes"],["Bruits d'animaux","Hocher la tête"],["Arbre ginji","Déployer les ailes"],["Rêve d'un bel oiseau","Pencher la tête"],["Nuages","Déployer les ailes"],["Rester éveillé","Hocher la tête"],["Bruits de la forêt","Chanter une belle mélodie"],["Affronter les épreuves","Fixer du regard"]],"Sirocco":[["Hommes mal fagotés","Hocher la tête"],["Être envié","Fixer du regard"],["Tempête de grêle","Hocher la tête"],["Gazouillis","Hocher la tête"],["Jouer un air ensemble","Chanter une belle mélodie"],["Reconnaître une volée","Déployer les ailes"],["Beauté de Kalla","Fixer du regard"],["Voir le monde","Fixer du regard"],["Nom venu de Kalla","Hocher la tête"],["Poésie ratée","Chanter une belle mélodie"]],"Sofia":[["Trop proche quand elle a faim","Fixer du regard"],["Seigneur Solel","Hocher la tête"],["Festins de son père","Déployer les ailes"],["Gros appétit","Chanter doucement"],["Noms mignons","Pencher la tête"],["Plats épicés","Pencher la tête"],["Jamais pompette","Pencher la tête"],["Fort de Lyoshan","Hocher la tête"],["Surnom « petit oiseau »","Déployer les ailes"],["Te cuisiner","Être intimidant"]],"Tialla":[["Je vois tant d'intelligence dans tes yeux","Fixer du regard"],["J'aime m'allonger au soleil, toi aussi ?","Déployer les ailes"],["Je manque d'expérience, mais j'ai beaucoup étudié","Déployer les ailes"],["J'aimerais être un oiseau et voler jusqu'à la bibliothèque du temple","Battre des ailes"],["Le barde entendu avec grand-père","Chanter une belle mélodie"],["Si le pire doit arriver, à quoi bon lutter ?","Pencher la tête"],["Trop réfléchir, ça embrouille la tête","Chanter une belle mélodie"],["La technique sans le savoir ne sert pas à grand-chose","Hocher la tête"],["Ces lunettes de grand-père sont jolies, non ?","Hocher la tête"],["Tu as un si beau plumage, je peux regarder ?","Déployer les ailes"]],"Ultand":[["Aurai-je une famille heureuse plus tard ?","Hocher la tête"],["Mes économies ne vont pas grossir toutes seules…","Pencher la tête"],["Je pourrais écouter les bardes toute la journée","Chanter une belle mélodie"],["Pas que du poisson tous les jours, quand même ?","Pencher la tête"],["Parfois, on ne peut pas s'empêcher de répondre à ses supérieurs","Hocher la tête"],["Elle te plaît, cette coiffure ?","Hocher la tête"],["Je suis épuisée, j'aurais besoin d'être chouchoutée…","Chanter une belle mélodie"],["Te regarder m'apaise","Fixer du regard"],["Comment se faire remarquer de quelqu'un qu'on aime ?","Déployer les ailes"],["Tu es trop mignon, je peux t'emmener chez moi ?","Être intimidant"]]},"chGoals":{"7":{"avant":[["c7-fish","Pêcher 1 Poisson du paradis au lac Brontès (pour Ninae)"],["c7-bows","Acheter 3 Arcs en fer (pour Nuzzuo)"],["c7-fianna","Fianna (soutien 3 au renom 8) : un cadeau adoré chaque semaine, puis l'inviter à l'auberge"],["c7-ninae","Ninae (soutien 3) : un cadeau adoré chaque semaine et des repas à l'auberge"],["c7-gold","Mettre 3 000 G de côté pour Fianna"],["c7-dates","Planter tes Dattes dans le champ de Cai dès que tu en as (Halvin)"]],"pendant":[["c7-lame","Tour 1 : ramasser la Lame purificatrice lâchée par Talimun"],["c7-cav","Déployer des cavaliers : les obstacles sont bas"],["c7-undead","Morts-vivants (Faveur des Enfers, −50 % de dégâts non efficaces) : Lame purificatrice et Séraphin"]]},"8":{"avant":[["c8-exam","Examen avancé de Cai : Cavalerie légère (licence avancée chez l'examinateur de Dagsion)"],["c8-olympia","Lancer les 3 quêtes d'Olympia"],["c8-horse","Capturer un Cheval de Ferghana pour Cai (Sunset Road, appât légumes de bonne qualité) ; vérifier à l'écurie qu'il a Canto (débloqué au lien 3)"],["c8-prom-tialla","Tialla niveau 20 : examen Prêtre (Physic au rang C de magie blanche)"],["c8-prom-ultand","Ultand niveau 20 : examen Prêtre"],["c8-prom-noctula","Noctula niveau 20 : examen Lutteur (pugilat, son meilleur rang) ou Brigand (hache)"],["c8-tialla","Tialla : viser Troubadour pour la magie noire"]],"pendant":[["c8-leda","Arène : vaincre Leda et la bête démoniaque (Cai ne doit pas tomber)"],["c8-kills","Laisser les coups fatals à Tialla, Ultand et Noctula (Ninae et Alexandra affaiblissent)"]]},"9":{"avant":[["c9-short","Temps libre court (3/9 – 11/9) : fais d'abord les priorités"],["c9-dates","Quête des Dattes (« Huge, Hairy Beasts », colporteur de la Compagnie Vandahl) avant le 11/9"],["c9-star","Fin de l'enquête au temple d'Aurora : récupérer la Lance étoilée (Lance C, efficace contre la cavalerie, capacité « Blinding Starlight » = attaque magique à portée 1-2) et l'ajouter au convoi"],["c9-heal","Ultand absente pendant le temps libre (quêtes comprises) : Tialla est la seule soigneuse, prends des potions en plus"]],"pendant":[["c9-ultand","Sauver Ultand, enlevée par Zenzele : elle revient dans ton équipe pour ce combat"]]},"10":{"avant":[["c10-bertrand","Paralogue de Bertrand (17/9 – 25/9) : Peppe, Gaitz, Très gros lingot"],["c10-talimun","Paralogue de Talimun (17/9 – 22/9 ou 1/10 – 12/10) : Ursula, Lame purificatrice"],["c10-solel","Paralogue de Solel (24/9 – 5/10) : Orichalque"]],"pendant":[["c10-gold","Ramasser les deux armes dorées lancées par le public"]]},"11":{"avant":[["c11-orchel","Paralogue d'Orchel (18/10 – 20/10) : Diego, Bâton de soin"]],"pendant":[]},"12":{"avant":[["c12-last","Dernières recrues avant la fin de la Partie I : elles reviennent en Partie III"]],"pendant":[]}},"chapters":[["Prol. 2","La Terre en ruine","The Ruined Land","Vaincre Lind","Tutoriel. Coffre de la Grotte des hérétiques : une Concoction, perdue sinon."],["1","Tumulte à Ribeira","Uproar in Ribeira","Prendre le Joyau rouge, vaincre Nero","Frappe avec Peter ou Tialla, achève avec Cai pour le soutien. Les fourrés protègent Cai."],["2","La Route de la capitale","Road to the Capital","Vaincre tous les ennemis, protéger la caravane","Castor gère seul le coin nord-est. Manquable : scène Castor/Centurio à l'est."],["3","Séparations et espoirs","Partings and Hopes","Vaincre Goliath","Ultand en invité. Questions de Yang Jie. Quête « Barrette perdue » avant le 28/2."],["4","Le Festival des forts","Festival of the Strong","Vaincre Zarcone","Theodora et Orchel combattent avec toi (défaite s'ils tombent). 24 tours de temps libre (non vérifié). Scène optionnelle avec Bertrand sous l'arène : rang d'épée de Cai en plus."],["5","Le Combat de Cai","Cai's Battle","Vaincre Benditz","Cai devient Cavalier Ornius. Coffres manquables (Zambato au sud, Écu en fer au nord) : tue les porteurs de clés. 104 tours de temps libre."],["6","Vers la terre de Cybèle","To the Land of Cybele","Vaincre Nuzzuo","Ultand rejoint. Manquables : coffre de lingots au nord-ouest (clé sur un Devin), scène de la fresque de Tialla. 120 tours de temps libre."],["7","Intérêts opposés","Opposed Agendas","Vaincre Inyoni","Lame purificatrice lâchée par Talimun : prends-la au tour 1. Obstacles bas : prends des cavaliers. Morts-vivants avec la Faveur des Enfers."],["8","Sentiments inébranlables","Unyielding Feelings","Arène : vaincre Leda et la bête démoniaque","Buccar rejoint en invité. Pas de récompense d'arme : la Lance étoilée est donnée au chapitre 9."],["9","Mystère au temple d'Aurora","Mystery at Aurora's Temple","Vaincre Zenzele et sauver Ultand","Lance étoilée offerte à la fin de l'enquête au temple, avant le combat. Temps libre court (3/9–11/9). Ultand absente pendant le temps libre (quêtes comprises) : Zenzele l'a enlevée. Elle revient pour le combat, qui consiste à la sauver."],["10","Un temps précieux","Precious Time","Demi-finale : vaincre Theodora","Le public lance deux armes dorées : ramasse-les, elles sont manquables (envoie un perso mobile). Theodora a une forte Défense : attaque-la surtout à la magie (Fianna, Tialla), puis armes efficaces contre les armures."],["11","Le Chaudron de Dagda","Dagda's Cauldron","Vaincre tous les ennemis","Paralogue d'Orchel entre le 18/10 et le 20/10."],["12","Un seul souhait","Just One Wish","Vaincre Bertrand et Castor","Fin de la Partie I. La Partie II est la même que pour Leda."]],"classes":[["Cai","Cavalier Ornius (ch. 5)","Cavalerie légère (Cheval de Ferghana, Canto tôt)","Cavalier bardé (sa classe actuelle)","Chevalier aurichal → Le Cavalier (divine)"],["Guzran","Chasseur","Escroc","Shido (sa classe actuelle)","Cherchombre"],["Peter","Chasseur","Aurige","Cavalier sylvain ou Archer d'élite","Bow Adept"],["Tialla","Devin","Shaman (fait)","Vate (sa classe actuelle)","Druide"],["Ultand","Devin","Prêtre (pas de Remède : chaque perso a sa propre liste de sorts)","Évêque pour l'instant ; Guardian (infanterie, soins +10) seulement une fois débloquée sur la route de Dietrich ou de Théodora","Sentinel (Partie III)"],["Sofia","Devin","Prêtre","Évêque ou Troubadour","Polymathe"],["Esmeralda","Soldat","Combattant cuirassé (fait)","Hoplite (sa classe actuelle)","Chevalier forteresse"],["Goliath","Soldat","Combattant cuirassé (sa classe actuelle)","Hoplite","Chevalier forteresse"],["Mu","Gladiateur","Épéiste","Shido ou Guerrier","Guerroyeur"],["Noctula","Gladiateur","Brigand ou Lutteur","Guerrier","Guerroyeur"],["Mikaela","Gladiateur","Brigand ou Lutteur","Guerrier","Guerroyeur"],["Olympia","Devin","Prêtre","Évêque","Polymathe"],["Sirocco","Devin","Shaman","Troubadour ou Vate","High Savant"],["Dante","Devin","Shaman","Vate","Druide"],["Fianna","Devin","Prêtre (fait)","Troubadour (sa classe actuelle)","Valkyrium"],["Ninae","— (arrive en Cavalerie légère)","Cavalerie légère","Cavalier bardé","Chevalier aurichal"],["Halvin","Chasseur","Archer (sa classe actuelle)","Cavalier sylvain (Équitation C, à cheval) ou Archer d'élite","Bow Knight ou Bow Adept"],["Inyoni","Chasseur","Escroc","Archer d'élite","Bow Adept"],["Catania","Chasseur ou Gladiateur","Épéiste","Shido","Sword Master"],["Nuzzuo","Chasseur","Escroc (sa classe actuelle)","Rôdeur ou Shido","Cherchombre"],["Loretta","—","Soldat ailé (sa classe actuelle)","Chevalier pégase (à confirmer chez l'examinateur)","Celestial Trooper"],["Ludia","Gladiateur","Épéiste","Shido","Sword Master"],["Gaitz","Gladiateur","Épéiste","Shido","Sword Master"],["Lilian","Chasseur","Archer (sa classe actuelle)","Archer d'élite","Bow Adept"],["Ursula","Chasseur","Escroc","Archer d'élite","Bow Adept"],["Benditz","Chasseur","Aurige","Cavalier sylvain","Bow Knight"],["Peppe","Chasseur","Aurige","Cavalier sylvain","Bow Knight"],["Diego","Chasseur","Escroc","Rôdeur ou Shido","Cherchombre"],["Alexandra","—","Soldat ailé (sa classe actuelle)","Chevalier pégase (à confirmer chez l'examinateur)","Celestial Trooper"],["Yang Jie","Gladiateur ou Devin","Lutteur ou Prêtre","War Monk (pugilat + magie blanche)","Battle Master (alternative)"]],"combatRules":"- Cai n'est pas obligatoire par défaut : s'il n'est pas marqué obligatoire, choisis-le seulement s'il est utile pour ce combat. La Hallebarde est l'arme de Cai : ne la promets pas à un autre perso.\n- Si sorts_connus est « non renseigné », seule Tialla a Remède.\n- Accords : Cai, Guzran, Halvin, Peter et Nuzzuo sont des hommes (il) ; Tialla, Ultand, Ninae, Esmeralda, Noctula, Alexandra, Loretta, Sofia et Mikaela sont des femmes (elle).","convoy":[["Épées","Épée en bois","E",1,""],["Épées","Épée en bronze","D",2,""],["Épées","Épée d'élu","E",1,"Confère +1 à la jauge d'embrasement des alliés adjacents (risque de Burst si elle se remplit)."],["Épées","Épée royale","E",1,"Permet d'utiliser la capacité Feu d'Ennea EX."],["Épées","Zambato","D",1,"Efficace contre la cavalerie."],["Lances","Lance en bois","D",1,""],["Lances","Lance en bronze","D",1,""],["Lances","Hallebarde","C",1,"Efficace contre la cavalerie et les armures."],["Lances","Lance d'élu","C",1,"Arme légendaire d'une princesse des glaces (pas d'effet indiqué)."],["Haches","Hache de fer","E",1,""],["Haches","Massue","D",1,""],["Arcs","Arc en bois","D",1,""],["Arcs","Arc en bronze","D",1,""],["Arcs","Arc de chasseur","C",1,"Efficace contre les bêtes."],["Arcs","Arc anti cavalerie","C",1,"Efficace contre la cavalerie et les volants."],["Gantelets","Gantelets en bronze","D",1,""],["Gantelets","Gantelets en fer","E",1,""],["Gantelets","Breidablik","E",1,"Attaque magique. Augmente les points de soutien gagnés. Capacité Lumière d'union."],["Écus","Écu en fer","",1,""],["Écus","Écu talisman","",1,"Défense +1, Résistance +2."],["Accessoires","Bâton de soin","",1,"Augmente les soins."],["Accessoires","Gemme Frénésie","",1,"Dégâts ×1,5 en attaquant avec une capacité. Activation 10 %."],["Accessoires","Gemme Miracle","",1,"Aucun dégât subi lors d'une attaque. Activation 3 %."],["Accessoires","Amulette anti-arc","",1,"Précision et Esquive +15 contre un ennemi armé d'un arc."],["Accessoires","Anneau d'archer","",1,"Précision +5."],["Potions","Potion","",8,""]],"done":"Partie I terminée le 29/10/2026","equipRules":"- Pas d'écu sur Guzran, Peter ni Noctula (poids : ils vivent de leur Vitesse).\n- Cai porte uniquement des lances : la Lance stellaire (son arme, dès qu'elle est au convoi), la Lance d'élue et la Hallebarde ; une lance de fer seulement si l'une manque. Jamais d'épée (sauf la Lame purificatrice, et seulement si le joueur le demande pour une carte de morts-vivants).\n- L'Amulette anti-arc va à Cai.\n- Contre des volants, les archers sont efficaces (×2) : Guzran (Arc C+) garde l'Arc anti cavalerie en 3e arme plutôt que le Zambato s'il n'y a pas de cavalerie.\n- La Hallebarde va à Cai quand il est \"Oui\", même si cela lui coûte sa Lance d'élue. Guzran garde la Flissa (×2 contre les armures) et le Zambato (×2 contre la cavalerie) à côté de la Véroquine.\n- Rôles des mages : Tialla est l'attaquante (Vate, Magie noire B, Bolganone, et elle garde la magie blanche et Remède) et prend le Bâton magique (Magie +3) ; Fianna est la soigneuse principale qui attaque aussi (Troubadour montée, Foudre, Feu, Fange) et prend un Bâton de soin (+10 PV de soin) ; Ultand prend l'autre Bâton de soin. Si Tialla ne joue pas, le Bâton magique peut aller à Fianna. Pas de hache pour Fianna ni Tialla (mages pures) ; seule Ultand (17 en Force) en porte.\n- Ninae porte TOUJOURS l'Épée orage quand elle est \"Oui\" ou \"Remplaçant\" (choix du joueur), à côté de sa meilleure lance : retire plutôt le Javelot que l'Épée orage s'il manque de la place.\n- Ultand et Tialla sont des mages soigneurs (Prêtre, puis Évêque ou Troubadour) : sorts et Breidablik d'abord, aucune lance. Leur classe autorise les haches : une hache légère de secours (Hache de fer) est permise s'il leur reste de la place, utile contre les mages ennemis à faible Défense.","id":"cai","label":"Cai","lord":"Cai","mountGoal":{"Alexandra":"Son pégase","Cai":"Objectif : Cheval de Ferghana","Halvin":"Plus tard : un cheval pour Cavalier sylvain","Tialla":"Plus tard : un cheval pour Troubadour"},"order":["Cai","Tialla","Guzran","Ultand","Noctula","Peter","Mikaela","Yang Jie"],"paralogues":[["Bertrand","Match amical contre le roi de Brigid","Friendly Match with Brigid's King","17/9 – 25/9","Recrute Peppe et Gaitz, Très gros lingot"],["Talimun","Le Secret de la carriole disparue","Secret of the Vanished Carriage","17/9 – 22/9, ou 1/10 – 12/10","Recrute Ursula, Lame purificatrice"],["Solel","Le Secret doré (non vérifié)","Golden Secret","24/9 – 5/10","Orichalque, boutique de nuit d'Anna"],["Orchel","Les Regrets d'Orchel","Orchel's Regret","18/10 – 20/10","Recrute Diego, Bâton de soin"]],"progress":[["barrette","Chapitre 3 : quête de gentillesse « Barrette perdue » avant le 28/2"],["ornius","Chapitre 5 : Cai devient Cavalier Ornius aux écuries"],["lame","Chapitre 7 : Lame purificatrice ramassée au tour 1"],["bertrand","Paralogue de Bertrand (Peppe, Gaitz), entre le 17/9 et le 25/9"],["talimun","Paralogue de Talimun (Ursula, Lame purificatrice)"],["solel","Paralogue de Solel (Orichalque, boutique de nuit d'Anna)"],["orchel","Paralogue d'Orchel (Diego), entre le 18/10 et le 20/10"],["fin","Partie I terminée avec Cai"]],"recItems":{"Dadao":"2 Kothar Gar","Goliath":"3 Viandes de géant","Halvin":"10 Dattes","Kiroc":"8 Eaux pures","Loretta":"3 Épées en fer","Lysander":"5 Lances en fer","Mu":"3 Glirmosa","Nezha":"3 Viandes de ver des sables","Ninae":"1 Poisson du paradis","Nuzzuo":"3 Arcs en fer","Nydine":"2 Haches de bronze"},"recruits":[{"cond":"—","leda":false,"name":"Noctula","prio":0,"renown":4,"support":1},{"cond":"Objectif long terme (Dattes lentes à réunir). 10 Dattes : quête « Huge, Hairy Beasts » (colporteur de la Compagnie Vandahl à Dagsion, combat au col Moonwatch, avant le 11/9) = 2 Dattes, puis les planter avec le talent Champ de Cai et replanter une partie de chaque récolte","deja":["Leda"],"leda":true,"name":"Halvin","prio":1,"renown":5,"support":3},{"cond":"3 000 G","leda":false,"name":"Mikaela","prio":0,"renown":5,"support":3},{"cond":"1 Poisson du paradis (lac Brontès)","deja":["Leda"],"leda":true,"name":"Ninae","prio":2,"renown":6,"support":3},{"cond":"3 Arcs en fer","leda":false,"name":"Nuzzuo","prio":0,"renown":6,"support":2},{"cond":"—","leda":false,"name":"Alexandra","prio":0,"renown":7,"support":2},{"cond":"Quête : bêtes marines près du cap Damasen","leda":false,"name":"Esmeralda","prio":0,"renown":7,"support":2},{"cond":"6 000 G","deja":["Leda"],"leda":true,"name":"Inyoni","prio":2,"renown":8,"support":3},{"cond":"3 quêtes (ou 3 Gouttes écarlates selon une autre source)","deja":["Leda"],"leda":true,"name":"Olympia","prio":2,"renown":8,"support":3},{"cond":"3 Glirmosa","deja":["Leda"],"leda":true,"name":"Mu","prio":2,"renown":9,"support":3},{"cond":"Quête de recrutement","deja":["Leda"],"leda":true,"name":"Sirocco","prio":2,"renown":9,"support":3},{"cond":"—","leda":false,"name":"Sofia","prio":0,"renown":9,"support":3},{"cond":"—","deja":["Leda"],"leda":true,"name":"Catania","prio":2,"renown":10,"support":3},{"cond":"Paralogue de Bertrand (17/9 – 25/9)","leda":false,"name":"Peppe","prio":3,"renown":9,"support":1},{"cond":"Paralogue de Talimun, répondre « Oui » trois fois","leda":false,"name":"Ursula","prio":3,"renown":10,"support":3},{"cond":"Paralogue d'Orchel (18/10 – 20/10)","leda":false,"name":"Diego","prio":3,"renown":10,"support":3},{"cond":"3 Viandes de géant","leda":false,"name":"Goliath","prio":1,"renown":7,"support":3},{"cond":"3 Épées en fer","leda":false,"name":"Loretta","prio":1,"renown":7,"support":3},{"cond":"5 000 G","leda":false,"name":"Lilian","prio":1,"renown":8,"support":2},{"cond":"—","leda":false,"name":"Benditz","prio":1,"renown":9,"support":3},{"cond":"Quête de recrutement","leda":false,"name":"Ludia","prio":1,"renown":9,"support":3},{"cond":"8 000 G","deja":["Leda"],"leda":true,"name":"Dante","prio":1,"renown":10,"support":3},{"cond":"Répondre Fromage, Lune, Pommes de terre","leda":false,"name":"Yang Jie","prio":4,"renown":3,"support":2},{"cond":"3 Viandes de ver des sables","leda":false,"name":"Nezha","prio":4,"renown":6,"support":3},{"cond":"2 Kothar Gar (pêche au pont d'Alcineus)","deja":["Leda"],"leda":true,"name":"Dadao","prio":4,"renown":7,"support":3},{"cond":"8 Eaux pures","deja":["Leda"],"leda":true,"name":"Kiroc","prio":4,"renown":8,"support":3},{"cond":"5 Lances en fer","leda":false,"name":"Lysander","prio":4,"renown":8,"support":3},{"cond":"Pile ou face à 500 G : choisir Face","deja":["Leda"],"leda":true,"name":"Simon","prio":4,"renown":8,"support":3},{"cond":"Négociation : refuser les premiers prix, pas une quatrième fois","deja":["Leda"],"leda":true,"name":"Zarcone","prio":4,"renown":8,"support":3},{"cond":"3 quêtes","leda":false,"name":"Jester","prio":4,"renown":10,"support":3},{"cond":"3 000 G","leda":false,"name":"Fianna","prio":0,"renown":8,"support":3},{"cond":"Lui dire trois fois que tu as besoin de lui","leda":false,"name":"Majide","prio":5,"renown":5,"support":2},{"cond":"2 Haches de bronze","leda":false,"name":"Nydine","prio":5,"renown":6,"support":1},{"cond":"Quête de recrutement (niveau 30-35 conseillé)","leda":false,"name":"Seteth","prio":5,"renown":6,"support":3},{"cond":"2 000 G","deja":["Leda"],"leda":true,"name":"Jasmine","prio":5,"renown":8,"support":1},{"cond":"4 000 G","deja":["Leda"],"leda":true,"name":"Io","prio":5,"renown":10,"support":3}],"stateDoc":"guide/etat","team":[["Cai","Cavalier Ornius","Épée D+, Lance C+, Hache D+","Oui",{"a1":"Lance d'élu","a2":"Hallebarde","a3":"Lance en bronze","acc":"Amulette anti-arc","ecu":"Écu en fer","pot":1}],["Peter","Chasseur","Épée D, Arc D+","Oui",{"a1":"Arc en bronze","a2":"Arc en bois","a3":"Épée en bronze","acc":"Anneau d'archer","ecu":"","pot":1}],["Tialla","Devin → Prêtre → Troubadour","Magie noire C, Magie blanche D+, Hache D","Oui",{"a1":"Sorts (grimoire)","a2":"Breidablik","a3":"","acc":"Gemme Miracle","ecu":"Écu talisman","pot":1}],["Guzran","Chasseur","Épée C, Arc E+","Oui",{"a1":"Zambato","a2":"Épée en bronze","a3":"Épée royale","acc":"Gemme Frénésie","ecu":"","pot":1}],["Ultand","Devin → Prêtre","Magie blanche D, Magie noire D","Oui",{"a1":"Sorts (grimoire)","a2":"","a3":"","acc":"Bâton de soin","ecu":"","pot":1}],["Noctula","Gladiateur","Épée D+, Pugilat D+, Hache D","Oui",{"a1":"Gantelets en bronze","a2":"Hache de fer","a3":"Épée en bois","acc":"","ecu":"","pot":1}],["Mikaela","Gladiateur","Épée D, Pugilat D, Hache D+","Remplaçant",{"a1":"Massue","a2":"Gantelets en fer","a3":"","acc":"","ecu":"","pot":1}]],"training":[["Exercices d'infanterie","Épée, Arc, Infanterie","Lilian + Halvin","Les deux archers : Arc vers A pour Lilian (B), vers B pour Halvin (C+), et Infanterie. Priorité basse : ils sont remplaçants. Sinon Ludia (Épée B, Infanterie B)."],["Exercices de combat","Épée, Hache, Pugilat","Noctula + Ludia","Noctula : Pugilat B+ vers A et Hache B (Guerrier manie la hache). Ludia : Épée B vers A pour Shido. Sinon Goliath (Hache B) ou Loretta (Épée B)."],["Exercice en armure","Lance, Hache, Autorité, Cuirassé","Goliath + Esmeralda","Goliath en priorité : Lance C à remonter et Cuirassé B pour Hoplite dès le niveau 35. Esmeralda (déjà Hoplite) : Lance B+ vers A et Cuirassé vers A pour Chevalier forteresse en Partie III. Sinon Ninae (Cuirassé C+)."],["Exercices de magie","Magie noire, Magie blanche, Autorité","Tialla + Fianna","Les deux ont leur élite (Vate et Troubadour) : Tialla monte Magie noire B vers A (Bolganone), Fianna Magie blanche B vers A et Magie noire C vers B. Priorité moyenne. Sinon Ultand (Magie blanche C, vers Évêque) à la place de l'une d'elles."],["Exercice sur monture","Lance, Autorité, Équitation, Vol","Loretta + Fianna","Loretta : Vol et Lance C+ vers B pour Chevalier pégase. Fianna (Troubadour, montée) : Équitation C+ vers B. Sinon Ninae (Équitation C+) ou Cai (Lance A)."]]},"bless":{"Aurora":3,"Credna":0,"Jurah":3,"Kalla":1,"Mars":0,"Smyrnos":0}};
+(function start(){
+  try{const h=location.hash.slice(1);if(VIEWS[h]) current=h;}catch(_){}
+  applyData(EMBEDDED.game,EMBEDDED.route);
+  try{merge(JSON.parse(localStorage.getItem(stateKey())||"null"))}catch(_){}
+  try{const bl=JSON.parse(localStorage.getItem("fe-bless")||"null")||EMBEDDED.bless;if(bl)state.bless=Object.assign({},state.bless,bl)}catch(_){}
+  render(); setSave("Enregistré sur cet appareil");
+})();
+</script>
+
+</body></html>
