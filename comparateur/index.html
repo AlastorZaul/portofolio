@@ -13,7 +13,7 @@
   :root[data-theme="dark"] { --bg:#131412; --fg:#e8e7e1; --muted:#9b9e96; --card:#1a1c19; --line:#2b2e2a; --accent:#8cc3ae; --chip:#222723; color-scheme: dark; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font: 14px/1.6 "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--fg); min-height: 100vh; padding: 40px max(16px, env(safe-area-inset-left, 0px)); }
-  main { max-width: 800px; margin: 0 auto; }
+  main { max-width: 960px; margin: 0 auto; }
   a { color: var(--accent); }
   a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
   .back {
@@ -41,7 +41,9 @@
     cursor: pointer;
   }
   select option { background: var(--card); color: var(--fg); }
+  #catalog th, #catalog td { padding: 10px 6px; }
   #catalog td, #catalog th { white-space: nowrap; }
+  #catalog td:nth-child(1) { white-space: normal; min-width: 150px; }
   #catalog td:nth-child(7) { white-space: normal; min-width: 180px; }
   select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   table { width: 100%; border-collapse: collapse; font-size: 14px; }
