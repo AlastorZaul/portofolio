@@ -5,37 +5,58 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Comparateur GPU — Jérôme</title>
 <style>
-  :root { --bg:#f5f4ef; --fg:#1c1e1b; --muted:#5d615a; --card:#ffffff; --line:#d6d4cb; --accent:#2c5a4d; --chip:#e6ebe6; }
+  @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap");
+  :root { --bg:#f5f4ef; --fg:#1c1e1b; --muted:#5d615a; --card:#ffffff; --line:#d6d4cb; --accent:#2c5a4d; --chip:#e6ebe6; color-scheme: light; }
   @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) { --bg:#131412; --fg:#e8e7e1; --muted:#9b9e96; --card:#1a1c19; --line:#2b2e2a; --accent:#8cc3ae; --chip:#222723; }
+    :root:not([data-theme="light"]) { --bg:#131412; --fg:#e8e7e1; --muted:#9b9e96; --card:#1a1c19; --line:#2b2e2a; --accent:#8cc3ae; --chip:#222723; color-scheme: dark; }
   }
+  :root[data-theme="dark"] { --bg:#131412; --fg:#e8e7e1; --muted:#9b9e96; --card:#1a1c19; --line:#2b2e2a; --accent:#8cc3ae; --chip:#222723; color-scheme: dark; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--fg); min-height: 100vh; padding: 32px 16px; }
-  main { max-width: 960px; margin: 0 auto; }
+  body { font: 14px/1.6 "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--fg); min-height: 100vh; padding: 40px max(16px, env(safe-area-inset-left, 0px)); }
+  main { max-width: 800px; margin: 0 auto; }
   a { color: var(--accent); }
-  h1 { font-size: 24px; }
-  .back { display: inline-block; margin-bottom: 14px; font-weight: 500; }
-  .sub { color: var(--muted); font-size: 14px; margin-top: 6px; line-height: 1.5; }
-  section { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 20px; margin-top: 20px; }
-  h2 { font-size: 17px; margin-bottom: 14px; }
-  .controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: end; margin-bottom: 14px; }
-  label { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--muted); }
-  select { background: var(--bg); color: var(--fg); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; font-size: 14px; min-width: 180px; }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .back {
+    display: inline-flex; align-items: center; gap: 6px; margin-bottom: 28px;
+    padding: 6px 14px; border: 1px solid var(--line); border-radius: 999px;
+    color: var(--fg); text-decoration: none; font-size: 13px; font-weight: 500;
+  }
+  .back:hover { border-color: var(--accent); color: var(--accent); }
+  .eyebrow { margin: 0 0 12px; font: 500 12px/1.4 "IBM Plex Mono", monospace; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  header::before { content: ""; display: block; width: 48px; height: 3px; border-radius: 2px; background: var(--accent); margin-bottom: 22px; }
+  h1 { font: 500 clamp(34px, 6vw, 44px)/1.1 "Newsreader", Georgia, serif; letter-spacing: -0.015em; text-wrap: balance; }
+  .sub { color: var(--muted); font-size: 16px; margin-top: 14px; max-width: 62ch; line-height: 1.6; }
+  section { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 24px; margin-top: 20px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+  h2 { font: 500 24px/1.2 "Newsreader", Georgia, serif; margin-bottom: 16px; }
+  .controls { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; margin-bottom: 16px; }
+  label { display: flex; flex-direction: column; gap: 6px; font: 500 11px/1.4 "IBM Plex Mono", monospace; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  select { background: var(--bg); color: var(--fg); border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; font: 400 14px "IBM Plex Sans", system-ui, sans-serif; text-transform: none; letter-spacing: 0; min-width: 180px; }
+  select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   table { width: 100%; border-collapse: collapse; font-size: 14px; }
-  th, td { text-align: left; padding: 9px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
-  th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .03em; }
-  td.win { color: var(--accent); font-weight: 600; }
-  .tag { font-size: 11px; padding: 2px 7px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
+  th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--muted); font: 500 11px/1.4 "IBM Plex Mono", monospace; text-transform: uppercase; letter-spacing: 0.05em; }
+  tbody th { font: 400 14px/1.4 "IBM Plex Sans", system-ui, sans-serif; text-transform: none; letter-spacing: 0; color: var(--fg); }
+  td.win { color: var(--accent); font-weight: 500; }
+  .tag { font: 500 11px/1.4 "IBM Plex Mono", monospace; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); background: var(--chip); }
   .small { color: var(--muted); font-size: 12px; display: block; margin-top: 2px; }
-  .note { color: var(--muted); font-size: 12px; margin-top: 12px; line-height: 1.5; }
+  .note { color: var(--muted); font-size: 12px; margin-top: 14px; line-height: 1.5; }
   .empty { color: var(--muted); font-size: 14px; }
   .scroll { overflow-x: auto; }
+  footer { margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+  footer .links { display: flex; flex-wrap: wrap; gap: 16px; font-weight: 500; margin-top: 10px; }
+  footer a { color: var(--accent); }
+  @media (max-width: 560px) {
+    body { padding-block: 28px; }
+    section { padding: 18px; }
+    h2 { font-size: 21px; }
+  }
 </style>
 </head>
 <body>
 <main>
-  <a class="back" href="../">← Retour au portfolio</a>
+  <a class="back" href="../">← Tous les projets</a>
   <header>
+    <p class="eyebrow">Outil personnel</p>
     <h1>Comparateur GPU</h1>
     <p class="sub">Compare des cartes graphiques à partir de leurs spécifications : mémoire, consommation, prix de lancement (MSRP) et prix constatés en France. Il n'y a pas de score de performance, car ces données ne sont pas des benchmarks.</p>
   </header>
@@ -86,6 +107,13 @@
     </div>
     <p class="note">MSRP : prix de lancement indicatifs en dollars américains, à vérifier avant publication. Prix constatés : relevés sur LDLC et gpuprix lors de recherches web, avec des dates variables (2025 à 2026). Ces valeurs ne sont pas vérifiées en direct et peuvent avoir changé. Les cartes marquées « retirée » ne sont plus vendues neuves.</p>
   </section>
+  <footer>
+    Projets personnels. Plus de détails sur demande.
+    <div class="links">
+      <a href="https://github.com/AlastorZaul" target="_blank" rel="noopener">Profil GitHub</a>
+      <a href="https://www.linkedin.com/in/desvauxjerome" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </footer>
 </main>
 
 <script>
